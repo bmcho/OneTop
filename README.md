@@ -15,11 +15,16 @@
   - 포지션별 기술스택
     - 프론트엔드
       - React
+      - Next.js
+      - Redux
+      - Styled-Component
     - 백엔드
-      - Python
-      - MySQL
+      - Python 3.8
+      - FastAPI
+      - MySQL 5.7
+      - Docker
     - 데이터분석
-      - python(백엔드 버전 동일하게)
+      - python 3.8
       - 데이터 분류(분석용 데이터, 서비스용 데이터)
       - 텐서플로우(python, VM의 GPU 버전을 확인하고 결정)
         - cuDNN, CUDA(분석용 VM)
