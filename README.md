@@ -75,9 +75,8 @@
     - 타입별(랭킹)
 
 ## 4. 프로젝트 구성도
-  - 프로젝트 구조도
-  - 와이어프레임 e.g) figma
-  - 스토리보드
+
+  - [와이어프레임](https://whimsical.com/onetop-KvEYZNLaXBoVpCeUHzFJR4)
 
 ## 5. 프로젝트 팀원 역할 분담
 
