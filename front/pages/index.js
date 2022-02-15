@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import { loadTvShowRequestAction } from '../src/stores/modules/tvShow'; // tvShow 리듀서에서 만든 액션
 
 const Home = () => {
@@ -14,7 +15,7 @@ const Home = () => {
 
   return ( // 고차함수라 한번 실행한 함수를 onClick에 넣어준다.
     <div>
-      <button onClick={onClickHero('superman')}>슈퍼맨</button>
+      <Button onClick={onClickHero('superman')}>슈퍼맨</Button>
       <button onClick={onClickHero('batman')}>배트맨</button>
       {tvShowTitle && <div>{tvShowTitle}</div>}
       <br />
@@ -33,6 +34,9 @@ const Home = () => {
     </div>
   );
 }
+const Button = styled.button`
+background-color: red;
+`
 export default Home
 
 
