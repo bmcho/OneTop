@@ -1,8 +1,10 @@
 import React from 'react';
+import SearchKeyword from '../src/components/searchKeyword/searchKeyword';
 
 const search = (props) => (
   <div>
-    search page
+    <div>search page</div>
+    <SearchKeyword />
   </div>
 );
 
