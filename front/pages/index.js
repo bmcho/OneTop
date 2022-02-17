@@ -8,15 +8,15 @@ const Home = () => {
   const { tvShowTitle, tvShowContents } = useSelector(state => state.tvShow); // tvShow redux의 state들을 불러온다.
 
   const onClickHero = (hero) => {
-    return (() => {
-      dispatch(loadTvShowRequestAction(hero));
-    })
+    // return (() => {
+    dispatch(loadTvShowRequestAction(hero));
+    // })
   }; // hero 넣어서 동적으로 data를 변경해주는 action 생성함수를 시행한다. 
 
   return ( // 고차함수라 한번 실행한 함수를 onClick에 넣어준다.
     <div>
-      <Button onClick={onClickHero('superman')}>슈퍼맨</Button>
-      <button onClick={onClickHero('batman')}>배트맨</button>
+      <Button onClick={() => onClickHero('superman')}>superman</Button>
+      <button onClick={() => onClickHero('batman')}>배트맨</button>
       {tvShowTitle && <div>{tvShowTitle}</div>}
       <br />
       {tvShowContents && (
