@@ -14,6 +14,7 @@ export const CLEAR_AUTO_COMPLETE_DATA = 'CLEAR_AUTO_COMPLETE_DATA';
 export const LOAD_DATA_SUCCESS = 'LOAD_DATA_SUCCESS';
 export const LOAD_DATA_FAILURE = 'LOAD_DATA_FAILURE';
 export const SET_SEARCH_KEYWORD_HISTORY = 'SET_SEARCH_KEYWORD_HISTORY';
+export const DELETE_SEARCH_KEYWORD_HISTORY = 'DELETE_SEARCH_KEYWORD_HISTORY';
 
 export const setAutoCompleteKeywordAction = (data) => ({
   type: SET_AUTO_COMPLETE_KEYWORD,
@@ -48,7 +49,10 @@ export const setSearchKeywordHistoryAction = (data) => ({
   type: SET_SEARCH_KEYWORD_HISTORY,
   data,
 })
-
+export const deleteSearchKeywordHistoryAction = (data) => ({
+  type: DELETE_SEARCH_KEYWORD_HISTORY,
+  data,
+})
 const searchKeyword = (state = initialState, action) => {
   switch (action.type) {
     case SET_AUTO_COMPLETE_KEYWORD:
@@ -91,12 +95,26 @@ const searchKeyword = (state = initialState, action) => {
           }
         }
       } else {
-        if (action.data.length === 0) {
-          return state
+        if (typeof action.data === 'string') {
+          if (action.data.length === 0) {
+            return state
+          } else {
+            return { ...state, searchKeywordHistory: [...state.searchKeywordHistory, action.data] }
+          }
         } else {
-          return { ...state, searchKeywordHistory: [...state.searchKeywordHistory, action.data] }
+          return state
+          // if (action.data.length === 0) {
+          //   return state
+          // } else {
+          //   return { ...state, searchKeywordHistory: [...state.searchKeywordHistory, ...action.data] }
+          // }
         }
+
       }
+    case DELETE_SEARCH_KEYWORD_HISTORY:
+      const keywords = [...state.searchKeywordHistory]
+      keywords.splice(parseInt(action.data), 1);
+      return { ...state, searchKeywordHistory: keywords }
     default:
       return state;
   }
