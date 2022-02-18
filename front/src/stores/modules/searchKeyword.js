@@ -10,6 +10,7 @@ export const initialState = {
 export const SET_AUTO_COMPLETE_KEYWORD = 'SET_AUTO_COMPLETE_KEYWORD';
 export const SET_SEARCH_KEYWORD = 'SET_SEARCH_KEYWORD';
 export const LOAD_AUTO_COMPLETE_DATA_SUCCESS = 'LOAD_AUTO_COMPLETE_DATA_SUCCESS';
+export const CLEAR_AUTO_COMPLETE_DATA = 'CLEAR_AUTO_COMPLETE_DATA';
 export const LOAD_DATA_SUCCESS = 'LOAD_DATA_SUCCESS';
 export const LOAD_DATA_FAILURE = 'LOAD_DATA_FAILURE';
 export const SET_SEARCH_KEYWORD_HISTORY = 'SET_SEARCH_KEYWORD_HISTORY';
@@ -27,6 +28,10 @@ export const setSearchKeywordAction = (data) => ({
 export const loadAutoCompleteDataSuccessAction = (data) => ({
   type: LOAD_AUTO_COMPLETE_DATA_SUCCESS,
   data,
+})
+
+export const clearAutoCompleteDataAction = () => ({
+  type: CLEAR_AUTO_COMPLETE_DATA,
 })
 
 export const loadDataSuccessAction = (data) => ({
@@ -54,6 +59,8 @@ const searchKeyword = (state = initialState, action) => {
         name: tvShow.show.name,
       }))
       return { ...state, autoCompleteData: autoCompleteData }
+    case CLEAR_AUTO_COMPLETE_DATA:
+      return { ...state, autoCompleteData: [] }
     case SET_SEARCH_KEYWORD:
       return { ...state, searchKeyword: action.data };
     case LOAD_DATA_SUCCESS:
@@ -69,7 +76,27 @@ const searchKeyword = (state = initialState, action) => {
     case LOAD_DATA_FAILURE:
       return { ...state, searchKeywordError: action.error };
     case SET_SEARCH_KEYWORD_HISTORY:
-      return { ...state, searchKeywordHistory: [...state.searchKeywordHistory, action.data] }
+      if (state.searchKeywordHistory.length === 0) {
+        if (typeof action.data === 'string') {
+          if (action.data.length === 0) {
+            return state
+          } else {
+            return { ...state, searchKeywordHistory: [action.data] }
+          }
+        } else {
+          if (action.data.length === 0) {
+            return state
+          } else {
+            return { ...state, searchKeywordHistory: [...action.data] }
+          }
+        }
+      } else {
+        if (action.data.length === 0) {
+          return state
+        } else {
+          return { ...state, searchKeywordHistory: [...state.searchKeywordHistory, action.data] }
+        }
+      }
     default:
       return state;
   }

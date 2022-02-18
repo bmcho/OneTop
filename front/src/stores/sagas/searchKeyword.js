@@ -1,6 +1,6 @@
 import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
 import axios from 'axios';
-import { loadAutoCompleteDataSuccessAction, loadDataFailureAction, loadDataSuccessAction, SET_SEARCH_KEYWORD, LOAD_DATA_SUCCESS, SET_AUTO_COMPLETE_KEYWORD } from '../modules/searchKeyword';
+import { loadAutoCompleteDataSuccessAction, loadDataFailureAction, loadDataSuccessAction, SET_SEARCH_KEYWORD, LOAD_DATA_SUCCESS, SET_AUTO_COMPLETE_KEYWORD, clearAutoCompleteDataAction } from '../modules/searchKeyword';
 
 function loadTvShowAPI(data) {
   return axios.get(`https://api.tvmaze.com/search/shows?q=${data}`);
@@ -9,6 +9,7 @@ function loadTvShowAPI(data) {
 function* loadTvShow(action) {
   try {
     const result = yield call(loadTvShowAPI, action.data);
+    yield put(clearAutoCompleteDataAction())
     yield put(loadDataSuccessAction(result.data));
   }
   catch (e) {
