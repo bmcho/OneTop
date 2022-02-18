@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchKeywordAction, setAutoCompleteKeywordAction, setSearchKeywordHistoryAction } from '../../../stores/modules/searchKeyword';
+import styled from 'styled-components';
+import searchKeyword, { setSearchKeywordAction, setAutoCompleteKeywordAction, setSearchKeywordHistoryAction } from '../../../stores/modules/searchKeyword';
 
 const SearchBar = (props) => {
   const dispatch = useDispatch();
-  const { autoCompleteKeyword, searchResultData } = useSelector(state => state.searchKeyword);
+  const { autoCompleteKeyword, searchResultData, searchKeyword } = useSelector(state => state.searchKeyword);
 
   const changeSearchValue = (e) => {
     dispatch(setAutoCompleteKeywordAction(e.target.value))
@@ -15,11 +16,21 @@ const SearchBar = (props) => {
   }
   return (
     <div>
-      <input type='text' value={autoCompleteKeyword} onChange={changeSearchValue} />
+      <Input type='text' value={autoCompleteKeyword} onChange={changeSearchValue} />
       <button onClick={() => clickSearchQuery(autoCompleteKeyword)}>검색</button>
-      <div>{autoCompleteKeyword}</div>
+
     </div>
   )
 };
 
+const Input = styled.input`
+  width: 500px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: beige;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+`
 export default SearchBar;
