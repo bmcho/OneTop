@@ -16,8 +16,6 @@ const SearchKeyword = (props) => {
 
   return (
     <div>
-      <div>searchKeyword</div>
-
       <SearchBar />
       {autoCompleteData.length ? <AutoComplete /> :
         autoCompleteKeyword ? <SearchResult /> : <SearchHistory />}

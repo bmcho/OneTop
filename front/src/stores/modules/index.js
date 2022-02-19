@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import { HYDRATE } from "next-redux-wrapper";
 import tvShow from "./tvShow";
 import searchKeyword from "./searchKeyword";
+import searchTypeTap from "./searchTypeTap";
 
 const rootReducer = (state, action) => {
   switch (action.type) {
@@ -11,7 +12,8 @@ const rootReducer = (state, action) => {
     default: {
       const combineReducer = combineReducers({
         tvShow,
-        searchKeyword
+        searchKeyword,
+        searchTypeTap
       });
       return combineReducer(state, action);
     }
