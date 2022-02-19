@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchKeywordHistoryAction } from '../../stores/modules/searchKeyword';
+import { setSearchKeywordHistoryAction } from '../../../stores/modules/searchKeyword';
 import AutoComplete from './autoComplete/autoComplete';
 import SearchBar from './searchBar/searchBar';
 import SearchHistory from './searchHistory/searchHistory';

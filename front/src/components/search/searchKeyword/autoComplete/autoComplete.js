@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { setAutoCompleteKeywordAction, setSearchKeywordAction, setSearchKeywordHistoryAction } from '../../../stores/modules/searchKeyword';
+import { setAutoCompleteKeywordAction, setSearchKeywordAction, setSearchKeywordHistoryAction } from '../../../../stores/modules/searchKeyword';
 
 const AutoComplete = (props) => {
   const dispatch = useDispatch();

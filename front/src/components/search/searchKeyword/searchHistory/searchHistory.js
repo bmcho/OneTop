@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { deleteSearchKeywordHistoryAction } from '../../../stores/modules/searchKeyword';
+import { deleteSearchKeywordHistoryAction } from '../../../../stores/modules/searchKeyword';
 
 const SearchHistory = (props) => {
   const dispatch = useDispatch();

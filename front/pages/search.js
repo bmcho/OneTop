@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import Header from '../src/components/header/header';
-import SearchIngredient from '../src/components/searchIngredient/searchIngredient';
-import SearchKeyword from '../src/components/searchKeyword/searchKeyword';
+import SearchIngredient from '../src/components/search/searchIngredient/searchIngredient';
+import SearchKeyword from '../src/components/search/searchKeyword/searchKeyword';
 
 const search = (props) => (
   <SearchPageBlock>
-    <Header />
     <div>search page</div>
     <SearchKeyword />
     <SearchIngredient />
