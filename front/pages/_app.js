@@ -4,15 +4,14 @@ import withReduxSaga from 'next-redux-saga'; // next와 redux-saga를 연결하�
 import { ThemeProvider } from 'styled-components';
 import { theme } from '../styles/theme';
 import { GlobalStyle } from '../styles/globalStyle';
+import Header from '../src/components/header/header';
+import Layout from '../src/components/layout/Layout';
 
 function MyApp({ Component, pageProps }) {
   return (
-    <>
-      <GlobalStyle />
-      <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </>
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
   )
 }
 
