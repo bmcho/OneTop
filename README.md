@@ -23,6 +23,7 @@
       - FastAPI
       - MySQL 5.7
       - Docker
+      - NginX
     - 데이터분석
       - python 3.8
       - 데이터 분류(분석용 데이터, 서비스용 데이터)
