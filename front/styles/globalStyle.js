@@ -32,5 +32,8 @@ export const GlobalStyle = createGlobalStyle`
             fill: #f2f3f4;
         }
     }
-    
+    ul, ol, li {
+        list-style: none;
+    }
+
 `;
