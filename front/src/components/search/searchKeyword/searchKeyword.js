@@ -5,6 +5,7 @@ import AutoComplete from './autoComplete/autoComplete';
 import SearchBar from './searchBar/searchBar';
 import SearchHistory from './searchHistory/searchHistory';
 import SearchResult from './searchResult/searchResult';
+import styled from 'styled-components';
 
 const SearchKeyword = (props) => {
   const dispatch = useDispatch();
@@ -15,13 +16,15 @@ const SearchKeyword = (props) => {
   }, [])
 
   return (
-    <div>
+    <SearchKeywordBlock>
       <SearchBar />
       {autoCompleteData.length ? <AutoComplete /> :
         autoCompleteKeyword ? <SearchResult /> : <SearchHistory />}
 
-    </div>
+    </SearchKeywordBlock>
   )
 };
-
+const SearchKeywordBlock = styled.div`
+width: 80%;
+margin: 0 auto;`
 export default SearchKeyword;

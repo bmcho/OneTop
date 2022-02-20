@@ -31,7 +31,7 @@ const SearchHistory = (props) => {
   )
 };
 const SearchKeywordHistoryList = styled.ul`
-  width: 500px;
+  width: 100%;
 `
 const SearchKeywordHistoryItem = styled.li`
   display: flex;

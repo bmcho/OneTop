@@ -15,16 +15,21 @@ const SearchBar = (props) => {
     dispatch(setSearchKeywordAction(keyword))
   }
   return (
-    <div>
+    <SearchBarBlock>
       <Input type='text' value={autoCompleteKeyword} onChange={changeSearchValue} />
       <button onClick={() => clickSearchQuery(autoCompleteKeyword)}>검색</button>
 
-    </div>
+    </SearchBarBlock>
   )
 };
-
+const SearchBarBlock = styled.div`   
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding:20px 0;
+`
 const Input = styled.input`
-  width: 500px;
+  width: 100%;
   padding: 10px;
   border-radius: 10px;
   border: none;
