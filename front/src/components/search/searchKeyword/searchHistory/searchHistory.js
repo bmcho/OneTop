@@ -1,18 +1,28 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { deleteSearchKeywordHistoryAction } from '../../../../stores/modules/searchKeyword';
+import { deleteSearchKeywordHistoryAction, setSearchKeywordAction, setAutoCompleteKeywordAction, setSearchKeywordHistoryAction } from '../../../../stores/modules/searchKeyword';
 
 const SearchHistory = (props) => {
   const dispatch = useDispatch();
   const { searchKeywordHistory } = useSelector(state => state.searchKeyword);
+  useEffect(() => {
+    const localStorageKeyword = JSON.parse(localStorage.getItem('keywords'));
+    if (searchKeywordHistory.length === 0 && localStorageKeyword.length !== 0) {
+      dispatch(setSearchKeywordHistoryAction(localStorageKeyword))
+    }
+  }, [])
 
   useEffect(() => {
     localStorage.setItem('keywords', JSON.stringify(searchKeywordHistory))
   }, [searchKeywordHistory])
 
   const deleteSearchKeyword = (e) => {
-    dispatch(deleteSearchKeywordHistoryAction((e.target.dataset.index)))
+    dispatch(deleteSearchKeywordHistoryAction(e.target.dataset.index))
+  }
+  const clickHistoryItem = (e) => {
+    dispatch(setAutoCompleteKeywordAction(searchKeywordHistory[e.target.dataset.index]))
+    dispatch(setSearchKeywordAction(searchKeywordHistory[e.target.dataset.index]))
   }
 
   return (
@@ -20,8 +30,8 @@ const SearchHistory = (props) => {
       {searchKeywordHistory && (
         <SearchKeywordHistoryList>
           {searchKeywordHistory.map((keyword, idx) => (
-            <SearchKeywordHistoryItem key={idx}>
-              <SearchKeywordHistoryItemButton>{keyword}</SearchKeywordHistoryItemButton>
+            <SearchKeywordHistoryItem key={idx} >
+              <SearchKeywordHistoryItemButton onClick={clickHistoryItem} data-index={idx}>{keyword}</SearchKeywordHistoryItemButton>
               <KeywordDeleteButton onClick={deleteSearchKeyword} data-index={idx}>x</KeywordDeleteButton>
             </SearchKeywordHistoryItem>
           ))}

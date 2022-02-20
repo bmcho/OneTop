@@ -10,6 +10,7 @@ import styled from 'styled-components';
 const SearchKeyword = (props) => {
   const dispatch = useDispatch();
   const { autoCompleteData, autoCompleteKeyword } = useSelector(state => state.searchKeyword);
+
   useEffect(() => {
     const keywords = JSON.parse(localStorage.getItem('keywords') || '[]')
     dispatch(setSearchKeywordHistoryAction(keywords))
@@ -25,6 +26,7 @@ const SearchKeyword = (props) => {
   )
 };
 const SearchKeywordBlock = styled.div`
-width: 80%;
-margin: 0 auto;`
+  width: 80%;
+  margin: 0 auto;
+`
 export default SearchKeyword;

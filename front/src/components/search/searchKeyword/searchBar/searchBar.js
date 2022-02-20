@@ -14,15 +14,19 @@ const SearchBar = (props) => {
     dispatch(setSearchKeywordHistoryAction(keyword))
     dispatch(setSearchKeywordAction(keyword))
   }
+  const resetSearchKeyword = () => {
+    dispatch(setAutoCompleteKeywordAction(''))
+  }
   return (
     <SearchBarBlock>
       <Input type='text' value={autoCompleteKeyword} onChange={changeSearchValue} />
-      <button onClick={() => clickSearchQuery(autoCompleteKeyword)}>검색</button>
+      <Button onClick={() => resetSearchKeyword()}>X</Button>
 
     </SearchBarBlock>
   )
 };
 const SearchBarBlock = styled.div`   
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -36,6 +40,12 @@ const Input = styled.input`
   background-color: beige;
   box-sizing: border-box;
   font-size: 16px;
-}
 `
+const Button = styled.button`    
+  position: absolute;
+  right: 10px;
+  top:50%;
+  transform: translateY(-50%);
+`
+
 export default SearchBar;

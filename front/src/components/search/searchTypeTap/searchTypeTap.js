@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { setSearchTapState } from '../../../stores/modules/searchTypeTap';
 
 const SearchTypeTap = (props) => {
   const dispatch = useDispatch();
-  const [typeState, setTypeState] = useState('category');
+  const { tapState } = useSelector(state => state.searchTypeTap);
   const changeTypeState = (state) => {
-    setTypeState(state)
-    dispatch(setSearchTapState(state))
+    dispatch(setSearchTapState(state));
   }
   return (
     <>
@@ -16,17 +15,17 @@ const SearchTypeTap = (props) => {
         <Item
           onClick={() => { changeTypeState('category') }}
           type={'category'}
-          typeState={typeState}
+          typeState={tapState}
         >카테고리</Item>
         <Item
           onClick={() => { changeTypeState('keyword') }}
           type={'keyword'}
-          typeState={typeState}
+          typeState={tapState}
         >키워드</Item>
         <Item
           onClick={() => { changeTypeState('ingredient') }}
           type={'ingredient'}
-          typeState={typeState}
+          typeState={tapState}
         >성분</Item>
       </NavBlock>
     </>

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Header from '../src/components/header/header';
@@ -8,7 +8,7 @@ import SearchTypeTap from '../src/components/search/searchTypeTap/searchTypeTap'
 import searchKeyword from '../src/stores/modules/searchKeyword';
 
 const search = (props) => {
-  const { tapState } = useSelector(state => state.searchTypeTap)
+  const { tapState } = useSelector(state => state.searchTypeTap);
   const renderSearch = useMemo(() => {
     if (tapState === 'category') {
       return
