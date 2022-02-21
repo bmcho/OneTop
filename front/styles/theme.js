@@ -13,7 +13,8 @@ export const theme = {
     lightGray2: '#f0f1f5',
     lightGray3: '#f6f7fa',
     lightGray4: '#fafbfc',
-    white: '#ffffff'
+    white: '#ffffff',
+    black: '#000000',
   },
   boxShadow: {
     normal: "0 3px 8px 0 rgb(0 0 0 / 10%)",

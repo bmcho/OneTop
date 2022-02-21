@@ -38,7 +38,7 @@ const SearchBarBlock = styled.div`
 `
 const Input = styled.input`
   width: 100%;
-  padding: 10px;
+  padding: 10px 20px;
   border-radius: 10px;
   border: none;
   background-color: ${theme.color.lightGray3};
