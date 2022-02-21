@@ -112,6 +112,7 @@ const SmallCategory = styled.button`
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 10px;
   margin-left: 20px;
+  font-weight: 900;
   ${({ active }) => {
     return (
       active &&
@@ -120,6 +121,14 @@ const SmallCategory = styled.button`
       `
     );
   }}
+  &:hover {
+    color: #f08c00;
+    border-color: #f08c00;
+  }
+  &:focus {
+    color: #f08c00;
+    border: 1px solid #f08c00;
+  }
 `;
 
 export default SearchFromCategory;
