@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import styled, { css } from "styled-components";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 const Slider = ({ children }) => {
   const SLIDER_LENGTH = children.length;
@@ -43,7 +44,9 @@ const Slider = ({ children }) => {
 
   return (
     <Wrapper>
-      <Btn onClick={prev} />
+      <Btn onClick={prev}>
+        <MdChevronLeft />
+      </Btn>
       <Container>
         <SliderContainer size={SLIDER_LENGTH} ref={ref} onTransitionEnd={roof}>
           {children &&
@@ -56,7 +59,9 @@ const Slider = ({ children }) => {
             })}
         </SliderContainer>
       </Container>
-      <Btn onClick={next} />
+      <Btn onClick={next}>
+        <MdChevronRight />
+      </Btn>
     </Wrapper>
   );
 };
@@ -107,10 +112,13 @@ const Slide = styled.div`
 `;
 
 const Btn = styled.div`
-  width: 20px;
-  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 60px;
   border: 1px solid rgba(255, 255, 255);
-  border-radius: 20px;
+  border-radius: 30px;
   background-color: rgba(0, 0, 0, 0.2);
   cursor: pointer;
 `;

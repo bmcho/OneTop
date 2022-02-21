@@ -1,5 +1,6 @@
 import { categories } from "../../../utils/categoryUtil";
 import styled, { css } from "styled-components";
+import { theme } from "../../../../styles/theme";
 import { useState } from "react";
 import Slider from "./Slider";
 
@@ -53,6 +54,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20px 0;
 `;
 
 const LargeCategory = styled.button`
@@ -87,7 +89,7 @@ const LargeCategory = styled.button`
   }
 
   &:hover {
-    background-color: #fbd460;
+    background-color: ${theme.color.yellow1};
     transition: all 0.4s ease-in;
   }
 `;
