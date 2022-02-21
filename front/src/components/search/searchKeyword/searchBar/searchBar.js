@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { theme } from '../../../../../styles/theme';
 import searchKeyword, { setSearchKeywordAction, setAutoCompleteKeywordAction, setSearchKeywordHistoryAction } from '../../../../stores/modules/searchKeyword';
 
 const SearchBar = (props) => {
@@ -19,7 +20,10 @@ const SearchBar = (props) => {
   }
   return (
     <SearchBarBlock>
-      <Input type='text' value={autoCompleteKeyword} onChange={changeSearchValue} />
+      <Input type='text'
+        value={autoCompleteKeyword}
+        placeholder='제품명을 입력해주세요'
+        onChange={changeSearchValue} />
       <Button onClick={() => resetSearchKeyword()}>X</Button>
 
     </SearchBarBlock>
@@ -37,7 +41,7 @@ const Input = styled.input`
   padding: 10px;
   border-radius: 10px;
   border: none;
-  background-color: beige;
+  background-color: ${theme.color.lightGray3};
   box-sizing: border-box;
   font-size: 16px;
 `

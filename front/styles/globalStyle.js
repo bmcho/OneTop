@@ -17,7 +17,7 @@ export const GlobalStyle = createGlobalStyle`
         font-family: -apple-system,BlinkMacSystemFont,helvetica,Apple SD Gothic Neo,sans-serif;       
         font-display: fallback;
         ${media.tablet}{
-            font-size: 10px;
+            font-size: 14px;
         }
         -ms-overflow-style: none;
         scrollbar-width: none;

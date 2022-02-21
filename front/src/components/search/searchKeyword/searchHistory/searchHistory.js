@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { theme } from '../../../../../styles/theme';
 import { deleteSearchKeywordHistoryAction, setSearchKeywordAction, setAutoCompleteKeywordAction, setSearchKeywordHistoryAction } from '../../../../stores/modules/searchKeyword';
 
 const SearchHistory = (props) => {
@@ -48,7 +49,7 @@ const SearchKeywordHistoryItem = styled.li`
   justify-content: space-between;
   padding: 10px;
   &:hover{
-    background-color:#eee;
+    background-color:${theme.color.lightGray3};
   }
 `
 const SearchKeywordHistoryItemButton = styled.span`
