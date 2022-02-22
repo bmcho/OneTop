@@ -7,15 +7,11 @@ import { deleteSearchKeywordHistoryAction, setSearchKeywordAction, setAutoComple
 const SearchHistory = (props) => {
   const dispatch = useDispatch();
   const { searchKeywordHistory } = useSelector(state => state.searchKeyword);
-  useEffect(() => {
-    const localStorageKeyword = JSON.parse(localStorage.getItem('keywords'));
-    if (searchKeywordHistory.length === 0 && localStorageKeyword.length !== 0) {
-      dispatch(setSearchKeywordHistoryAction(localStorageKeyword))
-    }
-  }, [])
 
   useEffect(() => {
-    localStorage.setItem('keywords', JSON.stringify(searchKeywordHistory))
+    if (!JSON.parse(localStorage.getItem('keywords')) || JSON.parse(localStorage.getItem('keywords')).length === 0) {
+      localStorage.setItem('keywords', JSON.stringify(searchKeywordHistory))
+    }
   }, [searchKeywordHistory])
 
   const deleteSearchKeyword = (e) => {
