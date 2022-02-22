@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchKeywordHistoryAction } from '../../../stores/modules/searchKeyword';
-import AutoComplete from './autoComplete/autoComplete';
-import SearchBar from './searchBar/searchBar';
-import SearchHistory from './searchHistory/searchHistory';
-import SearchResult from './searchResult/searchResult';
+import AutoComplete from './autoComplete/AutoComplete';
+import SearchBar from './searchBar/SearchBar';
+import SearchHistory from './searchHistory/SearchHistory';
+import SearchResult from './searchResult/SearchResult';
 import styled from 'styled-components';
 
 const SearchKeyword = (props) => {

@@ -1,11 +1,9 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import Header from '../src/components/header/header';
-import SearchIngredient from '../src/components/search/searchIngredient/searchIngredient';
-import SearchKeyword from '../src/components/search/searchKeyword/searchKeyword';
-import SearchTypeTap from '../src/components/search/searchTypeTap/searchTypeTap';
-import searchKeyword from '../src/stores/modules/searchKeyword';
+import SearchIngredient from '../src/components/search/searchIngredient/SearchIngredient';
+import SearchKeyword from '../src/components/search/searchKeyword/SearchKeyword';
+import SearchTypeTap from '../src/components/search/searchTypeTap/SearchTypeTap';
 import SearchFromCategory from '../src/components/search/searchCategory/SearchFromCategory';
 
 const search = (props) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { theme } from '../../../../styles/theme';
-import SearchBar from './searchBar/searchBar';
+import SearchBar from './searchBar/SearchBar';
 
 const SearchIngredient = (props) => (
   <SearchIngredientBlock>
