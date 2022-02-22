@@ -28,7 +28,7 @@ const SearchHistory = (props) => {
         <SearchKeywordHistoryList>
           {searchKeywordHistory.map((keyword, idx) => (
             <SearchKeywordHistoryItem key={idx} >
-              <SearchKeywordHistoryItemButton onClick={clickHistoryItem} data-index={idx}>{keyword}</SearchKeywordHistoryItemButton>
+              <SearchKeywordHistoryItemTitle onClick={clickHistoryItem} data-index={idx}>{keyword}</SearchKeywordHistoryItemTitle>
               <KeywordDeleteButton onClick={deleteSearchKeyword} data-index={idx}>x</KeywordDeleteButton>
             </SearchKeywordHistoryItem>
           ))}
@@ -48,8 +48,11 @@ const SearchKeywordHistoryItem = styled.li`
     background-color:${theme.color.lightGray3};
   }
 `
-const SearchKeywordHistoryItemButton = styled.span`
+const SearchKeywordHistoryItemTitle = styled.span`
   width: 100%;
+  &:hover{
+    cursor:pointer;
+  }
 `
 const KeywordDeleteButton = styled.button`
   padding:2px;
