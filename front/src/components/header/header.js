@@ -7,17 +7,17 @@ const Header = (props) => (
     <h1>Title</h1>
     <NavBlock>
       <li>
-        <Link href='/search'>
+        <Link href="/search">
           <a>search</a>
         </Link>
       </li>
       <li>
-        <Link href='/'>
+        <Link href="/">
           <a>recommend</a>
         </Link>
       </li>
       <li>
-        <Link href='/description'>
+        <Link href="/description">
           <a>description</a>
         </Link>
       </li>
@@ -25,23 +25,23 @@ const Header = (props) => (
   </HeaderBlock>
 );
 const HeaderBlock = styled.div`
-  width:1024px;
-  margin:0 auto;
-  height:100px;  
-  padding:20px;
-  box-sizing:border-box;
+  width: 1024px;
+  margin: 0 auto;
+  height: 100px;
+  padding: 20px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
+`;
 const NavBlock = styled.nav`
-  display:flex;
-  li+li{
-    padding-left:10px
+  display: flex;
+  li + li {
+    padding-left: 10px;
   }
-  a{
+  a {
     text-decoration: none;
     color: black;
   }
-`
+`;
 export default Header;

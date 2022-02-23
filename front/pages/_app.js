@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }) {
     <Layout>
       <Component {...pageProps} />
     </Layout>
-  )
+  );
 }
 
 export default wrapper.withRedux(withReduxSaga(MyApp));
