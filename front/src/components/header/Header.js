@@ -25,7 +25,7 @@ const Header = (props) => (
   </HeaderBlock>
 );
 const HeaderBlock = styled.div`
-  width:1024px;
+  max-width: 1024px;
   margin:0 auto;
   height:100px;  
   padding:20px;
