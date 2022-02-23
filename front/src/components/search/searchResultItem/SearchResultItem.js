@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { theme } from '../../../../styles/theme';
+import StarRating from '../../commons/starRating/StarRating';
 
 const SearchResultItem = ({ show }) => (
   <SearchResultItemBlock>
@@ -12,6 +13,8 @@ const SearchResultItem = ({ show }) => (
       <p>{show.name}</p>
       <p>타입 : {show.type}</p>
       <p>언어 : {show.score}</p>
+      <p>{show.score * 10}</p>
+      <StarRating rating={(show.score * 10).toPrecision(2)} />
       <Description>{show.language}</Description>
     </div>
   </SearchResultItemBlock>
