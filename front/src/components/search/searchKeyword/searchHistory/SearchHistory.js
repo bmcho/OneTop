@@ -3,20 +3,24 @@ import { BiTime } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { theme } from '../../../../../styles/theme';
+import { TiDelete } from "react-icons/ti";
 import { deleteSearchKeywordHistoryAction, setSearchKeywordAction, setAutoCompleteKeywordAction, setSearchKeywordHistoryAction } from '../../../../stores/modules/searchKeyword';
 
 const SearchHistory = (props) => {
   const dispatch = useDispatch();
   const { searchKeywordHistory } = useSelector(state => state.searchKeyword);
+  useEffect(() => {
+    const keywords = JSON.parse(localStorage.getItem('keywords') || '[]')
+    dispatch(setSearchKeywordHistoryAction(keywords))
+  }, [])
 
   useEffect(() => {
-    if (!JSON.parse(localStorage.getItem('keywords')) || JSON.parse(localStorage.getItem('keywords')).length === 0) {
-      localStorage.setItem('keywords', JSON.stringify(searchKeywordHistory))
-    }
+    localStorage.setItem('keywords', JSON.stringify(searchKeywordHistory))
+
   }, [searchKeywordHistory])
 
   const deleteSearchKeyword = (e) => {
-    dispatch(deleteSearchKeywordHistoryAction(e.target.dataset.index))
+    dispatch(deleteSearchKeywordHistoryAction(e.currentTarget.dataset.index))
   }
   const clickHistoryItem = (e) => {
     dispatch(setAutoCompleteKeywordAction(searchKeywordHistory[e.currentTarget.dataset.index]))
@@ -25,7 +29,7 @@ const SearchHistory = (props) => {
 
   return (
     <div>
-      {searchKeywordHistory && (
+      {searchKeywordHistory.length !== 0 ? (
         <div>
           <Title>최근 검색어</Title>
           <SearchKeywordHistoryList>
@@ -37,13 +41,17 @@ const SearchHistory = (props) => {
                   </IconWrap>
                   <span>{keyword}</span>
                 </SearchKeywordHistoryItemTitle>
-                <KeywordDeleteButton onClick={deleteSearchKeyword} data-index={idx}>x</KeywordDeleteButton>
+                <KeywordDeleteButton onClick={deleteSearchKeyword} data-index={idx}>
+                  <TiDelete size={18} color={theme.color.gray4} />
+                </KeywordDeleteButton>
               </SearchKeywordHistoryItem>
             ))}
           </SearchKeywordHistoryList>
         </div>
 
-      )}
+      ) : <div>
+        궁금한 제품을 검색해보세요!
+      </div>}
     </div>
   )
 };

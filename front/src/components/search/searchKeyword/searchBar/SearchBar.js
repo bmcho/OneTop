@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { theme } from '../../../../../styles/theme';
-import { BiSearch } from "react-icons/bi";
+import { TiDelete } from "react-icons/ti";
 import searchKeyword, { setSearchKeywordAction, setAutoCompleteKeywordAction, setSearchKeywordHistoryAction } from '../../../../stores/modules/searchKeyword';
 
 const SearchBar = (props) => {
@@ -22,11 +22,11 @@ const SearchBar = (props) => {
   return (
     <SearchBarBlock>
       <Input type='text'
-        value={autoCompleteKeyword}
+        value={autoCompleteKeyword || ''}
         placeholder='제품명을 입력해주세요'
         onChange={changeSearchValue} />
       <Button onClick={() => resetSearchKeyword()}>
-        {autoCompleteKeyword.length !== 0 ? 'X' : <BiSearch size={16} />}</Button>
+        {autoCompleteKeyword.length !== 0 && <TiDelete size={18} color={theme.color.gray4} />}</Button>
 
     </SearchBarBlock>
   )

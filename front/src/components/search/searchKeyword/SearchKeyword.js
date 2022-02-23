@@ -11,10 +11,10 @@ const SearchKeyword = (props) => {
   const dispatch = useDispatch();
   const { autoCompleteData, autoCompleteKeyword } = useSelector(state => state.searchKeyword);
 
-  useEffect(() => {
-    const keywords = JSON.parse(localStorage.getItem('keywords') || '[]')
-    dispatch(setSearchKeywordHistoryAction(keywords))
-  }, [])
+  // useEffect(() => {
+  //   const keywords = JSON.parse(localStorage.getItem('keywords') || '[]')
+  //   dispatch(setSearchKeywordHistoryAction(keywords))
+  // }, [])
 
   return (
     <SearchKeywordBlock>
