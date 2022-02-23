@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { theme } from '../../../../../styles/theme';
+import { BiSearch } from "react-icons/bi";
 import searchKeyword, { setSearchKeywordAction, setAutoCompleteKeywordAction, setSearchKeywordHistoryAction } from '../../../../stores/modules/searchKeyword';
 
 const SearchBar = (props) => {
@@ -24,7 +25,8 @@ const SearchBar = (props) => {
         value={autoCompleteKeyword}
         placeholder='제품명을 입력해주세요'
         onChange={changeSearchValue} />
-      <Button onClick={() => resetSearchKeyword()}>X</Button>
+      <Button onClick={() => resetSearchKeyword()}>
+        {autoCompleteKeyword.length !== 0 ? 'X' : <BiSearch size={16} />}</Button>
 
     </SearchBarBlock>
   )
@@ -50,6 +52,8 @@ const Button = styled.button`
   right: 10px;
   top:50%;
   transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
 `
 
 export default SearchBar;
