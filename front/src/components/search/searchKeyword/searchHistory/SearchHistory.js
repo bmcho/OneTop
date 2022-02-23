@@ -19,8 +19,8 @@ const SearchHistory = (props) => {
     dispatch(deleteSearchKeywordHistoryAction(e.target.dataset.index))
   }
   const clickHistoryItem = (e) => {
-    dispatch(setAutoCompleteKeywordAction(searchKeywordHistory[e.target.dataset.index]))
-    dispatch(setSearchKeywordAction(searchKeywordHistory[e.target.dataset.index]))
+    dispatch(setAutoCompleteKeywordAction(searchKeywordHistory[e.currentTarget.dataset.index]))
+    dispatch(setSearchKeywordAction(searchKeywordHistory[e.currentTarget.dataset.index]))
   }
 
   return (
@@ -61,7 +61,7 @@ const SearchKeywordHistoryItem = styled.li`
     background-color:${theme.color.lightGray3};
   }
 `
-const SearchKeywordHistoryItemTitle = styled.span`
+const SearchKeywordHistoryItemTitle = styled.button`
   width: 100%;
   display:flex;
   align-items: center;
