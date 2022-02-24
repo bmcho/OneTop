@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import SearchIngredient from '../src/components/search/searchIngredient/SearchIngredient';
@@ -8,20 +8,13 @@ import SearchFromCategory from '../src/components/search/searchCategory/SearchFr
 
 const search = (props) => {
   const { tapState } = useSelector((state) => state.searchTypeTap);
-  const renderSearch = useMemo(() => {
-    if (tapState === 'category') {
-      return <SearchFromCategory />;
-    } else if (tapState === 'keyword') {
-      return <SearchKeyword />;
-    } else {
-      return <SearchIngredient />;
-    }
-  }, [tapState]);
 
   return (
     <SearchPageBlock>
       <SearchTypeTap />
-      {renderSearch}
+      {tapState === 'category' && <SearchFromCategory />}
+      {tapState === 'keyword' && <SearchKeyword />}
+      {tapState === 'ingredient' && <SearchIngredient />}
     </SearchPageBlock>
   );
 };
