@@ -4,7 +4,7 @@ version: "3.2"
 # docker-compose -f docker-compose.dev.yml up
 # Dabase의 경우 Docker가 아닌 Local 환경에서 동작 하고 싶다면 밑의 database 영역을 주석 처리후에 실행해 주세요
 
-# 원활한 개발을 위해 Docker Service의 외부로부터의 Port는 모두 열어 놓았습니다.
+# 원활한 개발을 위해 nginx를 사용하지 않았고 Docker Service의 외부로부터의 Port는 모두 열어 놓았습니다.
 
 services:
   server:
