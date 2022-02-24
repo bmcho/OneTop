@@ -4,8 +4,12 @@ import { useRouter } from 'next/router';
 import { END } from 'redux-saga';
 import { getProductInfoAction } from '../../src/stores/modules/productInfo';
 import { useSelector } from 'react-redux';
+import { colorByLevel } from '../../src/utils/colorByLevel';
+import { theme } from '../../styles/theme';
 import styled from 'styled-components';
 import axios from 'axios';
+
+import ProductInfo from '../../src/components/detail/productInfo';
 
 const Detail = (props) => {
   const router = useRouter();
@@ -14,42 +18,38 @@ const Detail = (props) => {
   if (error) return <div>error...</div>;
 
   return (
-    <Container>
-      <Image
-        src={data.img}
-        alt={'상품이미지'}
-        width={400}
-        height={400}
-        layout="fixed"
-      />
-      <h2>{data.name}</h2>
-      <h3>{data.brand}</h3>
-      <h4>{`${data.price}/${data.capacity}`}</h4>
+    <DetailBlock>
+      <ProductInfo data={data} />
       <IngredientUl>
-        {data?.ingredients?.map((ingredient) => (
-          <IngredientLi>
-            <GradeInfo>
-              <div>
-                <div>{ingredient[0]}</div>
-              </div>
-            </GradeInfo>
-            <IngredientName>
-              <h6>{ingredient[1]}</h6>
-              <h6>{ingredient[2]}</h6>
-              <h6>{ingredient[3]}</h6>
-            </IngredientName>
-          </IngredientLi>
-        ))}
+        {data?.ingredients?.map((ingredient) => {
+          const maxLevel = Math.max(
+            ...ingredient.level.split('-').map((level) => parseInt(level))
+          );
+          const backgroundColor = colorByLevel(maxLevel);
+
+          return (
+            <IngredientLi key={ingredient.name}>
+              <GradeInfo background={theme.color[backgroundColor]}>
+                {ingredient.level}
+              </GradeInfo>
+              <IngredientName>
+                <h6>{ingredient.name}</h6>
+                <h6>{ingredient.nameEn}</h6>
+                <h6>{ingredient.purpose}</h6>
+              </IngredientName>
+            </IngredientLi>
+          );
+        })}
       </IngredientUl>
-    </Container>
+    </DetailBlock>
   );
 };
 
-const Container = styled.div`
-  width: 100%;
+const DetailBlock = styled.div`
+  max-width: 1024px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 `;
 
@@ -57,39 +57,38 @@ const IngredientUl = styled.ul`
   display: flex;
   flex-direction: column;
 `;
+
 const IngredientLi = styled.li`
   display: flex;
-  & + & {
-    margin-top: 10px;
-  }
+  padding: 5px 0;
+  align-items: center;
 `;
+
 const IngredientName = styled.div`
   display: flex;
   flex-direction: column;
+  h6 {
+    padding: 3px 0;
+    letter-spacing: 1.2px;
+  }
 `;
 
 const GradeInfo = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
-  div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 25px;
-    width: 25px;
-    min-height: 100%;
-    padding: 4px 5px;
-    border-radius: 10px 30px 30px;
-    background: rgb(0, 157, 78);
-    div {
-      color: rgb(255, 255, 255);
-      font-size: 1rem;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-  }
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  width: 25px;
+  min-height: 100%;
+  padding: 4px 5px;
+  border-radius: 10px 30px 30px;
+  background: ${(props) => props.background};
+  color: rgb(255, 255, 255);
+  font-size: 1rem;
+  white-space: nowrap;
+  font-weight: 600;
+  margin: 5px 10px;
 `;
 
 export async function getStaticPaths() {
@@ -108,8 +107,10 @@ export const getStaticProps = wrapper.getStaticProps(
       const { id } = params;
       store.dispatch(getProductInfoAction(id));
       store.dispatch(END);
-
       await store.sagaTask.toPromise();
+      return {
+        revalidate: 1,
+      };
     }
 );
 
