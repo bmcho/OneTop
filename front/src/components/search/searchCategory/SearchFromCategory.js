@@ -1,8 +1,8 @@
-import { categories } from "../../../utils/categoryUtil";
-import styled, { css } from "styled-components";
-import { theme } from "../../../../styles/theme";
-import { useState } from "react";
-import Slider from "./Slider";
+import { categories } from '../../../utils/categoryUtil';
+import styled, { css } from 'styled-components';
+import { theme } from '../../../../styles/theme';
+import { useState } from 'react';
+import Slider from './Slider';
 
 const SearchFromCategory = () => {
   const largeCategories = Object.keys(categories);

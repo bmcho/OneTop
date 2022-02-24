@@ -3,8 +3,5 @@ import tvShow from './tvShow';
 import searchData from './searchKeyword';
 
 export default function* rootSaga() {
-  yield all([
-    call(tvShow),
-    call(searchData)
-  ])
+  yield all([call(tvShow), call(searchData)]);
 }

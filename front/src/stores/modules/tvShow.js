@@ -3,7 +3,7 @@ export const initialState = {
   tvShowTitle: '',
   tvShowContents: [],
   loadTvShowError: '',
-}
+};
 
 // 비동기 적인 작업을 해야하므로 요청, 성공, 실패로 액션 타입들을 만들어 줘요.
 export const LOAD_TVSHOW_REQUEST = 'LOAD_TVSHOW_REQUEST';
@@ -23,7 +23,7 @@ export const loadTvShowSuccessAction = (data) => ({
 
 export const loadTvShowFailureAction = (error) => ({
   type: LOAD_TVSHOW_FAILURE,
-  error
+  error,
 });
 
 // ...은 spread 문법으로 불변성을 지키기 위해 사용 됩니다.
@@ -34,14 +34,14 @@ const tvShow = (state = initialState, action) => {
     case LOAD_TVSHOW_REQUEST:
       return { ...state, tvShowTitle: action.data };
     case LOAD_TVSHOW_SUCCESS:
-      const tvShows = action.data.map(tvShow => ({
+      const tvShows = action.data.map((tvShow) => ({
         id: tvShow.show.id,
         score: tvShow.score,
         url: tvShow.show.url,
         name: tvShow.show.name,
         type: tvShow.show.type,
-        language: tvShow.show.language
-      }))
+        language: tvShow.show.language,
+      }));
       return { ...state, tvShowContents: tvShows };
     case LOAD_TVSHOW_FAILURE:
       return { ...state, loadTvShowError: action.error };

@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
-import styled, { css } from "styled-components";
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import { useState, useRef, useEffect } from 'react';
+import styled, { css } from 'styled-components';
+import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 
 const Slider = ({ children }) => {
   const SLIDER_LENGTH = children.length;
