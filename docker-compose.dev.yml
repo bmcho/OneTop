@@ -1,0 +1,57 @@
+version: "3.2"
+
+# docker-compose.dev.yml build 방법
+# docker-compose -f docker-compose.dev.yml up
+# Dabase의 경우 Docker가 아닌 Local 환경에서 동작 하고 싶다면 밑의 database 영역을 주석 처리후에 실행해 주세요
+
+# 원활한 개발을 위해 Docker Service의 외부로부터의 Port는 모두 열어 놓았습니다.
+
+services:
+  server:
+    container_name: server
+    
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/srv/server
+    restart: always
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    depends_on:
+      - database
+
+  client:
+    container_name: client
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    volumes:
+      - ./front:/srv/client
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+
+  database:
+    image: mysql:5.7
+    container_name: database
+    env_file: .env
+    volumes:
+      - ./db_data:/var/lib/mysql-files
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    environment:
+     - MYSQL_ROOT_PASSWORD=${DBPASSWORD}
+     - MYSQL_DATABASE=${DBNAME}
+
+
