@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSearchKeywordHistoryAction } from '../../../stores/modules/searchKeyword';
+import { useSelector } from 'react-redux';
 import AutoComplete from './autoComplete/AutoComplete';
 import SearchBar from './searchBar/SearchBar';
 import SearchHistory from './searchHistory/SearchHistory';
@@ -8,24 +7,21 @@ import SearchResult from './searchResult/SearchResult';
 import styled from 'styled-components';
 
 const SearchKeyword = (props) => {
-  const dispatch = useDispatch();
-  const { autoCompleteData, autoCompleteKeyword } = useSelector(
+  const { autoCompleteData, searchKeyword } = useSelector(
     (state) => state.searchKeyword
   );
+  const { loadingStatus } = useSelector((state) => state.loading);
 
-  // useEffect(() => {
-  //   const keywords = JSON.parse(localStorage.getItem('keywords') || '[]')
-  //   dispatch(setSearchKeywordHistoryAction(keywords))
-  // }, [])
+  useEffect(() => {
+    console.log(loadingStatus);
+  }, [loadingStatus]);
 
   return (
     <SearchKeywordBlock>
       <SearchBar />
-      {autoCompleteData.length ? (
-        <AutoComplete />
-      ) : autoCompleteKeyword ? (
-        <SearchResult />
-      ) : (
+      {autoCompleteData.length !== 0 && <AutoComplete />}
+      {searchKeyword.length !== 0 && <SearchResult />}
+      {autoCompleteData.length === 0 && searchKeyword.length === 0 && (
         <SearchHistory />
       )}
     </SearchKeywordBlock>

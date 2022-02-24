@@ -5,24 +5,26 @@ import {
   loadDataFailureAction,
   loadDataSuccessAction,
   SET_SEARCH_KEYWORD,
-  LOAD_DATA_SUCCESS,
   SET_AUTO_COMPLETE_KEYWORD,
   clearAutoCompleteDataAction,
 } from '../modules/searchKeyword';
+import { finishLoading, startLoading } from '../modules/loading';
 
 function loadTvShowAPI(data) {
   return axios.get(`https://api.tvmaze.com/search/shows?q=${data}`);
 }
 
 function* loadTvShow(action) {
+  yield put(clearAutoCompleteDataAction());
+  yield put(startLoading());
   try {
     const result = yield call(loadTvShowAPI, action.data);
-    yield put(clearAutoCompleteDataAction());
     yield put(loadDataSuccessAction(result.data));
   } catch (e) {
     console.error(e);
     yield put(loadDataFailureAction(e));
   }
+  yield put(finishLoading());
 }
 
 function* loadAutoCompleteData(action) {
