@@ -7,7 +7,7 @@ import SearchResult from './searchResult/SearchResult';
 import styled from 'styled-components';
 
 const SearchKeyword = (props) => {
-  const { autoCompleteData, searchKeyword } = useSelector(
+  const { autoCompleteData, searchKeyword, autoCompleteKeyword } = useSelector(
     (state) => state.searchKeyword
   );
   const { loadingStatus } = useSelector((state) => state.loading);
@@ -21,7 +21,7 @@ const SearchKeyword = (props) => {
       <SearchBar />
       {autoCompleteData.length !== 0 && <AutoComplete />}
       {searchKeyword.length !== 0 && <SearchResult />}
-      {autoCompleteData.length === 0 && searchKeyword.length === 0 && (
+      {autoCompleteKeyword.length === 0 && searchKeyword.length === 0 && (
         <SearchHistory />
       )}
     </SearchKeywordBlock>

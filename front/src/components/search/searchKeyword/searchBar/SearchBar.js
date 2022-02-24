@@ -6,6 +6,7 @@ import { TiDelete } from 'react-icons/ti';
 import {
   setSearchKeywordAction,
   setAutoCompleteKeywordAction,
+  setSearchKeywordHistoryAction,
 } from '../../../../stores/modules/searchKeyword';
 
 const SearchBar = (props) => {
@@ -16,19 +17,24 @@ const SearchBar = (props) => {
 
   const changeSearchValue = (e) => {
     dispatch(setAutoCompleteKeywordAction(e.target.value));
+    dispatch(setSearchKeywordAction(''));
   };
   const resetSearchKeyword = () => {
     dispatch(setAutoCompleteKeywordAction(''));
     dispatch(setSearchKeywordAction(''));
   };
-
+  const requestSearchResult = (e) => {
+    dispatch(setSearchKeywordAction(e.target.value));
+    dispatch(setSearchKeywordHistoryAction(e.target.value));
+  };
   return (
     <SearchBarBlock>
       <Input
         type="text"
-        value={autoCompleteKeyword || searchKeyword || ''}
+        value={autoCompleteKeyword || ''}
         placeholder="제품명을 입력해주세요"
         onChange={changeSearchValue}
+        onKeyPress={requestSearchResult}
       />
       <Button onClick={resetSearchKeyword}>
         <TiDelete size={18} color={theme.color.gray4} />

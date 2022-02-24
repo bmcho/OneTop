@@ -21,7 +21,7 @@ const AutoComplete = (props) => {
     localStorage.setItem('keywords', JSON.stringify(searchKeywordHistory));
   }, [searchKeywordHistory]);
 
-  const clickSearchQuery = (keyword) => {
+  const requestSearchResult = (keyword) => {
     //keyword history 저장, 검색결과 요청
     dispatch(setSearchKeywordAction(keyword));
     dispatch(setSearchKeywordHistoryAction(keyword));
@@ -34,7 +34,7 @@ const AutoComplete = (props) => {
           {autoCompleteData.map((show) => (
             <AutoCompleteItem
               key={show.id}
-              onClick={() => clickSearchQuery(show.name)}
+              onClick={() => requestSearchResult(show.name)}
             >
               <AutoCompleteItemButton>
                 <span>{show.name}</span>

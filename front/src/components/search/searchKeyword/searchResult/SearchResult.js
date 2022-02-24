@@ -12,7 +12,9 @@ const SearchResult = (props) => {
   if (loadingStatus) return <div>loading</div>;
   return (
     <div>
-      {searchResultData && (
+      {searchResultData.length === 0 ? (
+        <div>검색 결과가 없습니다</div>
+      ) : (
         <div>
           {searchResultData.map((show, idx) => (
             <SearchResultItem key={idx} show={show} />
