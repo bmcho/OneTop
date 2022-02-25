@@ -1,16 +1,28 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AutoComplete from './autoComplete/AutoComplete';
 import SearchBar from './searchBar/SearchBar';
 import SearchHistory from './searchHistory/SearchHistory';
 import SearchResult from './searchResult/SearchResult';
 import styled from 'styled-components';
+import {
+  setAutoCompleteKeywordAction,
+  setSearchKeywordAction,
+} from '../../../stores/modules/searchKeyword';
 
 const SearchKeyword = (props) => {
+  const dispatch = useDispatch();
   const { autoCompleteData, searchKeyword, autoCompleteKeyword } = useSelector(
     (state) => state.searchKeyword
   );
   const { loadingStatus } = useSelector((state) => state.loading);
+
+  useEffect(() => {
+    return () => {
+      dispatch(setAutoCompleteKeywordAction(''));
+      dispatch(setSearchKeywordAction(''));
+    };
+  }, []);
 
   useEffect(() => {
     console.log(loadingStatus);
