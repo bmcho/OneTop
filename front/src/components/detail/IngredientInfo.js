@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { colorByLevel } from '../../utils/colorByLevel';
 import { theme } from '../../../styles/theme';
 import { MdOutlineClose } from 'react-icons/md';
@@ -32,6 +32,16 @@ const IngredientInfo = ({ ingredients, open, modalOpenHandle }) => {
     </Modal>
   );
 };
+
+const modalAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 const Modal = styled.div`
   display: ${({ open }) => (open ? 'flex' : 'none')};
   justify-content: center;
@@ -43,6 +53,7 @@ const Modal = styled.div`
   left: 0;
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.6);
+  animation: ${modalAnimation} 300ms;
 `;
 
 const StyledMdOutlineClose = styled(MdOutlineClose)`
