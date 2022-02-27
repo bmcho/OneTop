@@ -1,10 +1,12 @@
 import axios from 'axios';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, all, fork } from 'redux-saga/effects';
 import {
   GET_PRODUCT_INFO,
   GET_PRODUCT_INFO_SUCCESS,
   GET_PRODUCT_INFO_FAILURE,
   getProductInfoAction,
+  getProductInfoSuccessAction,
+  getProductInfoFailureAction,
 } from '../modules/productInfo';
 
 const getProductInfoApi = async (id) => {
@@ -16,12 +18,16 @@ function* loadProductInfo(action) {
   const { id } = action;
   try {
     const productInfo = yield call(getProductInfoApi, id);
-    yield put({ type: GET_PRODUCT_INFO_SUCCESS, payload: productInfo });
+    yield put(getProductInfoSuccessAction(productInfo));
   } catch (e) {
-    yield put({ type: GET_PRODUCT_INFO_FAILURE, error: e });
+    yield put(getProductInfoFailureAction(e));
   }
 }
 
-export function* productInfoSaga() {
+function* watchLoadProductInfo() {
   yield takeLatest(GET_PRODUCT_INFO, loadProductInfo);
+}
+
+export default function* tvShowSaga() {
+  yield all([fork(watchLoadProductInfo)]);
 }

@@ -10,10 +10,19 @@ export const GET_PRODUCT_INFO = 'GET_PRODUCT_INFO';
 export const GET_PRODUCT_INFO_SUCCESS = 'GET_PRODUCT_INFO_SUCCESS';
 export const GET_PRODUCT_INFO_FAILURE = 'GET_PRODUCT_INFO_FAILURE';
 
-export const getProductInfoAction = (id, location = 'server') => ({
+export const getProductInfoAction = (id) => ({
   type: GET_PRODUCT_INFO,
-  location,
   id,
+});
+
+export const getProductInfoSuccessAction = (data) => ({
+  type: GET_PRODUCT_INFO_SUCCESS,
+  data,
+});
+
+export const getProductInfoFailureAction = (error) => ({
+  type: GET_PRODUCT_INFO_FAILURE,
+  error,
 });
 
 const productInfo = (state = initialState, action) => {
@@ -30,7 +39,7 @@ const productInfo = (state = initialState, action) => {
     case GET_PRODUCT_INFO_SUCCESS:
       return {
         loading: false,
-        data: action.payload,
+        data: action.data,
         error: null,
       };
     case GET_PRODUCT_INFO_FAILURE:
