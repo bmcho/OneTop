@@ -2,30 +2,31 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
-  setAutoCompleteKeywordAction,
   setSearchKeywordAction,
   setSearchKeywordHistoryAction,
 } from '../../../../stores/modules/searchKeyword';
 
 const AutoComplete = (props) => {
   const dispatch = useDispatch();
-
   const { autoCompleteData, searchKeywordHistory } = useSelector(
     (state) => state.searchKeyword
   );
-  const clickSearchQuery = (keyword) => {
-    //keyword history 저장 검색결과 요청
-    dispatch(setAutoCompleteKeywordAction(keyword));
-    dispatch(setSearchKeywordAction(keyword));
-    addSearchKeywordHistory(keyword);
-  };
+
+  useEffect(() => {
+    console.log('autocomplete mounted');
+    return () => console.log('autocomplete unmounted');
+  }, []);
+
   useEffect(() => {
     localStorage.setItem('keywords', JSON.stringify(searchKeywordHistory));
   }, [searchKeywordHistory]);
 
-  const addSearchKeywordHistory = (keyword) => {
+  const requestSearchResult = (keyword) => {
+    //keyword history 저장, 검색결과 요청
+    dispatch(setSearchKeywordAction(keyword));
     dispatch(setSearchKeywordHistoryAction(keyword));
   };
+
   return (
     <div>
       {autoCompleteData && (
@@ -33,7 +34,7 @@ const AutoComplete = (props) => {
           {autoCompleteData.map((show) => (
             <AutoCompleteItem
               key={show.id}
-              onClick={() => clickSearchQuery(show.name)}
+              onClick={() => requestSearchResult(show.name)}
             >
               <AutoCompleteItemButton>
                 <span>{show.name}</span>

@@ -54,6 +54,7 @@ export const deleteSearchKeywordHistoryAction = (data) => ({
   type: DELETE_SEARCH_KEYWORD_HISTORY,
   data,
 });
+
 const searchKeyword = (state = initialState, action) => {
   switch (action.type) {
     case SET_AUTO_COMPLETE_KEYWORD:

@@ -7,13 +7,18 @@ import { TiDelete } from 'react-icons/ti';
 import {
   deleteSearchKeywordHistoryAction,
   setSearchKeywordAction,
-  setAutoCompleteKeywordAction,
   setSearchKeywordHistoryAction,
 } from '../../../../stores/modules/searchKeyword';
 
 const SearchHistory = (props) => {
   const dispatch = useDispatch();
   const { searchKeywordHistory } = useSelector((state) => state.searchKeyword);
+
+  useEffect(() => {
+    console.log('searchhistory mounted');
+    return () => console.log('searchhistory unmounted');
+  }, []);
+
   useEffect(() => {
     const keywords = JSON.parse(localStorage.getItem('keywords') || '[]');
     dispatch(setSearchKeywordHistoryAction(keywords));
@@ -26,12 +31,8 @@ const SearchHistory = (props) => {
   const deleteSearchKeyword = (e) => {
     dispatch(deleteSearchKeywordHistoryAction(e.currentTarget.dataset.index));
   };
+
   const clickHistoryItem = (e) => {
-    dispatch(
-      setAutoCompleteKeywordAction(
-        searchKeywordHistory[e.currentTarget.dataset.index]
-      )
-    );
     dispatch(
       setSearchKeywordAction(
         searchKeywordHistory[e.currentTarget.dataset.index]

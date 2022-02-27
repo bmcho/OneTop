@@ -3,6 +3,7 @@ import { HYDRATE } from 'next-redux-wrapper';
 import tvShow from './tvShow';
 import searchKeyword from './searchKeyword';
 import searchTypeTap from './searchTypeTap';
+import loading from './loading';
 
 const rootReducer = (state, action) => {
   switch (action.type) {
@@ -14,6 +15,7 @@ const rootReducer = (state, action) => {
         tvShow,
         searchKeyword,
         searchTypeTap,
+        loading,
       });
       return combineReducer(state, action);
     }
