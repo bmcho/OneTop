@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
+import { theme } from '../../../styles/theme';
 
-const ProductInfo = ({ data }) => {
+const ProductInfo = ({ data, modalOpenHandle }) => {
   return (
     <Container>
       <Image
@@ -29,6 +30,10 @@ const ProductInfo = ({ data }) => {
         </InfoLi>
         <InfoLi>
           <span>Price</span> {`${data.price}`}
+        </InfoLi>
+        <InfoLi>
+          <span>Ingredient</span>
+          <button onClick={modalOpenHandle}>성분보기</button>
         </InfoLi>
       </InfoContainer>
     </Container>
@@ -77,11 +82,20 @@ const InfoLi = styled.li`
   span {
     font-weight: 600;
   }
+  button {
+    font-size: 16px;
+    padding: 0;
+  }
+  button:hover {
+    color: ${theme.color.orange2};
+  }
+
   letter-spacing: 1.5px;
   line-height: calc(100% + 1.5px);
   font-size: 16px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 15px 0;
   border-bottom: 1.5px solid rgba(0, 0, 0, 0.3);
 `;

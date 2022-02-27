@@ -4,43 +4,32 @@ import { useRouter } from 'next/router';
 import { END } from 'redux-saga';
 import { getProductInfoAction } from '../../src/stores/modules/productInfo';
 import { useSelector } from 'react-redux';
-import { colorByLevel } from '../../src/utils/colorByLevel';
-import { theme } from '../../styles/theme';
 import styled from 'styled-components';
 import axios from 'axios';
 
 import ProductInfo from '../../src/components/detail/productInfo';
+import IngredientInfo from '../../src/components/detail/IngredientInfo';
+import { useCallback, useState } from 'react';
 
 const Detail = (props) => {
   const router = useRouter();
   const { data, error } = useSelector((state) => state.productInfo);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const modalOpenHandle = useCallback(() => {
+    setIsModalOpen((isopen) => !isopen);
+  }, []);
 
   if (error) return <div>error...</div>;
 
   return (
     <DetailBlock>
-      <ProductInfo data={data} />
-      <IngredientUl>
-        {data?.ingredients?.map((ingredient) => {
-          const maxLevel = Math.max(
-            ...ingredient.level.split('-').map((level) => parseInt(level))
-          );
-          const backgroundColor = colorByLevel(maxLevel);
-
-          return (
-            <IngredientLi key={ingredient.name}>
-              <GradeInfo background={theme.color[backgroundColor]}>
-                {ingredient.level}
-              </GradeInfo>
-              <IngredientName>
-                <h6>{ingredient.name}</h6>
-                <h6>{ingredient.nameEn}</h6>
-                <h6>{ingredient.purpose}</h6>
-              </IngredientName>
-            </IngredientLi>
-          );
-        })}
-      </IngredientUl>
+      <ProductInfo data={data} modalOpenHandle={modalOpenHandle} />
+      <IngredientInfo
+        ingredients={data.ingredients}
+        open={isModalOpen}
+        modalOpenHandle={modalOpenHandle}
+      />
     </DetailBlock>
   );
 };
@@ -51,44 +40,6 @@ const DetailBlock = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const IngredientUl = styled.ul`
-  display: flex;
-  flex-direction: column;
-`;
-
-const IngredientLi = styled.li`
-  display: flex;
-  padding: 5px 0;
-  align-items: center;
-`;
-
-const IngredientName = styled.div`
-  display: flex;
-  flex-direction: column;
-  h6 {
-    padding: 3px 0;
-    letter-spacing: 1.2px;
-  }
-`;
-
-const GradeInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 25px;
-  width: 25px;
-  min-height: 100%;
-  padding: 4px 5px;
-  border-radius: 10px 30px 30px;
-  background: ${(props) => props.background};
-  color: rgb(255, 255, 255);
-  font-size: 1rem;
-  white-space: nowrap;
-  font-weight: 600;
-  margin: 5px 10px;
 `;
 
 export async function getStaticPaths() {
@@ -108,9 +59,6 @@ export const getStaticProps = wrapper.getStaticProps(
       store.dispatch(getProductInfoAction(id));
       store.dispatch(END);
       await store.sagaTask.toPromise();
-      return {
-        revalidate: 1,
-      };
     }
 );
 
