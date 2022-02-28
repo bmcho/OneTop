@@ -1,56 +1,60 @@
-import { categories } from '../../../utils/categoryUtil';
+import { categories, categories2 } from '../../../utils/categoryUtil';
 import styled, { css } from 'styled-components';
 import { theme } from '../../../../styles/theme';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Slider from './Slider';
 import Image from 'next/image';
 
 const SearchFromCategory = () => {
-  const largeCategories = Object.keys(categories);
-  const smallCategories = Object.values(categories);
+  const categoryArr = Object.entries(categories);
 
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [largeCategoryIndex, setLargeCategoryIndex] = useState(0);
+  const [smallCategoryIndex, setSmallCategoryIndex] = useState(null);
 
-  const categoryExpandHandle = (index) => {
-    setSelectedIndex(index);
+  const selectLargeCategory = (idx) => {
+    setLargeCategoryIndex(idx);
+    setSmallCategoryIndex(null);
   };
 
+  const selectSmallCategory = (idx) => {
+    console.log(idx);
+    setSmallCategoryIndex(idx);
+  };
+  useEffect(() => {
+    console.log(smallCategoryIndex);
+  }, [smallCategoryIndex]);
   return (
     <Container>
       <Slider>
-        {largeCategories?.map((category, index) => {
+        {categoryArr?.map((category, index) => (
+          <LargeCategory key={index} onClick={() => selectLargeCategory(index)}>
+            <div className="img-wrapper">
+              <Image
+                src={'/images/category.jpg'}
+                alt={'카테고리 이미지'}
+                width={76}
+                height={76}
+                layout="fixed"
+              />
+            </div>
+            <h4>{category[0]}</h4>
+          </LargeCategory>
+        ))}
+      </Slider>
+      <SmallCategories>
+        {categoryArr[largeCategoryIndex][1].map((category, idx) => {
           return (
-            <LargeCategory
-              key={index}
-              onClick={() => categoryExpandHandle(index)}
-            >
-              <div className="img-wrapper">
-                <Image
-                  src={'/images/category.jpg'}
-                  alt={'카테고리 이미지'}
-                  width={76}
-                  height={76}
-                  layout="fixed"
-                />
-              </div>
-              <h4>{category}</h4>
-            </LargeCategory>
+            <SmallCategory key={idx} onClick={() => selectSmallCategory(idx)}>
+              {category}
+            </SmallCategory>
           );
         })}
-      </Slider>
-      {smallCategories?.map((smallCategory, index) => {
-        return (
-          <SmallCategories key={index}>
-            {smallCategory.map((category, idx) => {
-              return (
-                <SmallCategory active={index === selectedIndex} key={idx}>
-                  {category}
-                </SmallCategory>
-              );
-            })}
-          </SmallCategories>
-        );
-      })}
+      </SmallCategories>
+      <div>
+        {new Array(smallCategoryIndex).fill(0).map((e, idx) => (
+          <div>{idx}</div>
+        ))}
+      </div>
     </Container>
   );
 };
@@ -115,7 +119,7 @@ const SmallCategories = styled.div`
 `;
 
 const SmallCategory = styled.button`
-  display: none;
+  display: block;
   align-items: center;
   justify-content: center;
   padding: 10px 30px;
@@ -123,14 +127,7 @@ const SmallCategory = styled.button`
   border-radius: 10px;
   margin-left: 20px;
   font-weight: 900;
-  ${({ active }) => {
-    return (
-      active &&
-      css`
-        display: flex;
-      `
-    );
-  }}
+
   &:hover {
     color: #f08c00;
     border-color: #f08c00;
