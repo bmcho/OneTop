@@ -4,11 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { theme } from '../../../../../styles/theme';
 import { TiDelete } from 'react-icons/ti';
+import { AiOutlineFileSearch } from 'react-icons/ai';
+
 import {
   deleteSearchKeywordHistoryAction,
+  setAutoCompleteKeywordAction,
   setSearchKeywordAction,
   setSearchKeywordHistoryAction,
 } from '../../../../stores/modules/searchKeyword';
+import AutoComplete from '../searchBar/autoComplete/AutoComplete';
 
 const SearchHistory = (props) => {
   const dispatch = useDispatch();
@@ -35,6 +39,11 @@ const SearchHistory = (props) => {
   const clickHistoryItem = (e) => {
     dispatch(
       setSearchKeywordAction(
+        searchKeywordHistory[e.currentTarget.dataset.index]
+      )
+    );
+    dispatch(
+      setAutoCompleteKeywordAction(
         searchKeywordHistory[e.currentTarget.dataset.index]
       )
     );
@@ -68,7 +77,10 @@ const SearchHistory = (props) => {
           </SearchKeywordHistoryList>
         </div>
       ) : (
-        <div>궁금한 제품을 검색해보세요!</div>
+        <NoSearchHistory>
+          <AiOutlineFileSearch size={60} color={theme.color.lightGray1} />
+          <NoSearchHistoryText>궁금한 제품을 검색해보세요!</NoSearchHistoryText>
+        </NoSearchHistory>
       )}
     </div>
   );
@@ -106,5 +118,12 @@ const IconWrap = styled.span`
   width: 28px;
   height: 28px;
   box-sizing: border-box;
+`;
+const NoSearchHistory = styled.div`
+  text-align: center;
+  color: ${theme.color.gray4};
+`;
+const NoSearchHistoryText = styled.p`
+  padding: 10px 0;
 `;
 export default SearchHistory;

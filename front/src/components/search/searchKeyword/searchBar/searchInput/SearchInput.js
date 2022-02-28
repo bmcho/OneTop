@@ -83,9 +83,11 @@ const SearchInput = (props) => {
         // onKeyUp={handleKeyboardAction}
         // ref={inputRef}
       />
-      <Button onClick={resetSearchKeyword}>
-        <TiDelete size={18} color={theme.color.gray4} />
-      </Button>
+      {autoCompleteKeyword.length !== 0 && (
+        <Button onClick={resetSearchKeyword}>
+          <TiDelete size={18} color={theme.color.gray4} />
+        </Button>
+      )}
     </SearchInputBlock>
   );
 };

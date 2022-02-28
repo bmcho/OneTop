@@ -8,9 +8,8 @@ import {
 
 const AutoComplete = (props) => {
   const dispatch = useDispatch();
-  const { autoCompleteData, searchKeywordHistory } = useSelector(
-    (state) => state.searchKeyword
-  );
+  const { autoCompleteData, searchKeywordHistory, searchResultData } =
+    useSelector((state) => state.searchKeyword);
   const refs = useMemo(() => {
     if (autoCompleteData.length !== 0) {
       return autoCompleteData.map(() => React.createRef());
@@ -44,7 +43,7 @@ const AutoComplete = (props) => {
   // }, [selected]);
   return (
     <div>
-      {autoCompleteData && (
+      {searchResultData.length === 0 && autoCompleteData && (
         <AutoCompleteList>
           {autoCompleteData.map((show, idx) => (
             <AutoCompleteItem
