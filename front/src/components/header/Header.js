@@ -25,7 +25,11 @@ const Header = (props) => (
   </HeaderBlock>
 );
 const HeaderBlock = styled.div`
+<<<<<<< HEAD:front/src/components/header/Header.js
   max-width: 1024px;
+=======
+  width: 1024px;
+>>>>>>> feature_front_detail:front/src/components/header/header.js
   margin: 0 auto;
   height: 100px;
   padding: 20px;
