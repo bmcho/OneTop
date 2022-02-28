@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { theme } from '../../../../styles/theme';
 import { useState } from 'react';
 import Slider from './Slider';
+import Image from 'next/image';
 
 const SearchFromCategory = () => {
   const largeCategories = Object.keys(categories);
@@ -24,7 +25,13 @@ const SearchFromCategory = () => {
               onClick={() => categoryExpandHandle(index)}
             >
               <div className="img-wrapper">
-                <img src="/images/valeriia-miller-_42NKYROG7g-unsplash.jpg" />
+                <Image
+                  src={'/images/valeriia-miller-_42NKYROG7g-unsplash.jpg'}
+                  alt={'카테고리 이미지'}
+                  width={76}
+                  height={76}
+                  layout="fixed"
+                />
               </div>
               <h4>{category}</h4>
             </LargeCategory>
@@ -77,8 +84,6 @@ const LargeCategory = styled.button`
   }
 
   .img-wrapper img {
-    width: 76px;
-    height: 76px;
     display: block;
     object-fit: cover;
   }
@@ -89,6 +94,11 @@ const LargeCategory = styled.button`
   }
 
   &:hover {
+    background-color: ${theme.color.yellow1};
+    transition: all 0.4s ease-in;
+  }
+
+  &:focus {
     background-color: ${theme.color.yellow1};
     transition: all 0.4s ease-in;
   }
