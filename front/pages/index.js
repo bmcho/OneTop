@@ -16,7 +16,8 @@ const Home = () => {
   return (
     // 고차함수라 한번 실행한 함수를 onClick에 넣어준다.
     <div>
-      <Button onClick={() => onClickHero('superman')}>superman</Button>
+      메인페이지
+      {/* <Button onClick={() => onClickHero('superman')}>superman</Button>
       <button onClick={() => onClickHero('batman')}>배트맨</button>
       {tvShowTitle && <div>{tvShowTitle}</div>}
       <br />
@@ -31,7 +32,7 @@ const Home = () => {
             </div>
           ))}
         </div>
-      )}
+      )} */}
     </div>
   );
 };
