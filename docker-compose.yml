@@ -33,8 +33,6 @@ services:
       - SERVER_ADDR=server
     expose:
       - "3000"
-    ports:
-      - "3000:3000"
     networks:
       - nginx_bridge
     depends_on:
