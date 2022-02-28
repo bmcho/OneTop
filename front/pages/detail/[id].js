@@ -3,7 +3,7 @@ import wrapper from '../../src/stores';
 import { useRouter } from 'next/router';
 import { END } from 'redux-saga';
 import { getProductInfoAction } from '../../src/stores/modules/productInfo';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -14,17 +14,32 @@ import { useCallback, useState } from 'react';
 const Detail = (props) => {
   const router = useRouter();
   const { data, error } = useSelector((state) => state.productInfo);
+  const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const modalOpenHandle = useCallback(() => {
     setIsModalOpen((isopen) => !isopen);
   }, []);
 
+  const addCompareBoxHandle = useCallback(() => {
+    dispatch();
+  }, []);
+
   if (error) return <div>error...</div>;
 
+  const { img, hashTag, name, description, brand, capacity, price } = data;
   return (
     <DetailBlock>
-      <ProductInfo data={data} modalOpenHandle={modalOpenHandle} />
+      <ProductInfo
+        img={img}
+        hashTag={hashTag}
+        name={name}
+        description={description}
+        brand={brand}
+        capacity={capacity}
+        price={price}
+        modalOpenHandle={modalOpenHandle}
+      />
       <IngredientInfo
         ingredients={data.ingredients}
         open={isModalOpen}
@@ -43,13 +58,20 @@ const DetailBlock = styled.div`
 `;
 
 export async function getStaticPaths() {
-  const res = await axios.get('http://localhost:3004/item');
-  const items = res.data;
-  const paths = items.map((item) => ({ params: { id: item.id } }));
-  return {
-    paths,
-    fallback: false,
-  };
+  try {
+    const res = await axios.get('http://localhost:3004/item');
+    const items = res.data;
+    const paths = items.map((item) => ({ params: { id: item.id } }));
+    return {
+      paths,
+      fallback: false,
+    };
+  } catch (e) {
+    return {
+      paths: [],
+      fallback: false,
+    };
+  }
 }
 
 export const getStaticProps = wrapper.getStaticProps(

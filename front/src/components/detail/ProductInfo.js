@@ -1,13 +1,23 @@
 import styled from 'styled-components';
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { theme } from '../../../styles/theme';
+import { useRouter } from 'next/router';
 
-const ProductInfo = ({ data, modalOpenHandle }) => {
+const ProductInfo = ({
+  img,
+  hashTag,
+  name,
+  description,
+  brand,
+  capacity,
+  price,
+  modalOpenHandle,
+}) => {
   return (
     <Container>
       <Image
-        src={data.img}
+        src={img}
         alt={'상품이미지'}
         width={450}
         height={450}
@@ -15,25 +25,29 @@ const ProductInfo = ({ data, modalOpenHandle }) => {
       />
       <InfoContainer>
         <TagUl>
-          {data.hashTag &&
-            data.hashTag.map((tag) => {
+          {hashTag &&
+            hashTag.map((tag) => {
               return <li key={tag}>{tag}</li>;
             })}
         </TagUl>
-        <h3>{data.name}</h3>
-        <InfoLi>{data.description}</InfoLi>
+        <h3>{name}</h3>
+        <InfoLi>{description}</InfoLi>
         <InfoLi>
-          <span>Brand</span> {data.brand}
+          <span>Brand</span> {brand}
         </InfoLi>
         <InfoLi>
-          <span>Size</span> {`${data.capacity}`}
+          <span>Size</span> {`${capacity}`}
         </InfoLi>
         <InfoLi>
-          <span>Price</span> {`${data.price}`}
+          <span>Price</span> {`${price}`}
         </InfoLi>
         <InfoLi>
           <span>Ingredient</span>
           <button onClick={modalOpenHandle}>성분보기</button>
+        </InfoLi>
+        <InfoLi>
+          <span>Compare Box</span>
+          <button onClick={modalOpenHandle}>비교상자에 넣기</button>
         </InfoLi>
       </InfoContainer>
     </Container>
