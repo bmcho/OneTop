@@ -1,6 +1,9 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
+'''
+성분
+'''
 class IngredientBase(BaseModel):
   ko_ingredient: Optional[str] = None
   en_ingredient: Optional[str] = None
@@ -11,21 +14,10 @@ class Ingredient(IngredientBase):
   class Config:
     orm_mode = True
 
-class ReviewBase(BaseModel):
-  user_name: str
-  user_age: int
-  user_type: str
-  user_sex: str
-  user_evaluate: int
-  review: str
 
-class Review(ReviewBase):
-  id: int
-  product_num: int
-
-  class Config:
-    orm_mode = True
-
+'''
+화장품 상세
+'''
 class DescripBase(BaseModel):
   color_type: str
   cost: int
@@ -41,6 +33,9 @@ class Descrip(DescripBase):
   class Config:
     orm_mode = True
 
+'''
+화장품정보
+'''
 class ProductsBase(BaseModel):
   name: str
   img_url: Optional[str] = None
@@ -60,7 +55,6 @@ class Products(ProductsBase):
 
   descriptions: Descrip
   ingredients: Optional[List[Ingredient]] = None
-  reviews: Optional[List[Review]] = None
 
   class Config:
     orm_mode = True
