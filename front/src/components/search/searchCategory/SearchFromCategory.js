@@ -26,7 +26,7 @@ const SearchFromCategory = () => {
             >
               <div className="img-wrapper">
                 <Image
-                  src={'/images/valeriia-miller-_42NKYROG7g-unsplash.jpg'}
+                  src={'/images/category.jpg'}
                   alt={'카테고리 이미지'}
                   width={76}
                   height={76}
