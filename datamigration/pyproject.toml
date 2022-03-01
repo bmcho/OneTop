@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "datamigration"
+version = "0.1.0"
+description = ""
+authors = ["none"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pandas = "^1.4.1"
+PyMySQL = "^1.0.2"
+SQLAlchemy = "^1.4.31"
+pydantic = "^1.9.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
