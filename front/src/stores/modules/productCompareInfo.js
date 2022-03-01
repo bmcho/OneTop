@@ -10,6 +10,7 @@ export const ADD_PRODUCT_COMPARE_INFO_SUCCESS =
 export const ADD_PRODUCT_COMPARE_INFO_FAILURE =
   'ADD_PRODUCT_COMPARE_INFO_FAILURE';
 export const REMOVE_PRODUCT_COMPARE_INFO = 'REMOVE_PRODUCT_COMPARE_INFO';
+export const CHECK_PRODUCT_COMPARE_INFO = 'CHECK_PRODUCT_COMPARE_INFO';
 
 export const addProductCompareInfoAction = (id) => ({
   type: ADD_PRODUCT_COMPARE_INFO,
@@ -29,6 +30,10 @@ export const addProductCompareInfoFailureAction = (error) => ({
 export const removeProductCompareInfoAction = (id) => ({
   type: REMOVE_PRODUCT_COMPARE_INFO,
   id,
+});
+
+export const checkProductCompareInfoAction = () => ({
+  type: CHECK_PRODUCT_COMPARE_INFO,
 });
 
 const productCompareInfo = (state = initialState, action) => {
@@ -55,6 +60,11 @@ const productCompareInfo = (state = initialState, action) => {
       return {
         ...state,
         data: state.data.filter((info) => info.id !== action.id),
+      };
+    case CHECK_PRODUCT_COMPARE_INFO:
+      return {
+        ...state,
+        data: state.data.map((info) => ({ ...info, checked: true })),
       };
     default:
       return state;

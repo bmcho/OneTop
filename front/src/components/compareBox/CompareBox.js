@@ -1,17 +1,27 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { MdOutlineClose } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdOutlineShoppingBasket } from 'react-icons/md';
 import Image from 'next/image';
 import { theme } from '../../../styles/theme';
-import { removeProductCompareInfoAction } from '../../stores/modules/productCompareInfo';
+import {
+  removeProductCompareInfoAction,
+  checkProductCompareInfoAction,
+} from '../../stores/modules/productCompareInfo';
+import { useEffect } from 'react';
 
 const CompareBox = ({ comparBoxOpenHandle }) => {
   const { data, error } = useSelector((state) => state.productCompareInfo);
   const dispatch = useDispatch();
+
   const productRemoveHandle = (id) => {
     dispatch(removeProductCompareInfoAction(id));
   };
+
+  useEffect(() => {
+    dispatch(checkProductCompareInfoAction());
+  }, []);
+
   return (
     <CompareBoxBlock>
       <StyledMdOutlineClose size={24} onClick={comparBoxOpenHandle} />
@@ -51,28 +61,33 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
                 return <td key={`${d.id}${index}`}>{d.name}</td>;
               })}
             </tr>
+            <tr>
+              <th>Price</th>
+              {data.map((d, index) => {
+                return <td key={`${d.id}${index}`}>{d.price}</td>;
+              })}
+            </tr>
+            <tr>
+              <th>Size</th>
+              {data.map((d, index) => {
+                return <td key={`${d.id}${index}`}>{d.capacity}</td>;
+              })}
+            </tr>
           </tbody>
         </ItemTable>
-        // <ItemsUl>
-        //   <ItemLi>
-        //     <div>이미지</div>
-        //     <div>name</div>
-        //   </ItemLi>
-        //   {data.map((product) => {
-        //     return (
-        //       <ItemLi>
-        //         <div>
-        //           <Image src={product.img} width={92.5} height={92.5} />
-        //         </div>
-        //         <div>{product.name}</div>
-        //       </ItemLi>
-        //     );
-        //   })}
-        // </ItemsUl>
       )}
     </CompareBoxBlock>
   );
 };
+
+const CompareBoxAnimation = keyframes`
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+`;
 
 const CompareBoxBlock = styled.div`
   position: fixed;
@@ -84,6 +99,8 @@ const CompareBoxBlock = styled.div`
   background-color: ${({ theme }) => theme.color.yellow2};
   border-radius: 30px;
   padding: 17px 22px 0;
+  transform-origin: 100% 100%;
+  animation: ${CompareBoxAnimation} 0.5s ease;
 `;
 
 const StyledMdOutlineClose = styled(MdOutlineClose)`
@@ -137,19 +154,25 @@ const ItemLi = styled.li`
 `;
 
 const ItemTable = styled.table`
-  border: 1px solid ${({ theme }) => theme.color.black};
-  border-collapse: collapse;
-
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
   td,
   th {
     width: 92.5px;
     height: 80px;
     text-align: center;
     vertical-align: middle;
-    border: 1px solid ${({ theme }) => theme.color.black};
+    border: 1px solid rgba(0, 0, 0, 0.3);
   }
   th {
     position: relative;
+    background-color: #fcc419;
+    background-color: rgba(252, 196, 25, 0.4);
+  }
+  thead th {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
   }
 `;
 
@@ -160,12 +183,11 @@ const RemoveButton = styled.button`
   height: 12px;
   font-size: 10px;
   z-index: 99;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${({ theme }) => theme.color.gray5};
   transition: all 0.5s ease;
+  color: ${({ theme }) => theme.color.white};
   &:hover {
     height: 100%;
-    background-color: ${({ theme }) => theme.color.gray2};
-    color: ${({ theme }) => theme.color.white};
     font-size: 18px;
     font-weight: 900;
   }

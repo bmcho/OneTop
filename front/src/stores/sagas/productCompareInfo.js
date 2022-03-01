@@ -18,7 +18,9 @@ function* loadProductCompareInfo(action) {
   const { id } = action;
   try {
     const compareInfo = yield call(getProductCompareInfoApi, id);
-    yield put(addProductCompareInfoSuccessAction(compareInfo));
+    yield put(
+      addProductCompareInfoSuccessAction({ ...compareInfo, checked: false })
+    );
   } catch (e) {
     yield put(addProductCompareInfoFailureAction(e));
   }
