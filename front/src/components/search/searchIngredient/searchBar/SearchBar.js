@@ -1,9 +1,7 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { theme } from '../../../../../styles/theme';
 
 const SearchBar = ({ inputTitle }) => {
-  const inputRef = useRef();
   const [keywords, setKeywords] = useState([]);
   const [inputText, setInputText] = useState('');
   const changeInputText = (e) => {
@@ -54,9 +52,9 @@ const KeywordItem = styled.div`
   display: inline-block;
   padding: 10px;
   margin: 0 10px 10px 0;
-  background-color: ${theme.color.lightGray3};
+  background-color: ${(props) => props.theme.color.lightGray3};
   border-radius: 16px;
-  color: ${theme.color.purple};
+  color: ${(props) => props.theme.color.purple};
 `;
 const Input = styled.input`
   border: none;

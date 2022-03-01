@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { BiTime } from 'react-icons/bi';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { theme } from '../../../../../styles/theme';
 import { TiDelete } from 'react-icons/ti';
 import { AiOutlineFileSearch } from 'react-icons/ai';
 import {
   setAutoCompleteKeywordAction,
   setSearchKeywordAction,
 } from '../../../../stores/modules/searchKeyword';
+import { theme } from '../../../../../styles/theme';
 
 const SearchHistory = (props) => {
   const dispatch = useDispatch();
@@ -86,7 +86,7 @@ const SearchKeywordHistoryItem = styled.li`
   justify-content: space-between;
   padding: 10px;
   &:hover {
-    background-color: ${theme.color.lightGray3};
+    background-color: ${(props) => props.theme.color.lightGray3};
   }
 `;
 const SearchKeywordHistoryItemTitle = styled.button`
@@ -103,7 +103,7 @@ const KeywordDeleteButton = styled.button`
 const IconWrap = styled.span`
   margin-right: 12px;
   padding: 5px;
-  background-color: ${theme.color.lightGray1};
+  background-color: ${(props) => props.theme.color.lightGray1};
   border-radius: 50%;
   width: 28px;
   height: 28px;
@@ -111,7 +111,7 @@ const IconWrap = styled.span`
 `;
 const NoSearchHistory = styled.div`
   text-align: center;
-  color: ${theme.color.gray4};
+  color: ${(props) => props.theme.color.gray4};
 `;
 const NoSearchHistoryText = styled.p`
   padding: 10px 0;

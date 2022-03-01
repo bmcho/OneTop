@@ -1,6 +1,5 @@
-import { categories, categories2 } from '../../../utils/categoryUtil';
-import styled, { css } from 'styled-components';
-import { theme } from '../../../../styles/theme';
+import { categories } from '../../../utils/categoryUtil';
+import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import Slider from './Slider';
 import Image from 'next/image';
@@ -98,12 +97,12 @@ const LargeCategory = styled.button`
   }
 
   &:hover {
-    background-color: ${theme.color.yellow1};
+    background-color: ${(props) => props.theme.color.yellow1};
     transition: all 0.4s ease-in;
   }
 
   &:focus {
-    background-color: ${theme.color.yellow1};
+    background-color: ${(props) => props.theme.color.yellow1};
     transition: all 0.4s ease-in;
   }
 `;

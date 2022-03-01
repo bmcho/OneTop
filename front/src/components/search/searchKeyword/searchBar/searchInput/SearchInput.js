@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { theme } from '../../../../../../styles/theme';
 import { TiDelete } from 'react-icons/ti';
 import {
   setSearchKeywordAction,
@@ -84,7 +83,7 @@ const SearchInput = (props) => {
       />
       {autoCompleteKeyword.length !== 0 && (
         <Button onClick={resetSearchKeyword}>
-          <TiDelete size={18} color={theme.color.gray4} />
+          <TiDelete size={18} color={(props) => props.theme.color.gray4} />
         </Button>
       )}
     </SearchInputBlock>
@@ -103,7 +102,7 @@ const Input = styled.input`
   padding: 10px 20px;
   border-radius: 10px;
   border: none;
-  background-color: ${theme.color.lightGray3};
+  background-color: ${(props) => props.theme.color.lightGray3};
   box-sizing: border-box;
   font-size: 16px;
 `;
