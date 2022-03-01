@@ -21,7 +21,6 @@ const SearchInput = (props) => {
   //   }
   // }, [selected]);
   const changeSearchValue = (e) => {
-    setAutoCompleteKeywordAction;
     dispatch(setAutoCompleteKeywordAction(e.target.value));
     dispatch(setSearchKeywordAction(''));
   };

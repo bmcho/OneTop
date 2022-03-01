@@ -1,15 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import {
-  setSearchKeywordAction,
-  setSearchKeywordHistoryAction,
-} from '../../../../../stores/modules/searchKeyword';
+import { setSearchKeywordAction } from '../../../../../stores/modules/searchKeyword';
 
 const AutoComplete = (props) => {
   const dispatch = useDispatch();
-  const { autoCompleteData, searchKeywordHistory, searchResultData } =
-    useSelector((state) => state.searchKeyword);
+  const { autoCompleteData, searchResultData } = useSelector(
+    (state) => state.searchKeyword
+  );
   const refs = useMemo(() => {
     if (autoCompleteData.length !== 0) {
       return autoCompleteData.map(() => React.createRef());
@@ -24,14 +22,16 @@ const AutoComplete = (props) => {
     return () => console.log('autocomplete unmounted');
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('keywords', JSON.stringify(searchKeywordHistory));
-  }, [searchKeywordHistory]);
-
   const requestSearchResult = (keyword) => {
     //keyword history 저장, 검색결과 요청
     dispatch(setSearchKeywordAction(keyword));
-    dispatch(setSearchKeywordHistoryAction(keyword));
+    setSearchHistoryInLocal(keyword);
+  };
+  const setSearchHistoryInLocal = (newKeyword) => {
+    console.log(newKeyword);
+    const keywords = JSON.parse(localStorage.getItem('keywords'));
+    keywords.push(newKeyword);
+    localStorage.setItem('keywords', JSON.stringify(keywords));
   };
   // useEffect(() => {
   //   if (selected > 0) {

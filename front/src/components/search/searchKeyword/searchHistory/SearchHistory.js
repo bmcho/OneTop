@@ -1,61 +1,51 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiTime } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { theme } from '../../../../../styles/theme';
 import { TiDelete } from 'react-icons/ti';
 import { AiOutlineFileSearch } from 'react-icons/ai';
-
 import {
-  deleteSearchKeywordHistoryAction,
   setAutoCompleteKeywordAction,
   setSearchKeywordAction,
-  setSearchKeywordHistoryAction,
 } from '../../../../stores/modules/searchKeyword';
-import AutoComplete from '../searchBar/autoComplete/AutoComplete';
 
 const SearchHistory = (props) => {
   const dispatch = useDispatch();
-  const { searchKeywordHistory } = useSelector((state) => state.searchKeyword);
-
+  const [searchHistory, setSearchHistory] = useState([]);
   useEffect(() => {
-    console.log('searchhistory mounted');
-    return () => console.log('searchhistory unmounted');
+    console.log('search history mounted');
+    return () => console.log('search history unmounted');
   }, []);
 
   useEffect(() => {
     const keywords = JSON.parse(localStorage.getItem('keywords') || '[]');
-    dispatch(setSearchKeywordHistoryAction(keywords));
+    setSearchHistory(keywords);
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('keywords', JSON.stringify(searchKeywordHistory));
-  }, [searchKeywordHistory]);
-
   const deleteSearchKeyword = (e) => {
-    dispatch(deleteSearchKeywordHistoryAction(e.currentTarget.dataset.index));
+    const idx = parseInt(e.currentTarget.dataset.index);
+    const keywords = JSON.parse(localStorage.getItem('keywords'));
+    keywords.splice(idx, 1);
+    localStorage.setItem('keywords', JSON.stringify(keywords));
   };
 
   const clickHistoryItem = (e) => {
     dispatch(
-      setSearchKeywordAction(
-        searchKeywordHistory[e.currentTarget.dataset.index]
-      )
+      setSearchKeywordAction(searchHistory[e.currentTarget.dataset.index])
     );
     dispatch(
-      setAutoCompleteKeywordAction(
-        searchKeywordHistory[e.currentTarget.dataset.index]
-      )
+      setAutoCompleteKeywordAction(searchHistory[e.currentTarget.dataset.index])
     );
   };
 
   return (
     <div>
-      {searchKeywordHistory.length !== 0 ? (
+      {searchHistory.length !== 0 ? (
         <div>
           <Title>최근 검색어</Title>
           <SearchKeywordHistoryList>
-            {searchKeywordHistory.map((keyword, idx) => (
+            {searchHistory.map((keyword, idx) => (
               <SearchKeywordHistoryItem key={idx}>
                 <SearchKeywordHistoryItemTitle
                   onClick={clickHistoryItem}
