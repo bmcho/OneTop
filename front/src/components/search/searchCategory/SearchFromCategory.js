@@ -19,9 +19,7 @@ const SearchFromCategory = () => {
     console.log(idx);
     setSmallCategoryIndex(idx);
   };
-  useEffect(() => {
-    console.log(smallCategoryIndex);
-  }, [smallCategoryIndex]);
+
   return (
     <Container>
       <Slider>
@@ -51,7 +49,7 @@ const SearchFromCategory = () => {
       </SmallCategories>
       <div>
         {new Array(smallCategoryIndex).fill(0).map((e, idx) => (
-          <div>{idx}</div>
+          <div key={idx}>{idx}</div>
         ))}
       </div>
     </Container>

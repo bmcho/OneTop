@@ -7,6 +7,7 @@ import {
   setAutoCompleteKeywordAction,
   setSearchKeywordHistoryAction,
 } from '../../../../../stores/modules/searchKeyword';
+import { theme } from '../../../../../../styles/theme';
 
 const SearchInput = (props) => {
   const dispatch = useDispatch();
@@ -83,7 +84,7 @@ const SearchInput = (props) => {
       />
       {autoCompleteKeyword.length !== 0 && (
         <Button onClick={resetSearchKeyword}>
-          <TiDelete size={18} color={(props) => props.theme.color.gray4} />
+          <TiDelete size={18} color={theme.color.gray4} />
         </Button>
       )}
     </SearchInputBlock>
