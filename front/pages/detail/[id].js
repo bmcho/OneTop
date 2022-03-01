@@ -42,27 +42,12 @@ const Detail = (props) => {
 
   if (error) return <div>error...</div>;
 
-  const {
-    img,
-    hashTag,
-    name,
-    description,
-    brand,
-    capacity,
-    price,
-    ingredients,
-  } = productInfo;
+  const { ingredients, ...rest } = productInfo;
 
   return (
     <DetailBlock>
       <ProductInfo
-        img={img}
-        hashTag={hashTag}
-        name={name}
-        description={description}
-        brand={brand}
-        capacity={capacity}
-        price={price}
+        {...rest}
         modalOpenHandle={modalOpenHandle}
         addCompareBoxHandle={addCompareBoxHandle}
       />
