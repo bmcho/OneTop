@@ -20,7 +20,6 @@ function* loadProductCompareInfo(action) {
     const compareInfo = yield call(getProductCompareInfoApi, id);
     yield put(addProductCompareInfoSuccessAction(compareInfo));
   } catch (e) {
-    console.log(e, 11111);
     yield put(addProductCompareInfoFailureAction(e));
   }
 }
