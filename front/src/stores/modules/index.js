@@ -5,6 +5,7 @@ import searchKeyword from './searchKeyword';
 import searchTypeTap from './searchTypeTap';
 import loading from './loading';
 import productInfo from './productInfo';
+import productCompareInfo from './productCompareInfo';
 
 const combineReducer = combineReducers({
   tvShow,
@@ -12,6 +13,7 @@ const combineReducer = combineReducers({
   searchTypeTap,
   loading,
   productInfo,
+  productCompareInfo,
 });
 
 const rootReducer = (state, action) => {

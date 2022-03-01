@@ -10,24 +10,49 @@ import axios from 'axios';
 import ProductInfo from '../../src/components/detail/productInfo';
 import IngredientInfo from '../../src/components/detail/IngredientInfo';
 import { useCallback, useState } from 'react';
+import { addProductCompareInfoAction } from '../../src/stores/modules/productCompareInfo';
 
 const Detail = (props) => {
   const router = useRouter();
-  const { data, error } = useSelector((state) => state.productInfo);
+  const { data: productInfo, error } = useSelector(
+    (state) => state.productInfo
+  );
+  const { data: productCompareInfo } = useSelector(
+    (state) => state.productCompareInfo
+  );
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { id } = router.query;
 
   const modalOpenHandle = useCallback(() => {
     setIsModalOpen((isopen) => !isopen);
   }, []);
 
   const addCompareBoxHandle = useCallback(() => {
-    dispatch();
-  }, []);
+    if (productCompareInfo.length >= 3) {
+      alert('최대 3개까지 추가할수 있습니다.');
+      return;
+    }
+    if (productCompareInfo.find((info) => info.id === id)) {
+      alert('이미 추가된 제품입니다.');
+      return;
+    }
+    dispatch(addProductCompareInfoAction(id));
+  }, [productCompareInfo]);
 
   if (error) return <div>error...</div>;
 
-  const { img, hashTag, name, description, brand, capacity, price } = data;
+  const {
+    img,
+    hashTag,
+    name,
+    description,
+    brand,
+    capacity,
+    price,
+    ingredients,
+  } = productInfo;
+
   return (
     <DetailBlock>
       <ProductInfo
@@ -39,9 +64,10 @@ const Detail = (props) => {
         capacity={capacity}
         price={price}
         modalOpenHandle={modalOpenHandle}
+        addCompareBoxHandle={addCompareBoxHandle}
       />
       <IngredientInfo
-        ingredients={data.ingredients}
+        ingredients={ingredients}
         open={isModalOpen}
         modalOpenHandle={modalOpenHandle}
       />

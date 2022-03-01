@@ -28,6 +28,6 @@ function* watchLoadProductInfo() {
   yield takeLatest(GET_PRODUCT_INFO, loadProductInfo);
 }
 
-export default function* tvShowSaga() {
+export default function* productInfoSaga() {
   yield all([fork(watchLoadProductInfo)]);
 }

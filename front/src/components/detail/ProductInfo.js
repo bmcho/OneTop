@@ -13,6 +13,7 @@ const ProductInfo = ({
   capacity,
   price,
   modalOpenHandle,
+  addCompareBoxHandle,
 }) => {
   return (
     <Container>
@@ -47,7 +48,7 @@ const ProductInfo = ({
         </InfoLi>
         <InfoLi>
           <span>Compare Box</span>
-          <button onClick={modalOpenHandle}>비교상자에 넣기</button>
+          <button onClick={addCompareBoxHandle}>보관함에 넣기</button>
         </InfoLi>
       </InfoContainer>
     </Container>
