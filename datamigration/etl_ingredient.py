@@ -7,7 +7,7 @@ from core import *
 
 class Ingredient(BaseClass):
   def __init__(self) :
-    self.pd_data = self.read_data("Ingredient")
+    self.pd_data = self.read_data("ingredient")
 
   def __del__(self) :
     print("delete class : Ingredient")
@@ -18,23 +18,30 @@ class Ingredient(BaseClass):
       return Exception("The data does not exist")
 
     con = database.MysqlPool()
+
     try :
+
+      '''
+      double quotes => single quotes 치환
+      backslash -> empty
+      '''    
+      self.pd_data = self.pd_data.replace(regex={'"':'"', r'\\':""})
+      cursor = con.cursor()
       for idx, row in self.pd_data.iterrows() :
-        cursor = con.cursor()
-        data, ex = search_data("ingredient", cursor, [f"ko_ingredient = '{row['ko_ingredient']}'"])
+        
+        data, ex = search_data("ingredient", cursor, [f'ko_ingredient = "{row["ko_ingredient"]}"'])
         
         if ex is not None :
           raise(ex)
 
-        if data is not None :
+        if len(data) != 0 :
           continue
-
+        
         cursor.execute(f'INSERT INTO ingredient (ko_ingredient, en_ingredient, `use`, score) \
                    VALUES ("{row["ko_ingredient"]}","{row["en_ingredient"]}","{row["use"]}","{row["score"]}")')
-
       
       con.commit()
-      print(f' ingredient table - commit()')
+      print(f'ingredient table - commit()')
     except Exception as ex:
       con.rollback()
       return ex

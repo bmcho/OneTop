@@ -134,8 +134,8 @@ python-versions = ">=3.6"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.8"
-content-hash = "63a6cd39d3cab6cca2af66feec1027b0f51d6be019c85deb723ba90c02f25835"
+python-versions = "^3.9"
+content-hash = "55821a380b88013a30c2d214b25f673c745bb599345afb40b10e85bd41d76e3b"
 
 [metadata.files]
 greenlet = [

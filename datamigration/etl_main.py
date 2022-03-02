@@ -6,7 +6,6 @@ from etl_ingredient import Ingredient
 from etl_descrip import Descrip
 from etl_relation import Relation
 
-
 def init_logger():
 
     logger = logging.getLogger()
@@ -37,33 +36,37 @@ Ingredient ,Product > descrip > ProductIngredientRelation
 def main() :
   
   #product
+  print("migration start - product")
   ex = Product().load_data()
   if ex is not None :
-    logger.info(ex)
+    logger.info(f'product - {ex}')
     exit()
   else :
     logger.info("migration product")
   
   #igredient 
+  print("migration start - ingredient")
   ex = Ingredient().load_data()
   if ex is not None :
-    logger.info(ex)
+    logger.info(f'ingredient - {ex}')
     exit()
   else :
     logger.info("migration ingredient")
 
   #descrip 
+  print("migration start - descrip")
   ex = Descrip().load_data()
   if ex is not None :
-    logger.info(ex)
+    logger.info(f'descrip - {ex}')
     exit()
   else :
     logger.info("migration descrip")
 
   #relation 
+  print("migration start - product_ingredient_relation")
   ex = Relation().load_data()
   if ex is not None :
-    logger.info(ex)
+    logger.info(f'product_ingredient_relation - {ex}')
     exit()
   else :
     logger.info("migration product_ingredient_relation")

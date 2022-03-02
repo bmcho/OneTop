@@ -5,11 +5,11 @@ description = ""
 authors = ["none"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 pandas = "^1.4.1"
-PyMySQL = "^1.0.2"
-SQLAlchemy = "^1.4.31"
 pydantic = "^1.9.0"
+SQLAlchemy = "^1.4.31"
+PyMySQL = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 

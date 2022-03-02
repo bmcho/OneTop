@@ -32,7 +32,6 @@ def search_data(tablename, cursor, options = None) :
 
     cursor.execute(query)
     perm = cursor.fetchall()
-
     return perm , None
 
   except Exception as ex:

@@ -32,12 +32,13 @@ class Descrip(Base) :
 
   id = Column(Integer, primary_key=True, index=True)
   product_num = Column(Integer, ForeignKey('product.product_num'), index=True)
-  color_type = Column(String(100), nullable=False)
-  cost = Column(Integer, nullable=False)
-  category = Column(String(100), nullable=False)
-  product_category_large = Column(String(100))
-  product_category_middle = Column(String(100))
-  product_category_small = Column(String(100))
+  color_type = Column(TEXT)
+  description = Column(TEXT)
+  hashtag = Column(TEXT)
+  cost = Column(String(100))
+  major_classification = Column(String(100))
+  medium_classification = Column(String(100))
+  minor_classification = Column(String(100))
 
 '''
 성분
@@ -48,6 +49,8 @@ class Ingredient(Base) :
   id = Column(Integer, primary_key=True, index=True)
   ko_ingredient = Column(TEXT)
   en_ingredient = Column(TEXT)
+  use = Column(TEXT)
+  score = Column(String(10))
   
   products = relationship("product", 
                   secondary="ProductIngredientRelation",
