@@ -39,21 +39,22 @@ const CompareBoxButtonBlock = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: ${(props) => props.theme.boxShadow.normal};
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
+    rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
   cursor: pointer;
   animation: ${ButtonAnimation} 0.5s ease;
 `;
 
 const NonCheckAlerm = styled.div`
   position: absolute;
-  right: 0;
-  top: 0;
+  right: -1px;
+  top: -1px;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background-color: red;
 `;
