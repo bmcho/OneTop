@@ -4,7 +4,7 @@ from apps import models
 from apps.routers import detail, home, search
 from database import engine
 
-app = FastAPI()
+app = FastAPI(root_path="/api")
 
 models.Base.metadata.create_all(bind=engine)
 
