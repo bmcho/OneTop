@@ -7,7 +7,7 @@ class MysqlPool:
             passwd = 'onetop',
             host = 'database',
             port = 3306,
-            db = 'test',
+            db = 'onetop',
             charset = 'utf8mb4'
         )
 

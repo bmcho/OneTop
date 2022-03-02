@@ -1,0 +1,8 @@
+2022-03-02 18:18:14,877 - root - INFO - migration product
+2022-03-02 18:21:46,598 - root - INFO - migration ingredient
+2022-03-02 18:23:25,711 - root - INFO - migration descrip
+2022-03-02 18:32:44,434 - root - INFO - migration product_ingredient_relation
+2022-03-02 19:18:33,507 - root - INFO - migration product
+2022-03-02 19:25:07,350 - root - INFO - migration ingredient
+2022-03-02 19:26:06,047 - root - INFO - migration descrip
+2022-03-02 19:35:59,180 - root - INFO - migration product_ingredient_relation
