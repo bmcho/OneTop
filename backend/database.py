@@ -18,9 +18,9 @@ env = os.environ
 # port=os.getenv("MYSQL_PORT",default=3306)
 # database=os.getenv("MYSQL_DATABASE")
 
-#DB_URL = f"mysql+pymysql://{DB['user']}:{DB['password']}@{DB['host']}:{DB['port']}/{DB['database']}?charset=utf8"  # noqa
+# DB_URL = f"mysql+pymysql://{DB['user']}:{DB['password']}@{DB['host']}:{DB['port']}/{DB['database']}?charset=utf8"  # noqa
 # DB_URL=f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}?charset=utf8"
-DB_URL = f"mysql+pymysql://root:onetop@database:3306/onetop"
+DB_URL = f'{"mysql+pymysql://root:onetop@database:3306/onetop"}'
 
 engine = create_engine(DB_URL, encoding="utf-8")
 

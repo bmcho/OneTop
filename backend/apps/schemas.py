@@ -3,7 +3,6 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 
-
 class ProductList(BaseModel):
     id: int
     name: str
@@ -18,6 +17,7 @@ class ProductList(BaseModel):
 
     class Config:
         orm_mode = True
+
 
 class SearchKeyword(BaseModel):
     keyword: str
