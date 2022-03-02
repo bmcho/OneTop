@@ -35,20 +35,21 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
         <ItemTable>
           <thead>
             <tr>
-              <th></th>
               {data.map((d, index) => {
                 return (
                   <th key={`${d.id}${index}`}>
                     <RemoveButton onClick={() => productRemoveHandle(d.id)}>
                       삭제
                     </RemoveButton>
-                    <Image src={d.img} width={92.5} height={92.5} />
+                    <ImageWrapper>
+                      <Image src={d.img} width={123} height={123} />
+                    </ImageWrapper>
                   </th>
                 );
               })}
             </tr>
           </thead>
-          <tbody>
+          {/* <tbody>
             <tr>
               <th>Brand</th>
               {data.map((d, index) => {
@@ -73,7 +74,7 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
                 return <td key={`${d.id}${index}`}>{d.capacity}</td>;
               })}
             </tr>
-          </tbody>
+          </tbody> */}
         </ItemTable>
       )}
     </CompareBoxBlock>
@@ -159,7 +160,7 @@ const ItemTable = styled.table`
   letter-spacing: 1.2px;
   td,
   th {
-    width: 92.5px;
+    width: 120px;
     height: 80px;
     text-align: center;
     vertical-align: middle;
@@ -178,19 +179,27 @@ const ItemTable = styled.table`
 
 const RemoveButton = styled.button`
   position: absolute;
+  right: 0;
   bottom: 0;
-  width: 92.5px;
-  height: 12px;
-  font-size: 10px;
+  width: 120px;
+  height: 15px;
+  font-size: 12px;
   z-index: 99;
-  background-color: ${({ theme }) => theme.color.gray5};
+  font-weight: 900;
+  /* background-color: ${({ theme }) => theme.color.yellow2}; */
+  background-color: rgba(252, 196, 25, 0.5);
   transition: all 0.5s ease;
-  color: ${({ theme }) => theme.color.white};
+  border-radius: 10px;
+  /* color: ${({ theme }) => theme.color.white}; */
   &:hover {
     height: 100%;
     font-size: 18px;
-    font-weight: 900;
   }
 `;
 
+const ImageWrapper = styled.div`
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
+  overflow: hidden;
+`;
 export default CompareBox;
