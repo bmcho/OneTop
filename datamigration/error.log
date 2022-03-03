@@ -1,0 +1,31 @@
+2022-03-02 18:18:14,877 - root - INFO - migration product
+2022-03-02 18:21:46,598 - root - INFO - migration ingredient
+2022-03-02 18:23:25,711 - root - INFO - migration descrip
+2022-03-02 18:32:44,434 - root - INFO - migration product_ingredient_relation
+2022-03-02 19:18:33,507 - root - INFO - migration product
+2022-03-02 19:25:07,350 - root - INFO - migration ingredient
+2022-03-02 19:26:06,047 - root - INFO - migration descrip
+2022-03-02 19:35:59,180 - root - INFO - migration product_ingredient_relation
+2022-03-03 13:04:07,628 - root - INFO - migration product
+2022-03-03 13:10:28,439 - root - INFO - migration ingredient
+2022-03-03 13:10:36,297 - root - INFO - descrip - 'product_num'
+2022-03-03 13:19:11,084 - root - INFO - migration product
+2022-03-03 13:25:41,251 - root - INFO - migration ingredient
+2022-03-03 13:25:49,059 - root - INFO - descrip - (1054, "Unknown column 'product_num' in 'where clause'")
+2022-03-03 13:29:47,994 - root - INFO - migration product
+2022-03-03 13:36:16,428 - root - INFO - migration ingredient
+2022-03-03 13:36:19,202 - root - INFO - descrip - 'product_num'
+2022-03-03 13:50:29,682 - root - INFO - migration product
+2022-03-03 13:56:51,375 - root - INFO - migration ingredient
+2022-03-03 13:56:54,138 - root - INFO - descrip - 'product_num'
+2022-03-03 14:11:19,689 - root - INFO - product - 'rating'
+2022-03-03 14:18:46,897 - root - INFO - migration product
+2022-03-03 14:21:50,934 - root - INFO - migration ingredient
+2022-03-03 14:21:53,755 - root - INFO - descrip - 'product_num'
+2022-03-03 14:24:14,964 - root - INFO - migration product
+2022-03-03 14:30:20,664 - root - INFO - migration ingredient
+2022-03-03 14:30:23,447 - root - INFO - descrip - (1054, "Unknown column 'product_num' in 'where clause'")
+2022-03-03 14:34:54,563 - root - INFO - migration product
+2022-03-03 14:40:56,759 - root - INFO - migration ingredient
+2022-03-03 14:42:34,607 - root - INFO - migration descrip
+2022-03-03 14:51:22,146 - root - INFO - migration product_ingredient_relation

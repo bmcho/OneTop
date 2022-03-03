@@ -1,10 +1,5 @@
 #!/bin/bash
 
-#dev
+# # react build
 npm install
 npm run dev
-
-#build
-#npm install
-#npm build
-#npm start
