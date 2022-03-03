@@ -33,8 +33,6 @@ services:
       - SERVER_ADDR=server
     expose:
       - "3000"
-    ports:
-      - "3000:3000"
     networks:
       - nginx_bridge
     depends_on:
@@ -71,9 +69,24 @@ services:
      - MYSQL_DATABASE=${DBNAME}
     networks:
       - server_database_bridge
+      - migraion_database_bridge
+
+  migration:
+    container_name: migration
+    build:
+      context: ./datamigration
+      dockerfile: Dockerfile
+    volumes:
+      - ./datamigration:/srv/migration
+    networks:
+      - migraion_database_bridge
+    depends_on:
+      - database
 
 networks:
   nginx_bridge:
     driver: bridge
   server_database_bridge:
+    driver: bridge
+  migraion_database_bridge:
     driver: bridge
