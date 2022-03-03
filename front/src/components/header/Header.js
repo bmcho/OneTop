@@ -8,7 +8,9 @@ const Header = (props) => {
     <HeaderWrap>
       <HeaderItemWrap>
         <Link href="/">
-          <a>TITLE</a>
+          <a>
+            <Logo src="/images/logo.png" />
+          </a>
         </Link>
         <NavBlock>
           <li>
@@ -35,6 +37,10 @@ const HeaderItemWrap = styled.div`
   width: 100%;
   height: 100%;
   margin: 0 auto;
+`;
+const Logo = styled.img`
+  width: 50px;
+  height: 50px;
 `;
 const NavBlock = styled.nav`
   display: flex;
