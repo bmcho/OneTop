@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { media } from '../../../../styles/theme';
 import useInterval from '../../../hooks/interval/useInterval';
 import { categories } from '../../../utils/categoryUtil';
 
@@ -43,9 +44,10 @@ const Recommend = (props) => {
 
 const SearchBlock = styled.div`
   width: 100%;
-  // height: 100vh;
-  // margin-top: 100vh;
-  background
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 const Title = styled.h2`
   font-size: 27px;
@@ -69,6 +71,10 @@ const Category = styled.div`
   justify-content: center;
   margin: 0 auto;
   flex-wrap: wrap;
+  padding: 40px 0 100px 0;
+  ${media.mobile} {
+    width: 100%;
+  }
 `;
 const CategoryItem = styled.div`
   padding: 10px;

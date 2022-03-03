@@ -54,7 +54,7 @@ const Search = (props) => {
           </Item>
         </List>
       </div>
-      <div>
+      <ListSection>
         {tapState === 0 && (
           <FadeIn stagger={0.1} x={100}>
             <Category>
@@ -82,7 +82,7 @@ const Search = (props) => {
             </Category>
           </FadeIn>
         )}
-      </div>
+      </ListSection>
     </SearchBlock>
   );
 };
@@ -99,17 +99,22 @@ const Title = styled.h2`
   letter-spacing: -1.5px;
   transition: font-size 1s,line-height 1s,letter-spacing 1s;
   text-align: center;
+  
 }`;
 const Text = styled.p`
-  padding-top: 15px;
+  padding-top: 20px;
   font-size: 15px;
   line-height: 24px;
   letter-spacing: -1px;
   text-align: center;
 `;
+const ListSection = styled.div`
+  padding-bottom: 100px;
+`;
 const List = styled.ul`
   display: flex;
   justify-content: center;
+  padding-top: 40px;
 `;
 const Item = styled.li`
   padding-right: 10px;
