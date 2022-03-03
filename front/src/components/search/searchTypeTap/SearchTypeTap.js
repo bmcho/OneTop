@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { theme } from '../../../../styles/theme';
 import { setSearchTapState } from '../../../stores/modules/searchTypeTap';
 
 const SearchTypeTap = (props) => {
@@ -56,7 +55,7 @@ const Item = styled.li`
   padding: 10px;
   margin: 0 10px;
   background-color: ${(props) =>
-    props.type === props.typeState && theme.color.yellow1};
+    props.type === props.typeState && props.theme.color.yellow1};
   border-radius: 10px;
   position: relative;
   &::before,
@@ -66,7 +65,7 @@ const Item = styled.li`
     position: absolute;
     width: 0;
     height: 0;
-    border-color: ${theme.color.yellow1};
+    border-color: ${(props) => props.theme.color.yellow1};
     border: ${(props) => props.type === props.typeState && `2px solid black`};
     width: ${(props) => props.type === props.typeState && '100%'};
     height: ${(props) => props.type === props.typeState && '100%'};

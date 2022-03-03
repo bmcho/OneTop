@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { theme } from '../../../../styles/theme';
 import StarRating from '../../commons/starRating/StarRating';
 
 const SearchResultItem = ({ show }) => (
@@ -22,7 +21,7 @@ const SearchResultItem = ({ show }) => (
 const SearchResultItemBlock = styled.div`
   display: flex;
   padding: 16px 0;
-  border-bottom: 1px solid ${theme.color.lightGray3};
+  border-bottom: 1px solid ${(props) => props.theme.color.lightGray3};
 `;
 const ImageWrap = styled.div`
   display: flex;
@@ -32,7 +31,7 @@ const ImageWrap = styled.div`
 const Description = styled.p`
   font-size: 12px;
   line-height: 16px;
-  color: ${theme.color.gray2};
+  color: ${(props) => props.theme.color.gray2};
   margin-bottom: 4px;
 `;
 export default SearchResultItem;

@@ -1,7 +1,5 @@
 import React from 'react';
-import { FaStar, FaStarHalf } from 'react-icons/fa';
 import styled from 'styled-components';
-import { theme } from '../../../../styles/theme';
 const StarRating = ({ rating }) => {
   return (
     <StarRatingBlock>
@@ -26,7 +24,7 @@ const StarRatingFront = styled.div`
   width: ${(props) => props.width}%;
   overflow: hidden;
   height: 16px;
-  color: ${theme.color.yellow1};
+  color: ${(props) => props.theme.color.yellow1};
   font-size: 16px;
 `;
 const StarRatingBack = styled.div`
@@ -34,7 +32,7 @@ const StarRatingBack = styled.div`
   width: 80px;
   font-size: 16px;
   height: 16px;
-  color: ${theme.color.lightGray1};
+  color: ${(props) => props.theme.color.lightGray1};
 `;
 
 export default StarRating;
