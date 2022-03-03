@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export function useScroll() {
+export const useScroll = () => {
   const [scrollY, setScrollY] = useState(0);
 
   const listener = () => {
@@ -17,4 +17,4 @@ export function useScroll() {
   return {
     scrollY,
   };
-}
+};

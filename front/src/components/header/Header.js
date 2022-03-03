@@ -1,15 +1,11 @@
 import Link from 'next/link';
-import React, { useEffect } from 'react';
-import styled, { css } from 'styled-components';
-import { useRouter } from 'next/router';
+import React from 'react';
+import styled from 'styled-components';
+import HeaderWrap from './HeaderWrap';
 
-const Header = ({ path }) => {
-  const router = useRouter();
-  useEffect(() => {
-    console.log(router);
-  }, []);
+const Header = (props) => {
   return (
-    <HeaderBlock path={router.pathname}>
+    <HeaderWrap>
       <HeaderItemWrap>
         <Link href="/">
           <a>TITLE</a>
@@ -27,32 +23,10 @@ const Header = ({ path }) => {
           </li>
         </NavBlock>
       </HeaderItemWrap>
-    </HeaderBlock>
+    </HeaderWrap>
   );
 };
 
-Header.getInitialProps = async ({ query }) => {
-  const { id } = query;
-
-  return { path: id };
-};
-const HeaderBlock = styled.div`
-  width: 100%;
-  margin: 0 auto;
-  height: 100px;
-  padding: 20px;
-  box-sizing: border-box;
-
-  position: fixed;
-  z-index: 10;
-  ${(props) => {
-    if (props.path === '/') {
-      return css`
-        position: fixed;
-      `;
-    }
-  }}
-`;
 const HeaderItemWrap = styled.div`
   display: flex;
   align-items: center;
