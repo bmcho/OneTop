@@ -1,4 +1,13 @@
-from sqlalchemy import TEXT, Boolean, Column, ForeignKey, Integer, Numeric, String
+from sqlalchemy import (
+    TEXT,
+    Boolean,
+    Column,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    Table,
+)
 from sqlalchemy.orm import relationship
 
 from database import Base
@@ -19,9 +28,9 @@ class Product(Base):
     price = Column(String(100))
     extinction = Column(Boolean, default=True)
 
-    descriptions = relationship("Descrip", back_populates="Descrip")
+    descriptions = relationship("Descrip", back_populates="products")
     ingredients = relationship(
-        "Ingredient", secondary="ProductIngredientRelation", back_populates="Ingredient"
+        "Ingredient", secondary="ProductIngredientRelation", back_populates="products"
     )
 
 
@@ -42,6 +51,8 @@ class Descrip(Base):
     major_classification = Column(String(100))
     medium_classification = Column(String(100))
     minor_classification = Column(String(100))
+
+    products = relationship("Product", back_populates="descriptions")
 
 
 """
@@ -68,9 +79,16 @@ class Ingredient(Base):
 """
 
 
-class ProductIngredientRelation(Base):
-    __tablename__ = "productingredientrelation"
+# class ProductIngredientRelation(Base):
+#     __tablename__ = "productingredientrelation"
 
-    id = Column(Integer, primary_key=True, index=True)
-    product_num = Column(Integer, ForeignKey("product.product_num"), index=True)
-    ingredient_id = Column(Integer, ForeignKey("ingredient.id"), index=True)
+#     id = Column(Integer, primary_key=True, index=True)
+#     product_num = Column(Integer, ForeignKey("product.product_num"), index=True)
+#     ingredient_id = Column(Integer, ForeignKey("ingredient.id"), index=True)
+
+ProductIngredientRelation = Table(
+    "ProductIngredientRelation",
+    Base.metadata,
+    Column("product_id", ForeignKey("product.product_num")),
+    Column("ingredient_id", ForeignKey("ingredient.id")),
+)

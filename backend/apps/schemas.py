@@ -4,19 +4,25 @@ from pydantic import BaseModel
 
 
 class ProductList(BaseModel):
-    id: int
+    product_num: int
     name: str
-    img: str
+    img_url: str
     brand: str
-    rating: str
+    average_rating: float
     price: str
-    ingredients: str
+    # extinction:int
 
     # totalPageCount: int
     # currnetPage: int
 
     class Config:
         orm_mode = True
+
+
+class SearchResult(BaseModel):
+    totalPageCount: int
+    currentPage: int
+    result: List[ProductList] = []
 
 
 class SearchKeyword(BaseModel):
@@ -42,9 +48,3 @@ class SearchIngredients(BaseModel):
 
 class DetailId(BaseModel):
     id: int
-
-
-class SearchResult(BaseModel):
-    totalPageCount: int
-    currentPage: int
-    result: List[ProductList] = []
