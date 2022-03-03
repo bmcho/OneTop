@@ -49,32 +49,33 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
               })}
             </tr>
           </thead>
-          {/* <tbody>
+          <tbody>
             <tr>
-              <th>Brand</th>
               {data.map((d, index) => {
                 return <td key={`${d.id}${index}`}>{d.brand}</td>;
               })}
             </tr>
             <tr>
-              <th>Name</th>
               {data.map((d, index) => {
                 return <td key={`${d.id}${index}`}>{d.name}</td>;
               })}
             </tr>
             <tr>
-              <th>Price</th>
               {data.map((d, index) => {
-                return <td key={`${d.id}${index}`}>{d.price}</td>;
+                return <td key={`${d.id}${index}`}>{d.price}원</td>;
               })}
             </tr>
             <tr>
-              <th>Size</th>
               {data.map((d, index) => {
                 return <td key={`${d.id}${index}`}>{d.capacity}</td>;
               })}
             </tr>
-          </tbody> */}
+            <tr>
+              {data.map((d, index) => {
+                return <td key={`${d.id}${index}`}>{d.hashTag.join('\n')}</td>;
+              })}
+            </tr>
+          </tbody>
         </ItemTable>
       )}
     </CompareBoxBlock>
@@ -155,7 +156,7 @@ const ItemLi = styled.li`
 `;
 
 const ItemTable = styled.table`
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 600;
   letter-spacing: 1.2px;
   td,
@@ -164,7 +165,7 @@ const ItemTable = styled.table`
     height: 80px;
     text-align: center;
     vertical-align: middle;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    white-space: pre-wrap;
   }
   th {
     position: relative;
@@ -174,6 +175,10 @@ const ItemTable = styled.table`
   thead th {
     background-color: rgba(0, 0, 0, 0);
     border: none;
+  }
+  tbody {
+    display: block;
+    margin-top: 30px;
   }
 `;
 
@@ -186,11 +191,9 @@ const RemoveButton = styled.button`
   font-size: 12px;
   z-index: 99;
   font-weight: 900;
-  /* background-color: ${({ theme }) => theme.color.yellow2}; */
-  background-color: rgba(252, 196, 25, 0.5);
+  background-color: rgba(252, 196, 25, 0.4);
   transition: all 0.5s ease;
   border-radius: 10px;
-  /* color: ${({ theme }) => theme.color.white}; */
   &:hover {
     height: 100%;
     font-size: 18px;
