@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { theme } from '../../../../styles/theme';
 import SearchBar from './searchBar/SearchBar';
 
 const SearchIngredient = (props) => (
@@ -21,15 +20,15 @@ const SearchButtonWrap = styled.div`
   text-align: center;
 `;
 const SearchButton = styled.button`
-  background-color: ${theme.color.white};
-  color: ${theme.color.black};
+  background-color: ${(props) => props.theme.color.white};
+  color: ${(props) => props.theme.color.black};
   padding: 10px 20px;
   border-radius: 2px;
-  border: 2px solid ${theme.color.black};
+  border: 2px solid ${(props) => props.theme.color.black};
   &:hover {
     border: none;
-    background-color: ${theme.color.purple};
-    color: ${theme.color.white};
+    background-color: ${(props) => props.theme.color.purple};
+    color: ${(props) => props.theme.color.white};
     // font-weight:bold;
   }
 `;

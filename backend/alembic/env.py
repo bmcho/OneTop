@@ -32,6 +32,8 @@ target_metadata = models.Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+#database url
+url = f'mysql+pymysql://root:{os.environ["MYSQL_PASSWORD"]}@database:3306/{os.environ["MYSQL_PASSWORD"]}'
 
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
@@ -45,7 +47,7 @@ def run_migrations_offline():
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    # url = config.get_main_option("sqlalchemy.url")
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -66,7 +68,8 @@ def run_migrations_online():
     """
     connectable = engine_from_config(
         config.get_section(config.config_ini_section),
-        prefix="sqlalchemy.",
+        # prefix="sqlalchemy.",
+        url=url,
         poolclass=pool.NullPool,
     )
 
@@ -75,7 +78,6 @@ def run_migrations_online():
 
         with context.begin_transaction():
             context.run_migrations()
-
 
 if context.is_offline_mode():
     run_migrations_offline()

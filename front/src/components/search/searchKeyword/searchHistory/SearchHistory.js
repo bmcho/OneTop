@@ -1,52 +1,51 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiTime } from 'react-icons/bi';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { theme } from '../../../../../styles/theme';
 import { TiDelete } from 'react-icons/ti';
+import { AiOutlineFileSearch } from 'react-icons/ai';
 import {
-  deleteSearchKeywordHistoryAction,
+  setAutoCompleteKeywordAction,
   setSearchKeywordAction,
-  setSearchKeywordHistoryAction,
 } from '../../../../stores/modules/searchKeyword';
+import { theme } from '../../../../../styles/theme';
 
 const SearchHistory = (props) => {
   const dispatch = useDispatch();
-  const { searchKeywordHistory } = useSelector((state) => state.searchKeyword);
-
+  const [searchHistory, setSearchHistory] = useState([]);
   useEffect(() => {
-    console.log('searchhistory mounted');
-    return () => console.log('searchhistory unmounted');
+    console.log('search history mounted');
+    return () => console.log('search history unmounted');
   }, []);
 
   useEffect(() => {
     const keywords = JSON.parse(localStorage.getItem('keywords') || '[]');
-    dispatch(setSearchKeywordHistoryAction(keywords));
+    setSearchHistory(keywords);
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('keywords', JSON.stringify(searchKeywordHistory));
-  }, [searchKeywordHistory]);
-
   const deleteSearchKeyword = (e) => {
-    dispatch(deleteSearchKeywordHistoryAction(e.currentTarget.dataset.index));
+    const idx = parseInt(e.currentTarget.dataset.index);
+    const keywords = JSON.parse(localStorage.getItem('keywords'));
+    keywords.splice(idx, 1);
+    localStorage.setItem('keywords', JSON.stringify(keywords));
   };
 
   const clickHistoryItem = (e) => {
     dispatch(
-      setSearchKeywordAction(
-        searchKeywordHistory[e.currentTarget.dataset.index]
-      )
+      setSearchKeywordAction(searchHistory[e.currentTarget.dataset.index])
+    );
+    dispatch(
+      setAutoCompleteKeywordAction(searchHistory[e.currentTarget.dataset.index])
     );
   };
 
   return (
     <div>
-      {searchKeywordHistory.length !== 0 ? (
+      {searchHistory.length !== 0 ? (
         <div>
           <Title>최근 검색어</Title>
           <SearchKeywordHistoryList>
-            {searchKeywordHistory.map((keyword, idx) => (
+            {searchHistory.map((keyword, idx) => (
               <SearchKeywordHistoryItem key={idx}>
                 <SearchKeywordHistoryItemTitle
                   onClick={clickHistoryItem}
@@ -68,7 +67,10 @@ const SearchHistory = (props) => {
           </SearchKeywordHistoryList>
         </div>
       ) : (
-        <div>궁금한 제품을 검색해보세요!</div>
+        <NoSearchHistory>
+          <AiOutlineFileSearch size={60} color={theme.color.lightGray1} />
+          <NoSearchHistoryText>궁금한 제품을 검색해보세요!</NoSearchHistoryText>
+        </NoSearchHistory>
       )}
     </div>
   );
@@ -84,7 +86,7 @@ const SearchKeywordHistoryItem = styled.li`
   justify-content: space-between;
   padding: 10px;
   &:hover {
-    background-color: ${theme.color.lightGray3};
+    background-color: ${(props) => props.theme.color.lightGray3};
   }
 `;
 const SearchKeywordHistoryItemTitle = styled.button`
@@ -101,10 +103,17 @@ const KeywordDeleteButton = styled.button`
 const IconWrap = styled.span`
   margin-right: 12px;
   padding: 5px;
-  background-color: ${theme.color.lightGray1};
+  background-color: ${(props) => props.theme.color.lightGray1};
   border-radius: 50%;
   width: 28px;
   height: 28px;
   box-sizing: border-box;
+`;
+const NoSearchHistory = styled.div`
+  text-align: center;
+  color: ${(props) => props.theme.color.gray4};
+`;
+const NoSearchHistoryText = styled.p`
+  padding: 10px 0;
 `;
 export default SearchHistory;
