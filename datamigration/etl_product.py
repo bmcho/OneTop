@@ -38,7 +38,7 @@ class Product(BaseClass):
           continue
         
         cursor.execute(f'INSERT INTO product (product_num, name, img_url, brand, average_rating, price, extinction) \
-                   VALUES ("{row["product_num"]}","{row["name"]}","{row["img_url"]}","{row["brand"]}", "{row["rating"]}", "{row["price"]}", 1)')
+                   VALUES ("{row["product_num"]}","{row["name"]}","{row["img_url"]}","{row["brand"]}", "{row["average_rating"]}", "{row["price"]}", 1)')
         
       con.commit()
       print(f'product table - commit()')

@@ -29,7 +29,7 @@ class Descrip(BaseClass):
       cursor = con.cursor() 
       for idx, row in self.pd_data.iterrows() :
 
-        data, ex = search_data("descrip", cursor, [f'product_num = "{row["product_num"]}"'])
+        data, ex = search_data("descrip", cursor, [f'fk_product_descrip_product_num = "{row["fk_product_descrip_product_num"]}"'])
         
         if ex is not None :
           raise(ex)
@@ -37,8 +37,8 @@ class Descrip(BaseClass):
         if len(data) != 0 :
           continue
         
-        cursor.execute(f'INSERT INTO descrip (product_num, description, hashtag, color_type, cost, major_classification, medium_classification, minor_classification) \
-                   VALUES ("{row["product_num"]}","{row["description"]}","{row["hashtag"]}","{row["color_type"]}", "{row["cost"]}", "{row["major_classification"]}", "{row["medium_classification"]}", "{row["minor_classification"]}")')
+        cursor.execute(f'INSERT INTO descrip (fk_product_descrip_product_num, description, hashtag, color_type, cost, major_classification, medium_classification, minor_classification) \
+                   VALUES ("{row["fk_product_descrip_product_num"]}","{row["description"]}","{row["hashtag"]}","{row["color_type"]}", "{row["cost"]}", "{row["major_classification"]}", "{row["medium_classification"]}", "{row["minor_classification"]}")')
 
       con.commit()
       print(f'descrip table - commit()')

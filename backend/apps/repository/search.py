@@ -3,7 +3,9 @@ from typing import List
 from fastapi import HTTPException, Request, Response, status
 from sqlalchemy.orm import Session
 
-from .. import models, schemas
+import models as models
+
+from .. import schemas
 
 
 def get_product_by_category(db: Session, request: schemas.SearchCategory):
@@ -34,20 +36,23 @@ def get_product_by_keyword(db: Session, request: schemas.SearchKeyword):
 
     if searchType == "product":
         productList = (
-            db.query(models.Dummy).filter(models.Dummy.name.like(search)).all()
+            db.query(models.Product).filter(models.Product.name.like(search)).first()
         )
     elif searchType == "brand":
         search = search.upper()
         productList = (
-            db.query(models.Dummy).filter(models.Dummy.brand.like(search)).all()
+            db.query(models.Product).filter(models.Product.brand.like(search)).all()
         )
-    elif searchType == "ingredient":
-        productList = (
-            db.query(models.Dummy).filter(models.Dummy.ingredients.like(search)).all()
-        )
-    # productList = dict(productList)
-    # searchResult=schemas.SearchResult
-    # searchResult["totalPageCount"]
+    # elif searchType == "ingredient":
+    #     productList = (
+    #         db.query(models.Product).filter(models.Product.ingredients.like(search)).all()
+    #     )
+    # 성분은 참조테이블이 따로 있어서 구현을 다시 생각해봐야할듯.
+
+    # listLen = len(productList)
+    # searchResult = schemas.SearchResult
+    # searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
+    # searchResult.currentPage=request.requestPage
     return productList
 
 

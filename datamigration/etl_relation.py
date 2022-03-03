@@ -52,8 +52,8 @@ class Relation(BaseClass):
         # if len(data) != 0 :
         #   continue
 
-        cursor.execute(f'INSERT INTO productingredientrelation (product_num, ingredient_id) \
-                   VALUES ("{row["product_num"]}","{row["ingredient_id"]}")')
+        cursor.execute(f'INSERT INTO productingredientrelation (product_id, ingredient_id) \
+                   VALUES ("{row["product_id"]}","{row["ingredient_id"]}")')
 
       con.commit()
       print(f'ingredient table - commit')
