@@ -8,7 +8,7 @@ from sqlalchemy import (
     String,
     Table,
 )
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship,backref
 
 from database import Base
 
@@ -28,9 +28,9 @@ class Product(Base):
     price = Column(String(100))
     extinction = Column(Boolean, default=True)
 
-    descriptions = relationship("Descrip", back_populates="products")
+    descriptions = relationship("Descrip", back_populates="product")
     ingredients = relationship(
-        "Ingredient", secondary="ProductIngredientRelation", back_populates="products"
+        "Ingredient", secondary="ProductIngredientRelation"
     )
 
 
@@ -43,7 +43,7 @@ class Descrip(Base):
     __tablename__ = "descrip"
 
     id = Column(Integer, primary_key=True, index=True)
-    product_num = Column(Integer, ForeignKey("product.product_num"), index=True)
+    fk_product_descrip_product_num = Column(Integer, ForeignKey("product.product_num"), index=True)
     color_type = Column(TEXT)
     description = Column(TEXT)
     hashtag = Column(TEXT)
@@ -52,7 +52,7 @@ class Descrip(Base):
     medium_classification = Column(String(100))
     minor_classification = Column(String(100))
 
-    products = relationship("Product", back_populates="descriptions")
+    products = relationship("Product", back_populates="descrip")
 
 
 """
@@ -70,7 +70,7 @@ class Ingredient(Base):
     score = Column(String(10))
 
     products = relationship(
-        "product", secondary="ProductIngredientRelation", back_populates="product"
+        "Product", secondary="productingredientrelation"
     )
 
 
@@ -79,16 +79,12 @@ class Ingredient(Base):
 """
 
 
-# class ProductIngredientRelation(Base):
-#     __tablename__ = "productingredientrelation"
+class ProductIngredientRelation(Base):
+    __tablename__ = "productingredientrelation"
 
-#     id = Column(Integer, primary_key=True, index=True)
-#     product_num = Column(Integer, ForeignKey("product.product_num"), index=True)
-#     ingredient_id = Column(Integer, ForeignKey("ingredient.id"), index=True)
+    id = Column(Integer, primary_key=True)
+    product_id = Column(Integer, ForeignKey("product.product_num"))
+    ingredient_id = Column(Integer, ForeignKey("ingredient.id"))
 
-ProductIngredientRelation = Table(
-    "ProductIngredientRelation",
-    Base.metadata,
-    Column("product_id", ForeignKey("product.product_num")),
-    Column("ingredient_id", ForeignKey("ingredient.id")),
-)
+    products=relationship("Product",backref=backref("productingredientrelation"))
+    ingredients=relationship("Ingredient",backref=backref("productingredientrelation"))
