@@ -10,7 +10,7 @@ COPY . /srv/server
 
 RUN apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev \
-    && apk add --no-cache bash openssl 
+    && apk add --no-cache bash 
 
 # ENV ALLOWED_HOSTS 127.0.0.1
 
