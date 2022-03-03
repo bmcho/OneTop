@@ -18,6 +18,6 @@ router = APIRouter(
 #     return search.get_product_by_category(db, request)
 
 
-@router.get("/{id}", response_model=schemas.ProductList)
+@router.get("/{id}", response_model=schemas.ProductDetail)
 def product_detail_by_id(id: int, db: Session = Depends(get_db)):
     return detail.get_product_by_id(id, db)

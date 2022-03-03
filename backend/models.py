@@ -8,13 +8,22 @@ from sqlalchemy import (
     String,
     Table,
 )
-from sqlalchemy.orm import relationship,backref
+from sqlalchemy.orm import backref, relationship
 
 from database import Base
 
 """
 화장품 정보
 """
+
+
+productingredientrelation = Table(
+    "productingredientrelation",
+    Base.metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("product_id", Integer, ForeignKey("product.product_num")),
+    Column("ingredient_id", Integer, ForeignKey("ingredient.id")),
+)
 
 
 class Product(Base):
@@ -28,9 +37,9 @@ class Product(Base):
     price = Column(String(100))
     extinction = Column(Boolean, default=True)
 
-    descriptions = relationship("Descrip", back_populates="product")
-    ingredients = relationship(
-        "Ingredient", secondary="ProductIngredientRelation"
+    _descriptions = relationship("Descrip", back_populates="_products")
+    _ingredients = relationship(
+        "Ingredient", secondary="productingredientrelation", back_populates="_products"
     )
 
 
@@ -43,7 +52,9 @@ class Descrip(Base):
     __tablename__ = "descrip"
 
     id = Column(Integer, primary_key=True, index=True)
-    fk_product_descrip_product_num = Column(Integer, ForeignKey("product.product_num"), index=True)
+    fk_product_descrip_product_num = Column(
+        Integer, ForeignKey("product.product_num"), index=True
+    )
     color_type = Column(TEXT)
     description = Column(TEXT)
     hashtag = Column(TEXT)
@@ -52,7 +63,7 @@ class Descrip(Base):
     medium_classification = Column(String(100))
     minor_classification = Column(String(100))
 
-    products = relationship("Product", back_populates="descrip")
+    _products = relationship("Product", back_populates="_descriptions", uselist=False)
 
 
 """
@@ -69,8 +80,8 @@ class Ingredient(Base):
     use = Column(TEXT)
     score = Column(String(10))
 
-    products = relationship(
-        "Product", secondary="productingredientrelation"
+    _products = relationship(
+        "Product", secondary="productingredientrelation", back_populates="_ingredients"
     )
 
 
@@ -79,12 +90,14 @@ class Ingredient(Base):
 """
 
 
-class ProductIngredientRelation(Base):
-    __tablename__ = "productingredientrelation"
+# class ProductIngredientRelation(Base):
+#     __tablename__ = "productingredientrelation"
 
-    id = Column(Integer, primary_key=True)
-    product_id = Column(Integer, ForeignKey("product.product_num"))
-    ingredient_id = Column(Integer, ForeignKey("ingredient.id"))
+#     id = Column(Integer, primary_key=True)
+#     product_id = Column(Integer, ForeignKey("product.product_num"))
+#     ingredient_id = Column(Integer, ForeignKey("ingredient.id"))
 
-    products=relationship("Product",backref=backref("productingredientrelation"))
-    ingredients=relationship("Ingredient",backref=backref("productingredientrelation"))
+#     _products = relationship("Product", backref=backref("productingredientrelation"))
+#     _ingredients = relationship(
+#         "Ingredient", backref=backref("productingredientrelation")
+#     )
