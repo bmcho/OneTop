@@ -15,14 +15,12 @@ def get_product_by_category(db: Session, request: schemas.SearchCategory):
     searchLarge = "%{}%".format(largeCategory)
     searchSmall = "%{}%".format(smallCategory)
 
-    # productList = (
-    #     db.query(models.Product)
-    #     .filter(
-    #         (models.Product._descriptions.major_classification.like(searchLarge))
-    #         & (models.Product._descriptions.medium_classification.like(searchSmall))
-    #     )
-    #     .all()
-    # )
+    currentPage = request.requestPage
+    perPage = request.maxItemCountByPage
+
+    offset = currentPage * perPage
+    limit = offset + perPage
+
     productList = (
         db.query(models.Product)
         .join(models.Descrip)
@@ -32,12 +30,13 @@ def get_product_by_category(db: Session, request: schemas.SearchCategory):
         )
         .all()
     )
+    showList = productList[offset:limit]
 
     listLen = len(productList)
     searchResult = schemas.SearchResult
     searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
     searchResult.currentPage = request.requestPage
-    searchResult.result = productList
+    searchResult.result = showList
     return searchResult
 
 
@@ -46,15 +45,22 @@ def get_product_by_keyword(db: Session, request: schemas.SearchKeyword):
     searchType = request.searchResultType
     search = "%{}%".format(search_keyword)
 
+    currentPage = request.requestPage
+    perPage = request.maxItemCountByPage
+
+    offset = currentPage * perPage
+    limit = offset + perPage
     if searchType == "product":
         productList = (
             db.query(models.Product).filter(models.Product.name.like(search)).all()
         )
+        showList = productList[offset:limit]
     elif searchType == "brand":
         search = search.upper()
         productList = (
             db.query(models.Product).filter(models.Product.brand.like(search)).all()
         )
+        showList = productList[offset:limit]
     elif searchType == "ingredient":
         # keyword와 일치하는 성분을 성분테이블에서 찾음.
         # ingredientList = schemas.IngredientList
@@ -91,12 +97,12 @@ def get_product_by_keyword(db: Session, request: schemas.SearchKeyword):
         #         .all()
         #     )
         #     productList.append(product)
-
     listLen = len(productList)
     searchResult = schemas.SearchResult
     searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
     searchResult.currentPage = request.requestPage
-    searchResult.result = productList
+
+    searchResult.result = showList
     return searchResult
 
 
