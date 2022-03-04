@@ -1,13 +1,13 @@
-import pymysql
+import pymysql, os
 
 class MysqlPool:
     def __init__(self):
         self.conn = pymysql.connect(
             user = 'root',
-            passwd = 'onetop',
+            passwd = os.environ["MYSQL_PASSWORD"],
             host = 'database',
             port = 3306,
-            db = 'test',
+            db = os.environ["MYSQL_DATABASE"],
             charset = 'utf8mb4'
         )
 
@@ -22,3 +22,4 @@ class MysqlPool:
 
     def rollback(self):
         self.conn.rollback()
+
