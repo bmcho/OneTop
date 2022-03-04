@@ -44,7 +44,7 @@ services:
 
   nginx:
     container_name: nginx
-    platform: linux/x86_64
+    #platform: linux/x86_64
     image: nginx:latest
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
@@ -59,7 +59,7 @@ services:
       
   database:
     image: mysql:5.7
-    platform: linux/x86_64
+    #platform: linux/x86_64
     container_name: database
     env_file: .env
     volumes:
