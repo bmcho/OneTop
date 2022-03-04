@@ -20,10 +20,9 @@ def get_product_by_category(db: Session, request: schemas.SearchCategory):
 
     offset = currentPage * perPage
     limit = offset + perPage
-
     productList = (
         db.query(models.Product)
-        .join(models.Descrip)
+        .join(models.Descrip, models.Product._descriptions)
         .filter(
             (models.Descrip.major_classification.like(searchLarge))
             & (models.Descrip.medium_classification.like(searchSmall))
@@ -81,6 +80,30 @@ def get_product_by_keyword(db: Session, request: schemas.SearchKeyword):
     return searchResult
 
 
-# def get_product_by_ingredient(db:Session, request:schemas.SearchIngredients):
-#     includeIngredient=request.includeIngredient
-#     excludeIngredient=request.excludeIngredient
+def get_product_by_ingredient(db: Session, request: schemas.SearchIngredients):
+    includeIngredient = request.includeIngredient
+    excludeIngredient = request.excludeIngredient
+
+    currentPage = request.requestPage
+    perPage = request.maxItemCountByPage
+
+    offset = currentPage * perPage
+    limit = offset + perPage
+
+    productList = (
+        db.query(models.Product)
+        .join(models.Ingredient, models.Product._ingredients)
+        .filter(
+            models.Ingredient.ko_ingredient.in_(includeIngredient)
+            & models.Ingredient.ko_ingredient.not_in(excludeIngredient)
+        )
+        .all()
+    )
+    showList = productList[offset:limit]
+    listLen = len(productList)
+    searchResult = schemas.SearchResult
+    searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
+    searchResult.currentPage = request.requestPage
+
+    searchResult.result = showList
+    return searchResult
