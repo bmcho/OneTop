@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import Compare from '../src/components/intro/compare/Compare';
-import Main from '../src/components/intro/main/main';
+import Main from '../src/components/intro/main/Main';
 import Recommend from '../src/components/intro/recommend/Recommend';
-import Search from '../src/components/intro/search/search';
+import Search from '../src/components/intro/search/Search';
 const Home = () => {
   return (
     <Block>
