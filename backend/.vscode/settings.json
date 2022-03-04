@@ -15,5 +15,6 @@
             "source.organizeImports":true,
             "python.sortImports":true
         }
-    }
+    },
+    "editor.fontFamily": "D2Coding"
 }
