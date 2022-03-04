@@ -47,8 +47,8 @@ class SearchCategory(BaseModel):
 
 
 class SearchIngredients(BaseModel):
-    includeIngredient: List[str] = []
-    excludeIngredient: List[str] = []
+    includeIngredient: List[str]
+    excludeIngredient: List[str]
     requestPage: int
     maxItemCountByPage: int
 
