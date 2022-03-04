@@ -1,0 +1,102 @@
+version: "3.2"
+
+# docker-compose.dev.yml build 방법
+# docker-compose -f docker-compose.dev.yml up
+
+# 원활한 개발을 위해 nginx를 사용하지 않으셔도됩니다. Docker Service의 외부로부터의 Port는 모두 열어 놓았습니다.
+
+services:
+  server:
+    container_name: server
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file: .env
+    volumes:
+      - ./backend:/srv/server
+    restart: always
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    networks:
+      - nginx_bridge
+      - server_database_bridge
+    depends_on:
+      - database
+
+  client:
+    container_name: client
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    volumes:
+      - ./front:/srv/client
+    restart: always
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    networks:
+      - nginx_bridge
+    depends_on:
+      - server
+
+  nginx:
+    container_name: nginx
+    #platform: linux/x86_64
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+      - client
+    networks:
+      - nginx_bridge
+      
+  database:
+    image: mysql:5.7
+    #platform: linux/x86_64
+    container_name: database
+    env_file: .env
+    volumes:
+      - ./db_data:/var/lib/mysql-files
+    restart: unless-stopped
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
+    environment:
+     - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+     - MYSQL_DATABASE=${MYSQL_DATABASE}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - server_database_bridge
+      - migraion_database_bridge
+
+  # migration:
+  #   container_name: migration
+  #   platform: linux/x86_64
+  #   env_file: .env
+  #   build:
+  #     context: ./datamigration
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./datamigration:/srv/migration
+  #   networks:
+  #     - migraion_database_bridge
+  #   depends_on:
+  #     - database
+
+networks:
+  nginx_bridge:
+    driver: bridge
+  server_database_bridge:
+    driver: bridge
+  migraion_database_bridge:
+    driver: bridge
