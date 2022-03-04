@@ -29,7 +29,7 @@ const AutoComplete = (props) => {
   };
   const setSearchHistoryInLocal = (newKeyword) => {
     console.log(newKeyword);
-    const keywords = JSON.parse(localStorage.getItem('keywords'));
+    const keywords = JSON.parse(localStorage.getItem('keywords')) || [];
     keywords.push(newKeyword);
     localStorage.setItem('keywords', JSON.stringify(keywords));
   };
