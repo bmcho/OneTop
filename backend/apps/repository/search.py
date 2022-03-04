@@ -61,42 +61,19 @@ def get_product_by_keyword(db: Session, request: schemas.SearchKeyword):
             db.query(models.Product).filter(models.Product.brand.like(search)).all()
         )
         showList = productList[offset:limit]
-    elif searchType == "ingredient":
-        # keyword와 일치하는 성분을 성분테이블에서 찾음.
-        # ingredientList = schemas.IngredientList
-        # ingredientList = (
-        #     db.query(models.Ingredient)
-        #     .filter(models.Ingredient.ko_ingredient.like(search))
-        #     .all()
-        # )
-        # print(ingredientList)
-
-        """
-        성분테이블에서 가져온 id를 통해 productingredientrelation에서
-        product_id를 가져옴.
-        """
-
-        # productIdList = schemas.ProductIdList
-        # for i in range(len(ingredientList)):
-        #     productId = (
-        #         db.query(models.productingredientrelation)
-        #         .filter(
-        #             models.productingredientrelation.c.ingredient_id
-        #             == ingredientList[i]
-        #         )
-        #         .all()
-        #     )
-        #     productIdList.append(productId)
-
-        # productList = []
-
-        # for i in range(len(productIdList)):
-        #     product = (
-        #         db.query(models.Product)
-        #         .filter(models.Product.product_num == productIdList[i])
-        #         .all()
-        #     )
-        #     productList.append(product)
+    # elif searchType == "ingredient":
+    # firstFilter = (
+    #     db.query(models.Ingredient.id)
+    #     .filter(models.Ingredient.ko_ingredient.like(search))
+    #     .all()
+    # )
+    # fistFilter=list(firstFilter)
+    # secondFilter = (
+    #     db.query(models.productingredientrelation.product_id)
+    #     .filter(models.productingredientrelation.ingredient_id == id)
+    #     .all()
+    # )
+    #
     listLen = len(productList)
     searchResult = schemas.SearchResult
     searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
