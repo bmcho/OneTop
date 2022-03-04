@@ -61,19 +61,17 @@ def get_product_by_keyword(db: Session, request: schemas.SearchKeyword):
             db.query(models.Product).filter(models.Product.brand.like(search)).all()
         )
         showList = productList[offset:limit]
-    # elif searchType == "ingredient":
-    # firstFilter = (
-    #     db.query(models.Ingredient.id)
-    #     .filter(models.Ingredient.ko_ingredient.like(search))
-    #     .all()
-    # )
-    # fistFilter=list(firstFilter)
-    # secondFilter = (
-    #     db.query(models.productingredientrelation.product_id)
-    #     .filter(models.productingredientrelation.ingredient_id == id)
-    #     .all()
-    # )
-    #
+
+    # keyword를 ko_ingredient로 가지는 Product테이블의 row들을 다 가져옴.
+    elif searchType == "ingredient":
+        productList = (
+            db.query(models.Product)
+            .join(models.Ingredient, models.Product._ingredients)
+            .filter(models.Ingredient.ko_ingredient.like(search))
+            .all()
+        )
+        showList = productList[offset:limit]
+
     listLen = len(productList)
     searchResult = schemas.SearchResult
     searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
