@@ -5,20 +5,21 @@ import { theme } from '../../../styles/theme';
 import { useRouter } from 'next/router';
 
 const ProductInfo = ({
-  img,
-  hashTag,
+  img_url,
+  hashtag,
   name,
   description,
   brand,
-  capacity,
-  price,
+  price: priceInfo,
   modalOpenHandle,
   addCompareBoxHandle,
 }) => {
+  const [capacity, price] = priceInfo.split('/');
+  const hashTag = hashtag.slice(1, hashtag.length - 1).split(',');
   return (
     <Container>
       <Image
-        src={img}
+        src={img_url}
         alt={'상품이미지'}
         width={450}
         height={450}

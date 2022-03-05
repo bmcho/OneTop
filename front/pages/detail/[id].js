@@ -9,20 +9,28 @@ import axios from 'axios';
 
 import ProductInfo from '../../src/components/detail/productInfo';
 import IngredientInfo from '../../src/components/detail/IngredientInfo';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { addProductCompareInfoAction } from '../../src/stores/modules/productCompareInfo';
 
-const Detail = (props) => {
+const Detail = () => {
   const router = useRouter();
-  const { data: productInfo, error } = useSelector(
-    (state) => state.productInfo
-  );
+  const {
+    loading,
+    data: productInfo,
+    error,
+  } = useSelector((state) => state.productInfo);
+
   const { data: productCompareInfo } = useSelector(
     (state) => state.productCompareInfo
   );
+
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { id } = router.query;
+
+  useEffect(() => {
+    dispatch(getProductInfoAction(id));
+  }, [id]);
 
   const modalOpenHandle = useCallback(() => {
     setIsModalOpen((isopen) => !isopen);
@@ -33,16 +41,18 @@ const Detail = (props) => {
       alert('최대 3개까지 추가할수 있습니다.');
       return;
     }
-    if (productCompareInfo.find((info) => info.id === id)) {
+    if (productCompareInfo.find((info) => info.product_num === parseInt(id))) {
       alert('이미 추가된 제품입니다.');
       return;
     }
     dispatch(addProductCompareInfoAction(id));
-  }, [productCompareInfo]);
+  }, [productCompareInfo, id]);
 
+  if (loading) return <div>loading...</div>;
   if (error) return <div>error...</div>;
+  if (!productInfo) return <div>error...</div>;
 
-  const { ingredients, ...rest } = productInfo;
+  const { ...rest } = productInfo;
 
   return (
     <DetailBlock>
@@ -51,11 +61,11 @@ const Detail = (props) => {
         modalOpenHandle={modalOpenHandle}
         addCompareBoxHandle={addCompareBoxHandle}
       />
-      <IngredientInfo
+      {/* <IngredientInfo
         ingredients={ingredients}
         open={isModalOpen}
         modalOpenHandle={modalOpenHandle}
-      />
+      /> */}
     </DetailBlock>
   );
 };
@@ -67,32 +77,5 @@ const DetailBlock = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
-export async function getStaticPaths() {
-  try {
-    const res = await axios.get('http://localhost:3004/item');
-    const items = res.data;
-    const paths = items.map((item) => ({ params: { id: item.id } }));
-    return {
-      paths,
-      fallback: false,
-    };
-  } catch (e) {
-    return {
-      paths: [],
-      fallback: false,
-    };
-  }
-}
-
-export const getStaticProps = wrapper.getStaticProps(
-  (store) =>
-    async ({ params }) => {
-      const { id } = params;
-      store.dispatch(getProductInfoAction(id));
-      store.dispatch(END);
-      await store.sagaTask.toPromise();
-    }
-);
 
 export default Detail;

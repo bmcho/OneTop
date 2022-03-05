@@ -10,16 +10,18 @@ import {
 } from '../modules/productInfo';
 
 const getProductInfoApi = async (id) => {
-  const res = await axios.get(`http://localhost:3004/item/${id}`);
+  const res = await axios.get(`http://localhost/api/detail/${id}`);
   return res.data;
 };
 
 function* loadProductInfo(action) {
   const { id } = action;
+  console.log('id', id);
   try {
     const productInfo = yield call(getProductInfoApi, id);
     yield put(getProductInfoSuccessAction(productInfo));
   } catch (e) {
+    console.log(e);
     yield put(getProductInfoFailureAction(e));
   }
 }
