@@ -24,7 +24,7 @@ def search_keyword(request: schemas.SearchKeyword, db: Session = Depends(get_db)
     return search.get_product_by_keyword(db, request)
 
 
-@router.get("/ingredient", response_model=List[schemas.ProductList])
+@router.post("/ingredient", response_model=schemas.SearchResult)
 def search_ingredient(
     request: schemas.SearchIngredients, db: Session = Depends(get_db)
 ):
