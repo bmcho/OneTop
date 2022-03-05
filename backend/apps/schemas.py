@@ -15,6 +15,14 @@ class ProductList(BaseModel):
         orm_mode = True
 
 
+class ProductIdList(BaseModel):
+    product_id: List[int]
+
+
+class IngredientIdList(BaseModel):
+    ingredient_id: int
+
+
 class SearchResult(BaseModel):
     totalPageCount: int
     currentPage: int
@@ -39,8 +47,8 @@ class SearchCategory(BaseModel):
 
 
 class SearchIngredients(BaseModel):
-    includeIngredient: List[str] = []
-    excludeIngredient: List[str] = []
+    includeIngredient: List[str]
+    excludeIngredient: List[str]
     requestPage: int
     maxItemCountByPage: int
 
@@ -51,14 +59,13 @@ class DetailId(BaseModel):
 
 class IngredientList(BaseModel):
     id: int
-    ko_engredient: str
-    en_engredient: str
-    user: str
+    ko_ingredient: str
+    en_ingredient: str
+    use: str
     score: str
 
-
-class ProductIdList(BaseModel):
-    product_id: List[int]
+    class Config:
+        orm_mode = True
 
 
 class ProductDetail(BaseModel):
@@ -70,6 +77,7 @@ class ProductDetail(BaseModel):
     price: str
     description: str
     hashtag: str
+    ingredientList: List[IngredientList]
 
     class Config:
         orm_mode = True

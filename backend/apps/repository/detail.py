@@ -22,16 +22,6 @@ def get_product_by_id(id: int, db: Session):
     product_detail.average_rating = product.average_rating
     product_detail.price = product.price
 
-    #     productList = (
-    #     db.query(models.Product)
-    #     .join(models.Descrip)
-    #     .filter(
-    #         (models.Descrip.major_classification.like(searchLarge))
-    #         & (models.Descrip.medium_classification.like(searchSmall))
-    #     )
-    #     .all()
-    # )
-
     # Descrip table 정보들 옮기기.
     description = schemas.ProductDescription
     description = (
@@ -42,8 +32,13 @@ def get_product_by_id(id: int, db: Session):
     product_detail.description = description.description
     product_detail.hashtag = description.hashtag
 
-    # Ingredient table 정보들 옮기기.
-
-    # product_detail.ingredients= db.query(models.Product)
+    # id를 product_num으로 가지는 Ingredient테이블의 성분들을 다 가져옴.
+    ingredientFilterList = (
+        db.query(models.Ingredient)
+        .join(models.Product, models.Ingredient._products)
+        .filter(models.Product.product_num == id)
+        .all()
+    )
+    product_detail.ingredientList = ingredientFilterList
 
     return product_detail
