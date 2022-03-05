@@ -20,6 +20,7 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
 
   useEffect(() => {
     dispatch(checkProductCompareInfoAction());
+    return () => dispatch(checkProductCompareInfoAction());
   }, []);
 
   return (
@@ -38,11 +39,13 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
               {data.map((d, index) => {
                 return (
                   <th key={`${d.id}${index}`}>
-                    <RemoveButton onClick={() => productRemoveHandle(d.id)}>
+                    <RemoveButton
+                      onClick={() => productRemoveHandle(d.product_num)}
+                    >
                       삭제
                     </RemoveButton>
                     <ImageWrapper>
-                      <Image src={d.img} width={123} height={123} />
+                      <Image src={d.img_url} width={123} height={123} />
                     </ImageWrapper>
                   </th>
                 );
@@ -62,17 +65,15 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
             </tr>
             <tr>
               {data.map((d, index) => {
-                return <td key={`${d.id}${index}`}>{d.price}원</td>;
+                return <td key={`${d.id}${index}`}>{d.price}</td>;
               })}
             </tr>
             <tr>
               {data.map((d, index) => {
-                return <td key={`${d.id}${index}`}>{d.capacity}</td>;
-              })}
-            </tr>
-            <tr>
-              {data.map((d, index) => {
-                return <td key={`${d.id}${index}`}>{d.hashTag.join('\n')}</td>;
+                const hashTag = d.hashtag
+                  .slice(1, d.hashtag.length - 1)
+                  .split(',');
+                return <td key={`${d.id}${index}`}>{hashTag.join('\n')}</td>;
               })}
             </tr>
           </tbody>
@@ -159,6 +160,8 @@ const ItemTable = styled.table`
   font-size: 20px;
   font-weight: 600;
   letter-spacing: 1.2px;
+  border-collapse: separate;
+  border-spacing: 2px;
   td,
   th {
     width: 120px;
@@ -177,7 +180,6 @@ const ItemTable = styled.table`
     border: none;
   }
   tbody {
-    display: block;
     margin-top: 30px;
   }
 `;

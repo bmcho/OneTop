@@ -18,6 +18,21 @@ const Header = (props) => (
           <a>recommend</a>
         </Link>
       </li>
+      <li>
+        <Link href="/detail/4">
+          <a>4</a>
+        </Link>
+      </li>
+      <li>
+        <Link href="/detail/8">
+          <a>8</a>
+        </Link>
+      </li>
+      <li>
+        <Link href="/detail/12">
+          <a>12</a>
+        </Link>
+      </li>
     </NavBlock>
   </HeaderBlock>
 );
