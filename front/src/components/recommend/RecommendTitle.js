@@ -26,6 +26,9 @@ const TitleBlock = styled.div`
   border-radius: 20px;
   overflow: hidden;
   margin-bottom: 30px;
+  @media screen and (max-width: 1080px) {
+    width: 90%;
+  }
 `;
 
 const TitleText = styled.div`
@@ -43,6 +46,13 @@ const TitleText = styled.div`
   flex-direction: column;
   padding-left: 100px;
   letter-spacing: 1.5px;
+  @media screen and (max-width: 1080px) {
+    padding-left: 0;
+    align-items: center;
+  }
+  @media screen and (max-width: 860px) {
+    width: 100%;
+  }
 `;
 
 const TitleImage = styled.div`
@@ -50,6 +60,12 @@ const TitleImage = styled.div`
   height: 100%;
   position: relative;
   right: 0;
+  @media screen and (max-width: 1080px) {
+    width: 40%;
+  }
+  @media screen and (max-width: 860px) {
+    display: none;
+  }
 `;
 
 export default RecommendTitle;

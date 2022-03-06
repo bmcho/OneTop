@@ -1,20 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import StarRating from '../../commons/starRating/StarRating';
+import Image from 'next/image';
 
-const SearchResultItem = ({ show }) => (
+const SearchResultItem = ({ cosmetic }) => (
   <SearchResultItemBlock>
     <ImageWrap>
-      <img src="/images/product.jpeg" width={60} height={60} />
+      <Image src={cosmetic.img_url} width={60} height={60} />
     </ImageWrap>
     <div>
       <Description>이니스프리</Description>
-      <p>{show.name}</p>
-      <p>타입 : {show.type}</p>
-      <p>언어 : {show.score}</p>
-      <p>{show.score * 10}</p>
-      <StarRating rating={(show.score * 10).toPrecision(2)} />
-      <Description>{show.language}</Description>
+      <p>{cosmetic.name}</p>
+      <p>브랜드 : {cosmetic.brand}</p>
+      <p>평점 : {cosmetic.average_rating}</p>
+      {/* <p>{cosmetic.score * 10}</p> */}
+      <StarRating rating={(cosmetic.average_rating * 10).toPrecision(2)} />
+      {/* <Description>{cosmetic.language}</Description> */}
     </div>
   </SearchResultItemBlock>
 );

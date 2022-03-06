@@ -16,12 +16,10 @@ const getProductInfoApi = async (id) => {
 
 function* loadProductInfo(action) {
   const { id } = action;
-  console.log('id', id);
   try {
     const productInfo = yield call(getProductInfoApi, id);
     yield put(getProductInfoSuccessAction(productInfo));
   } catch (e) {
-    console.log(e);
     yield put(getProductInfoFailureAction(e));
   }
 }

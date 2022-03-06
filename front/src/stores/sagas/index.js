@@ -3,6 +3,7 @@ import tvShow from './tvShow';
 import searchData from './searchKeyword';
 import productInfo from './productInfo';
 import productCompareInfo from './productCompareInfo';
+import productInfoByCategory from './searchCategory';
 
 export default function* rootSaga() {
   yield all([
@@ -10,5 +11,6 @@ export default function* rootSaga() {
     call(searchData),
     call(productInfo),
     call(productCompareInfo),
+    call(productInfoByCategory),
   ]);
 }
