@@ -81,7 +81,7 @@ services:
 
   # migration:
   #   container_name: migration
-  #   platform: linux/x86_64
+  #   # platform: linux/x86_64
   #   env_file: .env
   #   build:
   #     context: ./datamigration

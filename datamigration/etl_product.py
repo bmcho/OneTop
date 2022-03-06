@@ -41,17 +41,13 @@ class Product(BaseClass):
         if len(data) != 0 :
           continue
         
+        # extinction = 0 if 단종포함 else 1
         # 걸러내는 규칙이 간단하기 때문에 Regex보다 split과 contain을 사용하여 처리하는것이 효율적으로 처리하려고 했으나
         # 2g/2.5g, 1~3호3.5g/4~6호4.5g <- 이러한 놈들이 있다 그렇기 때문에 정규식으로..해줘야한다
-        # extinction = 0 if 단종포함 else 1
         # price ->  capacity / price
         # 가격미정 -> 그냥 가격미정 , capaciry / 가격미정
         extinction = 0 if "단종" in row["name"] else 1
         regStr = rex.match(row["price"])
-        # print(row["price"])
-        # print(regStr)
-        # print(regStr.group(1))
-        # print(regStr.group(2))
         price = 0 if regStr.group(2) == '가격미정' else regStr.group(2).translate(regStr.group(2).strip().maketrans({ '원':'' , ',':'' }))
         capacity = regStr.group(1).strip()
 
