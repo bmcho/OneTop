@@ -9,7 +9,8 @@ class ProductList(BaseModel):
     img_url: str
     brand: str
     average_rating: float
-    price: str
+    capacity: str
+    price: int
 
     class Config:
         orm_mode = True
@@ -37,6 +38,7 @@ class SearchKeyword(BaseModel):
     searchResultType: str
     requestPage: int
     maxItemCountByPage: int
+    sort: str
 
 
 class SearchCategory(BaseModel):
@@ -44,6 +46,7 @@ class SearchCategory(BaseModel):
     smallCategory: str
     requestPage: int
     maxItemCountByPage: int
+    sort: str
 
 
 class SearchIngredients(BaseModel):
@@ -51,6 +54,7 @@ class SearchIngredients(BaseModel):
     excludeIngredient: List[str]
     requestPage: int
     maxItemCountByPage: int
+    sort: str
 
 
 class DetailId(BaseModel):
