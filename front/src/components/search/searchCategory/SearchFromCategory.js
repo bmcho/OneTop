@@ -1,4 +1,4 @@
-import { categories } from '../../../utils/categoryUtil';
+import { categories, categories3 } from '../../../utils/categoryUtil';
 import styled, { css } from 'styled-components';
 import { useEffect, useState } from 'react';
 import Slider from './Slider';
@@ -12,15 +12,13 @@ const SearchFromCategory = ({
   selectSmallCategory,
 }) => {
   const router = useRouter();
-  const categoryArr = Object.entries(categories);
-
   const changResultRouteHandle = ({
     idx,
     largeCategory,
     smallCategory,
     page,
   }) => {
-    selectSmallCategory(idx);
+    selectSmallCategory(idx + 1);
     router.push({
       pathname: router.pathname,
       query: {
@@ -34,11 +32,11 @@ const SearchFromCategory = ({
   return (
     <Container>
       <Slider>
-        {categoryArr?.map((category, index) => (
+        {categories3.map((category) => (
           <LargeCategory
-            key={index}
-            active={largeCategoryIndex === index}
-            onClick={() => selectLargeCategory(index)}
+            key={category.id}
+            active={largeCategoryIndex === category.id}
+            onClick={() => selectLargeCategory(parseInt(category.id))}
           >
             <div className="img-wrapper">
               <Image
@@ -49,26 +47,26 @@ const SearchFromCategory = ({
                 layout="fixed"
               />
             </div>
-            <h4>{category[0]}</h4>
+            <h4>{category.large}</h4>
           </LargeCategory>
         ))}
       </Slider>
       <SmallCategories>
-        {largeCategoryIndex !== null &&
-          categoryArr[largeCategoryIndex][1].map((category, idx) => {
+        {largeCategoryIndex &&
+          categories3[largeCategoryIndex - 1].small.map((category, idx) => {
             return (
               <SmallCategory
-                key={idx}
+                key={category.id}
                 onClick={() =>
                   changResultRouteHandle({
                     idx,
-                    largeCategory: categoryArr[largeCategoryIndex][0],
-                    smallCategory: category,
+                    largeCategory: categories3[largeCategoryIndex - 1].large,
+                    smallCategory: category.label,
                     page: 1,
                   })
                 }
               >
-                {category}
+                {category.label}
               </SmallCategory>
             );
           })}
