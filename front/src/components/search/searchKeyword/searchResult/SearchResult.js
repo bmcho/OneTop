@@ -16,8 +16,8 @@ const SearchResult = (props) => {
         <div>검색 결과가 없습니다</div>
       ) : (
         <div>
-          {searchResultData.map((show, idx) => (
-            <SearchResultItem key={idx} show={show} />
+          {searchResultData.map((cosmetic, idx) => (
+            <SearchResultItem key={idx} cosmetic={cosmetic} />
           ))}
         </div>
       )}

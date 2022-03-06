@@ -59,7 +59,7 @@ const SearchBar = (props) => {
   };
   const changeSearchValue = (e) => {
     dispatch(setAutoCompleteKeywordAction(e.currentTarget.value));
-    dispatch(setSearchKeywordAction(''));
+    // dispatch(setSearchKeywordAction(''));
   };
 
   const resetSearchKeyword = () => {
