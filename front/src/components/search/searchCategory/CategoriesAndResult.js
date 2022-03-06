@@ -46,8 +46,7 @@ const CategoriesAndResult = () => {
       setLargeCategoryIndex(largeIndex + 1);
       setSmallCategoryIndex(smallIndex + 1);
     } else if (largeCategoryIndex || smallCategoryIndex) {
-      setLargeCategoryIndex(null);
-      setSmallCategoryIndex(null);
+      resetCategory();
     }
     setLoading(false);
   }, [largeCategory, smallCategory]);
