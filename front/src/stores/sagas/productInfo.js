@@ -10,7 +10,7 @@ import {
 } from '../modules/productInfo';
 
 const getProductInfoApi = async (id) => {
-  const res = await axios.get(`http://localhost:3004/item/${id}`);
+  const res = await axios.get(`${process.env.BASE_URL}/detail/${id}`);
   return res.data;
 };
 

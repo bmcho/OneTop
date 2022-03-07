@@ -70,15 +70,15 @@ const searchKeyword = (state = initialState, action) => {
     case SET_SEARCH_KEYWORD:
       return { ...state, searchKeyword: action.data };
     case LOAD_DATA_SUCCESS:
-      const tvShows = action.data.map((tvShow) => ({
-        id: tvShow.show.id,
-        score: tvShow.score,
-        url: tvShow.show.url,
-        name: tvShow.show.name,
-        type: tvShow.show.type,
-        language: tvShow.show.language,
-      }));
-      return { ...state, searchResultData: tvShows };
+      // const tvShows = action.data.map((tvShow) => ({
+      //   id: tvShow.show.id,
+      //   score: tvShow.score,
+      //   url: tvShow.show.url,
+      //   name: tvShow.show.name,
+      //   type: tvShow.show.type,
+      //   language: tvShow.show.language,
+      // }));
+      return { ...state, searchResultData: action.data };
     case LOAD_DATA_FAILURE:
       return { ...state, searchKeywordError: action.error };
     case SET_SEARCH_KEYWORD_HISTORY:

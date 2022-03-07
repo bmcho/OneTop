@@ -293,23 +293,29 @@ def get_product_by_keyword(db: Session, request: schemas.SearchKeyword):
 
     showList = productList[offset:limit]
 
-    # search_product_list = schemas.ProductNameList
+    # search_product_list = schemas.ProductList
     # search_product_list = (
-    #     db.query(models.Product)
-    #     .filter(models.Product.name.like(search_keyword))
-    #     .limit(10)
+    #     db.query(models.Product.name)
+    #     .distinct()
+    #     .filter(models.Product.name.like(search))[:10]
     # )
-    # search_brand_list = schemas.ProductBrandList
+    # # search_product_list = search_product_list[:10]
+
+    # search_brand_list = schemas.ProductList
     # search_brand_list = (
-    #     db.query(models.Product)
-    #     .filter(models.Product.brand.like(search_keyword))
-    #     .limit(10)
+    #     db.query(models.Product.brand)
+    #     .distinct()
+    #     .filter(models.Product.brand.like(search))[:10]
     # )
+    # # search_brand_list = search_brand_list[:10]
+
+    # search_ingredient_list = schemas.KoIngredientList
     # search_ingredient_list = (
-    #     db.query(models.Ingredient)
-    #     .filter(models.Ingredient.ko_ingredient.like(search_keyword))
-    #     .limit(10)
+    #     db.query(models.Ingredient.ko_ingredient)
+    #     .distinct()
+    #     .filter(models.Ingredient.ko_ingredient.like(search))[:10]
     # )
+    # # search_ingredient_list = list(search_ingredient_list)
 
     listLen = len(productList)
     searchResult = schemas.SearchResultKeyword
@@ -387,6 +393,13 @@ def get_product_by_ingredient(db: Session, request: schemas.SearchIngredients):
             .all()
         )
 
+    # search_ingredient_list = schemas.KoIngredientList
+    # search_ingredient_list = (
+    #     db.query(models.Ingredient.ko_ingredient)
+    #     .distinct()
+    #     .filter(models.Ingredient.ko_ingredient.like(search))[:10]
+    # )
+
     showList = productList[offset:limit]
     listLen = len(productList)
     searchResult = schemas.SearchResult
@@ -395,3 +408,57 @@ def get_product_by_ingredient(db: Session, request: schemas.SearchIngredients):
 
     searchResult.result = showList
     return searchResult
+
+
+def get_keyword_autocomplete(db: Session, request: schemas.Keyword):
+    search_keyword = request.keyword
+    search = "%{}%".format(search_keyword)
+
+    search_product_list = (
+        db.query(models.Product.name)
+        .distinct()
+        .filter(models.Product.name.like(search))
+        .order_by(models.Product.extinction.desc())[:10]
+    )
+
+    search_product_list = [value for value, in search_product_list]
+
+    search_brand_list = (
+        db.query(models.Product.brand)
+        .distinct()
+        .filter(models.Product.brand.like(search))
+        .order_by(models.Product.extinction.desc())[:10]
+    )
+    search_brand_list = [value for value, in search_brand_list]
+
+    search_ingredient_list = (
+        db.query(models.Ingredient.ko_ingredient)
+        .distinct()
+        .filter(models.Ingredient.ko_ingredient.like(search))[:10]
+    )
+    search_ingredient_list = [value for value, in search_ingredient_list]
+
+    keywordList = schemas.KeywordAutocompleteList
+
+    keywordList.productList = search_product_list
+    keywordList.brandList = search_brand_list
+    keywordList.ingredientList = search_ingredient_list
+
+    return keywordList
+
+
+def get_ingredient_autocomplete(db: Session, request: schemas.Keyword):
+    search_keyword = request.keyword
+    search = "%{}%".format(search_keyword)
+
+    search_ingredient_list = (
+        db.query(models.Ingredient.ko_ingredient)
+        .distinct()
+        .filter(models.Ingredient.ko_ingredient.like(search))[:10]
+    )
+    search_ingredient_list = [value for value, in search_ingredient_list]
+
+    ingredientList = schemas.IngredientAutocompleteList
+    ingredientList.ingredientList = search_ingredient_list
+
+    return ingredientList
