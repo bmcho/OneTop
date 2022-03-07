@@ -34,7 +34,8 @@ class Product(Base):
     img_url = Column(String(500), nullable=False)
     brand = Column(String(50), nullable=False)
     average_rating = Column(Numeric)
-    price = Column(String(100))
+    capacity = Column(String(50))
+    price = Column(Integer())
     extinction = Column(Boolean, default=True)
 
     _descriptions = relationship("Descrip", back_populates="_products")

@@ -1,5 +1,6 @@
 from typing import List, Optional
 
+from fastapi import Depends
 from pydantic import BaseModel
 
 
@@ -9,7 +10,8 @@ class ProductList(BaseModel):
     img_url: str
     brand: str
     average_rating: float
-    price: str
+    capacity: str
+    price: int
 
     class Config:
         orm_mode = True
@@ -32,11 +34,55 @@ class SearchResult(BaseModel):
         orm_mode = True
 
 
+class ProductNameList(BaseModel):
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
+class ProductBrandList(BaseModel):
+    brand: str
+
+    class Config:
+        orm_mode = True
+
+
+class KoIngredientList(BaseModel):
+    ko_ingredient: str
+
+    class Config:
+        orm_mode = True
+
+
+class SearchResultKeyword(BaseModel):
+    totalPageCount: int
+    currentPage: int
+    result: List[ProductList]
+    productList: List[str]
+    brandList: List[str]
+    ingredientList: List[str]
+
+    class Config:
+        orm_mode = True
+
+
+# class SearchResultIngredient(BaseModel):
+#     totalPageCount: int
+#     currentPage: int
+#     result: List[ProductList]
+#     ingredientList = List[str]
+
+#     class Config:
+#         orm_mode = True
+
+
 class SearchKeyword(BaseModel):
     keyword: str
     searchResultType: str
     requestPage: int
     maxItemCountByPage: int
+    sort: str
 
 
 class SearchCategory(BaseModel):
@@ -44,6 +90,7 @@ class SearchCategory(BaseModel):
     smallCategory: str
     requestPage: int
     maxItemCountByPage: int
+    sort: str
 
 
 class SearchIngredients(BaseModel):
@@ -51,6 +98,8 @@ class SearchIngredients(BaseModel):
     excludeIngredient: List[str]
     requestPage: int
     maxItemCountByPage: int
+    sort: str
+    # requestPage, maxItemCountByPage,sort가 공통 인자. 상속관계 만들기 가능.
 
 
 class DetailId(BaseModel):
