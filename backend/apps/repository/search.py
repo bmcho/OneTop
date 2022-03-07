@@ -293,32 +293,32 @@ def get_product_by_keyword(db: Session, request: schemas.SearchKeyword):
 
     showList = productList[offset:limit]
 
-    search_product_list = schemas.ProductNameList
-    search_product_list = (
-        db.query(models.Product)
-        .filter(models.Product.name.like(search_keyword))
-        .limit(10)
-    )
-    search_brand_list = schemas.ProductBrandList
-    search_brand_list = (
-        db.query(models.Product)
-        .filter(models.Product.brand.like(search_keyword))
-        .limit(10)
-    )
-    search_ingredient_list = (
-        db.query(models.Ingredient)
-        .filter(models.Ingredient.ko_ingredient.like(search_keyword))
-        .limit(10)
-    )
+    # search_product_list = schemas.ProductNameList
+    # search_product_list = (
+    #     db.query(models.Product)
+    #     .filter(models.Product.name.like(search_keyword))
+    #     .limit(10)
+    # )
+    # search_brand_list = schemas.ProductBrandList
+    # search_brand_list = (
+    #     db.query(models.Product)
+    #     .filter(models.Product.brand.like(search_keyword))
+    #     .limit(10)
+    # )
+    # search_ingredient_list = (
+    #     db.query(models.Ingredient)
+    #     .filter(models.Ingredient.ko_ingredient.like(search_keyword))
+    #     .limit(10)
+    # )
 
     listLen = len(productList)
     searchResult = schemas.SearchResultKeyword
     searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
     searchResult.currentPage = request.requestPage
 
-    searchResult.productList = search_product_list
-    searchResult.brandList = search_brand_list
-    searchResult.ingredientList = search_ingredient_list
+    # searchResult.productList = search_product_list
+    # searchResult.brandList = search_brand_list
+    # searchResult.ingredientList = search_ingredient_list
 
     searchResult.result = showList
     return searchResult

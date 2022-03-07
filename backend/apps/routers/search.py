@@ -19,7 +19,7 @@ def search_category(request: schemas.SearchCategory, db: Session = Depends(get_d
     return search.get_product_by_category(db, request)
 
 
-@router.post("/keyword", response_model=schemas.SearchResultKeyword)
+@router.post("/keyword", response_model=schemas.SearchResult)
 def search_keyword(request: schemas.SearchKeyword, db: Session = Depends(get_db)):
     return search.get_product_by_keyword(db, request)
 
