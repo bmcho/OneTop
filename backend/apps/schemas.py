@@ -55,6 +55,26 @@ class KoIngredientList(BaseModel):
         orm_mode = True
 
 
+class Keyword(BaseModel):
+    keyword: str
+
+
+class KeywordAutocompleteList(BaseModel):
+    productList: List[str]
+    brandList: List[str]
+    ingredientList: List[str]
+
+    class Config:
+        orm_mode = True
+
+
+class IngredientAutocompleteList(BaseModel):
+    ingredientList: List[str]
+
+    class Config:
+        orm_mode = True
+
+
 class SearchResultKeyword(BaseModel):
     totalPageCount: int
     currentPage: int
@@ -67,14 +87,14 @@ class SearchResultKeyword(BaseModel):
         orm_mode = True
 
 
-# class SearchResultIngredient(BaseModel):
-#     totalPageCount: int
-#     currentPage: int
-#     result: List[ProductList]
-#     ingredientList = List[str]
+class SearchResultIngredient(BaseModel):
+    totalPageCount: int
+    currentPage: int
+    result: List[ProductList]
+    ingredientList: List[KoIngredientList]
 
-#     class Config:
-#         orm_mode = True
+    class Config:
+        orm_mode = True
 
 
 class SearchKeyword(BaseModel):
