@@ -10,6 +10,7 @@ import {
 } from '../modules/searchKeyword';
 import { finishLoading, startLoading } from '../modules/loading';
 function searchKeywordResultAPI(data) {
+  console.log('keyword saga', data);
   const reqParam = {
     keyword: data,
     searchResultType: 'product',

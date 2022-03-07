@@ -2,13 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { setSearchIngredientAction } from '../../../stores/modules/searchIngredient';
-import SearchResultItem from '../searchResultItem/SearchResultItem';
+import { setIngredientForSearchAction } from '../../../stores/modules/searchIngredient';
 import SearchBar from './searchBar/SearchBar';
+import SearchIngredientResult from './searchIngredientResult/SearchIngredientResult';
 
 const SearchIngredient = (props) => {
   const dispatch = useDispatch();
-  const { searchResultData } = useSelector((state) => state.searchIngredient);
   const [includeKeywords, setIncludeKeywords] = useState([]);
   const [excludeKeywords, setExcludeKeywords] = useState([]);
   const getResult = () => {
@@ -18,8 +17,10 @@ const SearchIngredient = (props) => {
       requestPage: 0,
       maxItemCountByPage: 10,
     };
-    dispatch(setSearchIngredientAction(reqParam));
+    console.log('request point', reqParam);
+    dispatch(setIngredientForSearchAction(reqParam));
   };
+
   return (
     <SearchIngredientBlock>
       <SearchBar
@@ -35,10 +36,7 @@ const SearchIngredient = (props) => {
       <SearchButtonWrap>
         <SearchButton onClick={getResult}>검색</SearchButton>
       </SearchButtonWrap>
-      {searchResultData.length > 0 &&
-        searchResultData.map((cosmetic, idx) => (
-          <SearchResultItem key={idx} cosmetic={cosmetic} />
-        ))}
+      <SearchIngredientResult />
     </SearchIngredientBlock>
   );
 };

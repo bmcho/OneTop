@@ -2,22 +2,23 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import SearchResultItem from '../../searchResultItem/SearchResultItem';
 
-const SearchResult = (props) => {
-  const { searchResultData } = useSelector((state) => state.searchKeyword);
+const SearchIngredientResult = (props) => {
   const { loadingStatus } = useSelector((state) => state.loading);
+  const { searchIngredientResultData } = useSelector(
+    (state) => state.searchIngredient
+  );
   useEffect(() => {
-    console.log('searchresult mounted');
-    return () => console.log('searchresult unmounted');
-  }, []);
-
+    console.log('loadingStatus', loadingStatus);
+  }, [loadingStatus]);
   if (loadingStatus) return <div>loading</div>;
+
   return (
     <div>
-      {searchResultData.length === 0 ? (
+      {searchIngredientResultData.length === 0 ? (
         <div>검색 결과가 없습니다</div>
       ) : (
         <div>
-          {searchResultData.map((cosmetic, idx) => (
+          {searchIngredientResultData.map((cosmetic, idx) => (
             <SearchResultItem key={idx} cosmetic={cosmetic} />
           ))}
         </div>
@@ -25,5 +26,4 @@ const SearchResult = (props) => {
     </div>
   );
 };
-
-export default SearchResult;
+export default SearchIngredientResult;

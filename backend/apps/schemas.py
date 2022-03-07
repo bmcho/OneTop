@@ -143,7 +143,8 @@ class ProductDetail(BaseModel):
     img_url: str
     brand: str
     average_rating: float
-    price: str
+    price: int
+    capacity: str
     description: str
     hashtag: str
     ingredientList: List[IngredientList]
