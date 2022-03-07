@@ -3,13 +3,7 @@ import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
-const Pagenation = ({
-  pathname,
-  itemPerPage,
-  totalPage,
-  largeCategory,
-  smallCategory,
-}) => {
+const Pagenation = ({ pathname, itemPerPage, totalPage, kind }) => {
   const router = useRouter();
   const { page } = router.query;
   const [pagenatePage, setPagenagePage] = useState(parseInt(page) || 1);
@@ -32,8 +26,7 @@ const Pagenation = ({
     router.push({
       pathname: pathname,
       query: {
-        largeCategory,
-        smallCategory,
+        ...kind,
         page: pageNum,
       },
     });

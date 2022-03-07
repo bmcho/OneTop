@@ -8,7 +8,9 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 import ProductInfo from '../../src/components/detail/productInfo';
+import Review from '../../src/components/detail/Review';
 import IngredientInfo from '../../src/components/detail/IngredientInfo';
+import DescriptionInfo from '../../src/components/detail/DescriptionInfo';
 import { useCallback, useEffect, useState } from 'react';
 import { addProductCompareInfoAction } from '../../src/stores/modules/productCompareInfo';
 
@@ -25,16 +27,26 @@ const Detail = () => {
   );
 
   const dispatch = useDispatch();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState({
+    description: false,
+    ingredient: false,
+  });
   const { id } = router.query;
 
   useEffect(() => {
     dispatch(getProductInfoAction(id));
   }, [id]);
 
-  const modalOpenHandle = useCallback(() => {
-    setIsModalOpen((isopen) => !isopen);
-  }, []);
+  const modalOpenHandle = useCallback(
+    (kind) => {
+      console.log('kind', kind);
+      setIsModalOpen({
+        ...isModalOpen,
+        [kind]: !isModalOpen[kind],
+      });
+    },
+    [isModalOpen]
+  );
 
   const addCompareBoxHandle = useCallback(() => {
     if (productCompareInfo.length >= 3) {
@@ -52,20 +64,28 @@ const Detail = () => {
   if (error) return <div>error...</div>;
   if (!productInfo) return <div>error...</div>;
 
-  const { ...rest } = productInfo;
+  const { name, description, ingredientList, ...rest } = productInfo;
 
   return (
     <DetailBlock>
       <ProductInfo
         {...rest}
+        name={name}
         modalOpenHandle={modalOpenHandle}
         addCompareBoxHandle={addCompareBoxHandle}
       />
-      {/* <IngredientInfo
-        ingredients={ingredients}
-        open={isModalOpen}
+      <Review />
+      <DescriptionInfo
+        name={name}
+        open={isModalOpen.description}
+        description={description}
         modalOpenHandle={modalOpenHandle}
-      /> */}
+      />
+      <IngredientInfo
+        ingredients={ingredientList}
+        open={isModalOpen.ingredient}
+        modalOpenHandle={modalOpenHandle}
+      />
     </DetailBlock>
   );
 };

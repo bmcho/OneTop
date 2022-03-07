@@ -46,3 +46,9 @@
 2022-03-04 21:54:16,625 - root - INFO - migration ingredient
 2022-03-04 21:55:40,486 - root - INFO - migration descrip
 2022-03-04 22:04:13,647 - root - INFO - migration product_ingredient_relation
+2022-03-07 05:09:17,464 - root - INFO - product - (1146, "Table 'onetop.product' doesn't exist")
+2022-03-07 05:16:03,165 - root - INFO - product - (1146, "Table 'onetop.product' doesn't exist")
+2022-03-07 05:23:11,707 - root - INFO - migration product
+2022-03-07 05:23:41,234 - root - INFO - migration ingredient
+2022-03-07 05:25:20,311 - root - INFO - migration descrip
+2022-03-07 05:36:24,054 - root - INFO - migration product_ingredient_relation
