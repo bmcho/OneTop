@@ -1,7 +1,10 @@
 export const theme = {
   color: {
     // 숫자가 커질수록 밝은색
-    orange1: 'f08c00',
+    orange1: '#f08c00',
+    orange2: '#ff9e16',
+    red1: '#e63c2f',
+    green1: '#009d4e',
     yellow1: '#F5D672',
     yellow2: '#F8E49A',
     purple: '#4E3F98',

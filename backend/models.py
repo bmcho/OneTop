@@ -1,67 +1,104 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Numeric, TEXT
-from sqlalchemy.orm import relationship
+from sqlalchemy import (
+    TEXT,
+    Boolean,
+    Column,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    Table,
+)
+from sqlalchemy.orm import backref, relationship
 
 from database import Base
 
-'''
+"""
 화장품 정보
-'''
-class Product(Base) :
-  __tablename__ = "product"
+"""
 
-  product_num = Column(Integer, primary_key=True, index=True)
-  name = Column(String(100), nullable=False)
-  img_url = Column(String(500), nullable=False)
-  brand = Column(String(50), nullable=False)
-  average_rating = Column(Numeric)
-  price = Column(String(100))
-  extinction = Column(Boolean, default=True)
 
-  descriptions = relationship("Descrip", back_populates="Descrip")
-  ingredients = relationship("Ingredient", 
-                  secondary="ProductIngredientRelation",
-                  back_populates="Ingredient"
-                )
+productingredientrelation = Table(
+    "productingredientrelation",
+    Base.metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("product_id", Integer, ForeignKey("product.product_num")),
+    Column("ingredient_id", Integer, ForeignKey("ingredient.id")),
+)
 
-'''
+
+class Product(Base):
+    __tablename__ = "product"
+
+    product_num = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    img_url = Column(String(500), nullable=False)
+    brand = Column(String(50), nullable=False)
+    average_rating = Column(Numeric)
+    capacity = Column(String(50))
+    price = Column(Integer())
+    extinction = Column(Boolean, default=True)
+
+    _descriptions = relationship("Descrip", back_populates="_products")
+    _ingredients = relationship(
+        "Ingredient", secondary="productingredientrelation", back_populates="_products"
+    )
+
+
+"""
 화장품 상세
-'''
-class Descrip(Base) :
-  __tablename__ = "descrip"
+"""
 
-  id = Column(Integer, primary_key=True, index=True)
-  product_num = Column(Integer, ForeignKey('product.product_num'), index=True)
-  color_type = Column(TEXT)
-  description = Column(TEXT)
-  hashtag = Column(TEXT)
-  cost = Column(String(100))
-  major_classification = Column(String(100))
-  medium_classification = Column(String(100))
-  minor_classification = Column(String(100))
 
-'''
+class Descrip(Base):
+    __tablename__ = "descrip"
+
+    id = Column(Integer, primary_key=True, index=True)
+    fk_product_descrip_product_num = Column(
+        Integer, ForeignKey("product.product_num"), index=True
+    )
+    color_type = Column(TEXT)
+    description = Column(TEXT)
+    hashtag = Column(TEXT)
+    cost = Column(String(100))
+    major_classification = Column(String(100))
+    medium_classification = Column(String(100))
+    minor_classification = Column(String(100))
+
+    _products = relationship("Product", back_populates="_descriptions", uselist=False)
+
+
+"""
 성분
-'''
-class Ingredient(Base) :
-  __tablename__ = "ingredient"
+"""
 
-  id = Column(Integer, primary_key=True, index=True)
-  ko_ingredient = Column(TEXT)
-  en_ingredient = Column(TEXT)
-  use = Column(TEXT)
-  score = Column(String(10))
-  
-  products = relationship("product", 
-                  secondary="ProductIngredientRelation",
-                  back_populates="product"
-                )
-  
-'''
+
+class Ingredient(Base):
+    __tablename__ = "ingredient"
+
+    id = Column(Integer, primary_key=True, index=True)
+    ko_ingredient = Column(TEXT)
+    en_ingredient = Column(TEXT)
+    use = Column(TEXT)
+    score = Column(String(10))
+
+    _products = relationship(
+        "Product", secondary="productingredientrelation", back_populates="_ingredients"
+    )
+
+
+"""
 화장품, 성분 관계 테이블
-'''
-class ProductIngredientRelation(Base) :
-  __tablename__ = 'productingredientrelation'
+"""
 
-  id = Column(Integer, primary_key=True, index=True)
-  product_num = Column(Integer, ForeignKey('product.product_num'), index=True)
-  ingredient_id = Column(Integer, ForeignKey('ingredient.id'), index=True)
+
+# class ProductIngredientRelation(Base):
+#     __tablename__ = "productingredientrelation"
+
+#     id = Column(Integer, primary_key=True)
+#     product_id = Column(Integer, ForeignKey("product.product_num"))
+#     ingredient_id = Column(Integer, ForeignKey("ingredient.id"))
+
+#     _products = relationship("Product", backref=backref("productingredientrelation"))
+#     _ingredients = relationship(
+#         "Ingredient", backref=backref("productingredientrelation")
+#     )

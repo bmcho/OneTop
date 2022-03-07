@@ -4,7 +4,9 @@ import styled from 'styled-components';
 
 const Header = (props) => (
   <HeaderBlock>
-    <h1>Title</h1>
+    <Link href="/">
+      <a>TITLE</a>
+    </Link>
     <NavBlock>
       <li>
         <Link href="/search">
@@ -12,13 +14,8 @@ const Header = (props) => (
         </Link>
       </li>
       <li>
-        <Link href="/">
+        <Link href="/recommend">
           <a>recommend</a>
-        </Link>
-      </li>
-      <li>
-        <Link href="/description">
-          <a>description</a>
         </Link>
       </li>
     </NavBlock>

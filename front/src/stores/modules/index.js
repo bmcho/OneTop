@@ -4,21 +4,22 @@ import tvShow from './tvShow';
 import searchKeyword from './searchKeyword';
 import searchTypeTap from './searchTypeTap';
 import loading from './loading';
+import productInfo from './productInfo';
+import productCompareInfo from './productCompareInfo';
+
+const combineReducer = combineReducers({
+  tvShow,
+  searchKeyword,
+  searchTypeTap,
+  loading,
+  productInfo,
+  productCompareInfo,
+});
 
 const rootReducer = (state, action) => {
   switch (action.type) {
-    // 서버 사이드 데이터를 클라이언트 사이드 Store에 통합.
-    case HYDRATE:
-      return { ...action.payload };
-    default: {
-      const combineReducer = combineReducers({
-        tvShow,
-        searchKeyword,
-        searchTypeTap,
-        loading,
-      });
+    default:
       return combineReducer(state, action);
-    }
   }
 };
 
