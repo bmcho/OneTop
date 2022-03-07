@@ -21,6 +21,7 @@ def get_product_by_id(id: int, db: Session):
     product_detail.brand = product.brand
     product_detail.average_rating = product.average_rating
     product_detail.price = product.price
+    product_detail.capacity = product.capacity
 
     # Descrip table 정보들 옮기기.
     description = schemas.ProductDescription
