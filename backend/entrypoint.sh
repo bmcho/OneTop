@@ -1,4 +1,3 @@
-#!/bin/bash
 echo ---------------wait database-------------------------------
 dockerize -wait tcp://database:3306 -timeout 30s
 

@@ -8,7 +8,6 @@ const ProductInfo = ({
   img_url,
   hashtag,
   name,
-  description,
   brand,
   price: priceInfo,
   modalOpenHandle,
@@ -33,19 +32,26 @@ const ProductInfo = ({
             })}
         </TagUl>
         <h3>{name}</h3>
-        <InfoLi>{description}</InfoLi>
         <InfoLi>
           <span>Brand</span> {brand}
         </InfoLi>
         <InfoLi>
-          <span>Size</span> {`${capacity}`}
+          <span>Size</span> {capacity}
         </InfoLi>
         <InfoLi>
-          <span>Price</span> {`${price}`}
+          <span>Price</span> {price}
+        </InfoLi>
+        <InfoLi>
+          <span>Description</span>
+          <button onClick={() => modalOpenHandle('description')}>
+            설명보기
+          </button>
         </InfoLi>
         <InfoLi>
           <span>Ingredient</span>
-          <button onClick={modalOpenHandle}>성분보기</button>
+          <button onClick={() => modalOpenHandle('ingredient')}>
+            성분보기
+          </button>
         </InfoLi>
         <InfoLi>
           <span>Compare Box</span>
@@ -61,6 +67,7 @@ const Container = styled.div`
   display: flex;
   padding: 0 40px;
   justify-content: space-between;
+  margin-top: 100px;
   margin-bottom: 100px;
   @media screen and (max-width: 860px) {
     flex-direction: column;

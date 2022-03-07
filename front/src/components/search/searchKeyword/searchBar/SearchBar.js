@@ -76,8 +76,15 @@ const SearchBar = (props) => {
 
   const setSearchHistoryInLocal = (newKeyword) => {
     const keywords = JSON.parse(localStorage.getItem('keywords')) || [];
-    keywords.push(newKeyword);
-    localStorage.setItem('keywords', JSON.stringify(keywords));
+    if (!keywords.includes(newKeyword)) {
+      keywords.unshift(newKeyword);
+      localStorage.setItem('keywords', JSON.stringify(keywords));
+    } else {
+      const idx = keywords.findIndex((keyword) => keyword === newKeyword);
+      keywords.splice(idx, 1);
+      keywords.unshift(newKeyword);
+      localStorage.setItem('keywords', JSON.stringify(keywords));
+    }
   };
 
   return (
