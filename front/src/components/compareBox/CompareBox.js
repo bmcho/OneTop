@@ -20,6 +20,7 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
 
   useEffect(() => {
     dispatch(checkProductCompareInfoAction());
+    return () => dispatch(checkProductCompareInfoAction());
   }, []);
 
   return (
@@ -35,14 +36,17 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
         <ItemTable>
           <thead>
             <tr>
-              <th></th>
               {data.map((d, index) => {
                 return (
                   <th key={`${d.id}${index}`}>
-                    <RemoveButton onClick={() => productRemoveHandle(d.id)}>
+                    <RemoveButton
+                      onClick={() => productRemoveHandle(d.product_num)}
+                    >
                       삭제
                     </RemoveButton>
-                    <Image src={d.img} width={92.5} height={92.5} />
+                    <ImageWrapper>
+                      <Image src={d.img_url} width={123} height={123} />
+                    </ImageWrapper>
                   </th>
                 );
               })}
@@ -50,27 +54,26 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
           </thead>
           <tbody>
             <tr>
-              <th>Brand</th>
               {data.map((d, index) => {
                 return <td key={`${d.id}${index}`}>{d.brand}</td>;
               })}
             </tr>
             <tr>
-              <th>Name</th>
               {data.map((d, index) => {
                 return <td key={`${d.id}${index}`}>{d.name}</td>;
               })}
             </tr>
             <tr>
-              <th>Price</th>
               {data.map((d, index) => {
                 return <td key={`${d.id}${index}`}>{d.price}</td>;
               })}
             </tr>
             <tr>
-              <th>Size</th>
               {data.map((d, index) => {
-                return <td key={`${d.id}${index}`}>{d.capacity}</td>;
+                const hashTag = d.hashtag
+                  .slice(1, d.hashtag.length - 1)
+                  .split(',');
+                return <td key={`${d.id}${index}`}>{hashTag.join('\n')}</td>;
               })}
             </tr>
           </tbody>
@@ -154,16 +157,18 @@ const ItemLi = styled.li`
 `;
 
 const ItemTable = styled.table`
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 600;
   letter-spacing: 1.2px;
+  border-collapse: separate;
+  border-spacing: 2px;
   td,
   th {
-    width: 92.5px;
+    width: 120px;
     height: 80px;
     text-align: center;
     vertical-align: middle;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    white-space: pre-wrap;
   }
   th {
     position: relative;
@@ -174,23 +179,32 @@ const ItemTable = styled.table`
     background-color: rgba(0, 0, 0, 0);
     border: none;
   }
+  tbody {
+    margin-top: 30px;
+  }
 `;
 
 const RemoveButton = styled.button`
   position: absolute;
+  right: 0;
   bottom: 0;
-  width: 92.5px;
-  height: 12px;
-  font-size: 10px;
+  width: 120px;
+  height: 15px;
+  font-size: 12px;
   z-index: 99;
-  background-color: ${({ theme }) => theme.color.gray5};
+  font-weight: 900;
+  background-color: rgba(252, 196, 25, 0.4);
   transition: all 0.5s ease;
-  color: ${({ theme }) => theme.color.white};
+  border-radius: 10px;
   &:hover {
     height: 100%;
     font-size: 18px;
-    font-weight: 900;
   }
 `;
 
+const ImageWrapper = styled.div`
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
+  overflow: hidden;
+`;
 export default CompareBox;

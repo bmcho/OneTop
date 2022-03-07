@@ -1,8 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const SearchBar = ({ inputTitle }) => {
-  const [keywords, setKeywords] = useState([]);
+const SearchBar = ({ inputTitle, keywords, setKeywords }) => {
   const [inputText, setInputText] = useState('');
   const changeInputText = (e) => {
     setInputText(e.target.value);

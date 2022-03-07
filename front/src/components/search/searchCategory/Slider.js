@@ -78,7 +78,7 @@ const Container = styled.div`
   height: 200px;
   display: flex;
   align-items: center;
-  overflow-x: scroll;
+  overflow-x: hidden;
 
   @media screen and (max-width: 1200px) {
     width: calc(130px * 6);

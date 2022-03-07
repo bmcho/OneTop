@@ -1,30 +1,43 @@
-import { categories } from '../../../utils/categoryUtil';
-import styled from 'styled-components';
+import { categories, categories3 } from '../../../utils/categoryUtil';
+import styled, { css } from 'styled-components';
 import { useEffect, useState } from 'react';
 import Slider from './Slider';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
-const SearchFromCategory = () => {
-  const categoryArr = Object.entries(categories);
-
-  const [largeCategoryIndex, setLargeCategoryIndex] = useState(0);
-  const [smallCategoryIndex, setSmallCategoryIndex] = useState(null);
-
-  const selectLargeCategory = (idx) => {
-    setLargeCategoryIndex(idx);
-    setSmallCategoryIndex(null);
-  };
-
-  const selectSmallCategory = (idx) => {
-    console.log(idx);
-    setSmallCategoryIndex(idx);
+const SearchFromCategory = ({
+  largeCategoryIndex,
+  smallCategoryIndex,
+  selectLargeCategory,
+  selectSmallCategory,
+}) => {
+  const router = useRouter();
+  const changResultRouteHandle = ({
+    idx,
+    largeCategory,
+    smallCategory,
+    page,
+  }) => {
+    selectSmallCategory(idx + 1);
+    router.push({
+      pathname: router.pathname,
+      query: {
+        largeCategory,
+        smallCategory,
+        page,
+      },
+    });
   };
 
   return (
     <Container>
       <Slider>
-        {categoryArr?.map((category, index) => (
-          <LargeCategory key={index} onClick={() => selectLargeCategory(index)}>
+        {categories3.map((category) => (
+          <LargeCategory
+            key={category.id}
+            active={largeCategoryIndex === category.id}
+            onClick={() => selectLargeCategory(parseInt(category.id))}
+          >
             <div className="img-wrapper">
               <Image
                 src={'/images/category.jpg'}
@@ -34,24 +47,30 @@ const SearchFromCategory = () => {
                 layout="fixed"
               />
             </div>
-            <h4>{category[0]}</h4>
+            <h4>{category.large}</h4>
           </LargeCategory>
         ))}
       </Slider>
       <SmallCategories>
-        {categoryArr[largeCategoryIndex][1].map((category, idx) => {
-          return (
-            <SmallCategory key={idx} onClick={() => selectSmallCategory(idx)}>
-              {category}
-            </SmallCategory>
-          );
-        })}
+        {largeCategoryIndex &&
+          categories3[largeCategoryIndex - 1].small.map((category, idx) => {
+            return (
+              <SmallCategory
+                key={category.id}
+                onClick={() =>
+                  changResultRouteHandle({
+                    idx,
+                    largeCategory: categories3[largeCategoryIndex - 1].large,
+                    smallCategory: category.label,
+                    page: 1,
+                  })
+                }
+              >
+                {category.label}
+              </SmallCategory>
+            );
+          })}
       </SmallCategories>
-      <div>
-        {new Array(smallCategoryIndex).fill(0).map((e, idx) => (
-          <div key={idx}>{idx}</div>
-        ))}
-      </div>
     </Container>
   );
 };
@@ -98,11 +117,12 @@ const LargeCategory = styled.button`
     background-color: ${(props) => props.theme.color.yellow1};
     transition: all 0.4s ease-in;
   }
-
-  &:focus {
-    background-color: ${(props) => props.theme.color.yellow1};
-    transition: all 0.4s ease-in;
-  }
+  ${(props) =>
+    props.active &&
+    css`
+      background-color: ${(props) => props.theme.color.yellow1};
+      transition: all 0.4s ease-in;
+    `}
 `;
 
 const SmallCategories = styled.div`
