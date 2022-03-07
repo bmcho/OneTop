@@ -1,6 +1,20 @@
+from datetime import datetime
 from typing import List, Optional
 
 from pydantic import BaseModel
+
+"""
+create_date, modify_data
+"""
+
+
+class BaseClass(BaseModel):
+    create_data: datetime
+    modify_data: Optional[datetime] = None
+
+
+class Message(BaseModel):
+    message: str
 
 
 class ProductList(BaseModel):
@@ -96,3 +110,59 @@ class ProductDescription(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+"""
+review schema
+"""
+
+"""
+base
+"""
+
+
+class ReviewBase(BaseModel):
+    id: Optional[int] = None
+    fk_product_num: int
+
+
+"""
+create, modify, delete
+"""
+
+
+class ReviewManipulation(ReviewBase):
+    password: str
+    comment: Optional[str] = None
+    img_url: Optional[str] = None
+
+    class Config:
+        orm_mode = True
+
+
+class ReviewDelete(ReviewBase):
+    password: str
+
+    class Config:
+        orm_mode = True
+
+
+"""
+search
+"""
+
+
+class ReviewSearch(ReviewBase):
+    comment: str
+    img: Optional[str] = None
+    create_date: datetime
+    modify_data: Optional[datetime] = None
+
+    class Config:
+        orm_mode = True
+
+
+class ReviewReturn(BaseModel):
+    data: List[ReviewSearch]
+    total_page: int
+    current_page: int

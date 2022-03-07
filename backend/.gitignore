@@ -1,3 +1,5 @@
 .secrets.json
-__pycache__
+__pycache__/
 alembic/versions/*.py
+.static
+sql_app.db
