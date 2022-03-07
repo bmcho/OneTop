@@ -10,7 +10,7 @@ import {
 } from '../modules/searchCategory';
 
 const getProductInfoByCategoryAPI = async (body) => {
-  const res = await axios.post('http://localhost/api/search/category', body);
+  const res = await axios.post(`${process.env.BASE_URL}/search/category`, body);
 
   return res.data;
 };
