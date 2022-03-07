@@ -55,6 +55,6 @@ function* watchSearchResultData() {
   yield takeLatest(SET_SEARCH_KEYWORD, loadTvShow);
 }
 
-export default function* searchData() {
+export default function* searchKeyword() {
   yield all([fork(watchSearchResultData), fork(watchAutoCompleteData)]);
 }
