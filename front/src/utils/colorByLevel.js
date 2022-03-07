@@ -1,7 +1,5 @@
 export const colorByLevel = (level) => {
-  switch (level) {
-    case 0:
-      return 'gray1';
+  switch (parseInt(level)) {
     case 1:
     case 2:
       return 'green1';
@@ -10,7 +8,12 @@ export const colorByLevel = (level) => {
     case 5:
     case 6:
       return 'orange2';
-    default:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
       return 'red1';
+    default:
+      return 'gray1';
   }
 };

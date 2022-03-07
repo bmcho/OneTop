@@ -2,28 +2,31 @@ import styled, { keyframes } from 'styled-components';
 import { colorByLevel } from '../../utils/colorByLevel';
 import { theme } from '../../../styles/theme';
 import { MdOutlineClose } from 'react-icons/md';
+import Modal from './Modal';
 
 const IngredientInfo = ({ ingredients, open, modalOpenHandle }) => {
   return (
-    <Modal open={open} onClick={modalOpenHandle}>
+    <Modal
+      open={open}
+      modalOpenHandle={() => modalOpenHandle('ingredient')}
+      kind="ingredient"
+    >
       <IngredientUl>
         <h5>성분 정보</h5>
         <StyledMdOutlineClose size="24" />
         {ingredients?.map((ingredient) => {
-          const maxLevel = Math.max(
-            ...ingredient.level.split('-').map((level) => parseInt(level))
-          );
+          const maxLevel = Math.max(...ingredient.score.split('-'));
           const backgroundColor = colorByLevel(maxLevel);
 
           return (
-            <IngredientLi key={ingredient.name}>
+            <IngredientLi key={ingredient.id}>
               <GradeInfo background={theme.color[backgroundColor]}>
-                {ingredient.level}
+                {ingredient.score}
               </GradeInfo>
               <IngredientName>
-                <h6>{ingredient.name}</h6>
-                <h6>{ingredient.nameEn}</h6>
-                <h6>{ingredient.purpose}</h6>
+                <h6>{ingredient.ko_ingredient}</h6>
+                <h6>{ingredient.en_ingredient}</h6>
+                <h6>{ingredient.use}</h6>
               </IngredientName>
             </IngredientLi>
           );
@@ -32,29 +35,6 @@ const IngredientInfo = ({ ingredients, open, modalOpenHandle }) => {
     </Modal>
   );
 };
-
-const modalAnimation = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
-const Modal = styled.div`
-  display: ${({ open }) => (open ? 'flex' : 'none')};
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 99;
-  background-color: rgba(0, 0, 0, 0.6);
-  animation: ${modalAnimation} 300ms;
-`;
 
 const StyledMdOutlineClose = styled(MdOutlineClose)`
   width: 24px;

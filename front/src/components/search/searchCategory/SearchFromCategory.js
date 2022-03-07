@@ -12,6 +12,7 @@ const SearchFromCategory = ({
   selectSmallCategory,
 }) => {
   const router = useRouter();
+
   const changResultRouteHandle = ({
     idx,
     largeCategory,

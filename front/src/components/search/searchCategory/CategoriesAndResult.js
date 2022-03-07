@@ -75,11 +75,13 @@ const CategoriesAndResult = () => {
             pathname={router.pathname}
             totalPage={totalPageCount}
             itemPerPage={itemPerPage}
-            largeCategory={categories3[largeCategoryIndex - 1].large}
-            smallCategory={
-              categories3[largeCategoryIndex - 1].small[smallCategoryIndex - 1]
-                .label
-            }
+            kind={{
+              largeCategory: categories3[largeCategoryIndex - 1].large,
+              smallCategory:
+                categories3[largeCategoryIndex - 1].small[
+                  smallCategoryIndex - 1
+                ].label,
+            }}
           />
         </>
       ) : (
