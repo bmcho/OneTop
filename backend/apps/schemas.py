@@ -166,3 +166,12 @@ class ProductDescription(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class KeywordList(BaseModel):
+    keyword: str
+
+
+class KeywordCategoryList(BaseModel):
+    category: str
+    keywordList: List[str]
