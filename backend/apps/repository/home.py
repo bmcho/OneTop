@@ -3,15 +3,14 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-from ..core import util
 from fastapi import HTTPException, Request, Response, status
-
 from sklearn.metrics.pairwise import cosine_similarity
 from sqlalchemy.orm import Session
 
 import models as models
 
 from .. import schemas
+from ..core import util
 
 
 def call_keywords(category: str):
@@ -30,9 +29,9 @@ def call_keywords(category: str):
 
     # count > 5 이상인 값
     keywords = list(category_keywords[category_keywords["count"] > 5].keyword)
-    
+
     # 리스트로 반환
-    return { "keyword": keywords }
+    return {"keyword": keywords}
 
 
 def keywords_similarity(request: schemas.KeywordCategoryList, db: Session):
@@ -50,7 +49,9 @@ def keywords_similarity(request: schemas.KeywordCategoryList, db: Session):
     )
 
     # product_embedding 을 db에서 읽어 데이터 프레임으로 만들기
-    product_embedding = pd.read_csv(f"{util.BASE_DIR}/recommand/temp_product_embedding2.csv")
+    product_embedding = pd.read_csv(
+        f"{util.BASE_DIR}/recommand/temp_product_embedding2.csv"
+    )
     product_embedding = product_embedding[
         product_embedding.category == request.category
     ]
@@ -62,7 +63,9 @@ def keywords_similarity(request: schemas.KeywordCategoryList, db: Session):
     )
 
     # 단종 상품 제외 !!
-    product_embedding = product_embedding[product_embedding.Discontinued == False]
+    product_embedding = product_embedding[
+        product_embedding.Discontinued == False  # noqa
+    ]
 
     # 선택한 키워드 벡터 계산
     vector = np.zeros((100,))
@@ -83,9 +86,11 @@ def keywords_similarity(request: schemas.KeywordCategoryList, db: Session):
     product_num_list = list(
         cos_df.sort_values("similarity", ascending=False)[0:11].product_num
     )
-    
-    product = db.query(models.Product).filter(
-            models.Product.product_num.in_(product_num_list)
-        ).all()
+
+    product = (
+        db.query(models.Product)
+        .filter(models.Product.product_num.in_(product_num_list))
+        .all()
+    )
 
     return product

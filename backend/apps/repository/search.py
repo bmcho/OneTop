@@ -17,18 +17,131 @@ from .. import schemas
 
 
 def get_product_by_category(db: Session, request: schemas.SearchCategory):
-    largeCategory = request.largeCategory
-    smallCategory = request.smallCategory
     sort = request.sort
-
-    searchLarge = "%{}%".format(largeCategory)
-    searchSmall = "%{}%".format(smallCategory)
 
     currentPage = request.requestPage
     perPage = request.maxItemCountByPage
 
     offset = currentPage * perPage
     limit = offset + perPage
+
+    productList = get_productList_category(db, sort, request)
+
+    showList = productList[offset:limit]
+
+    listLen = len(productList)
+    searchResult = schemas.SearchResult
+    searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
+    searchResult.currentPage = request.requestPage
+    searchResult.result = showList
+    return searchResult
+
+
+def get_product_by_keyword(db: Session, request: schemas.SearchKeyword):
+    searchType = request.searchResultType
+    sort = request.sort
+
+    currentPage = request.requestPage
+    perPage = request.maxItemCountByPage
+
+    offset = currentPage * perPage
+    limit = offset + perPage
+
+    productList = get_productList_keyword(db, sort, searchType, request)
+
+    showList = productList[offset:limit]
+
+    listLen = len(productList)
+    searchResult = schemas.SearchResultKeyword
+    searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
+    searchResult.currentPage = request.requestPage
+
+    searchResult.result = showList
+    return searchResult
+
+
+def get_product_by_ingredient(db: Session, request: schemas.SearchIngredients):
+    sort = request.sort
+
+    currentPage = request.requestPage
+    perPage = request.maxItemCountByPage
+
+    offset = currentPage * perPage
+    limit = offset + perPage
+
+    productList = get_productList_ingredient(db, sort, request)
+
+    showList = productList[offset:limit]
+    listLen = len(productList)
+    searchResult = schemas.SearchResult
+    searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
+    searchResult.currentPage = request.requestPage
+
+    searchResult.result = showList
+    return searchResult
+
+
+def get_keyword_autocomplete(db: Session, request: schemas.Keyword):
+    search_keyword = request.keyword
+    search = "%{}%".format(search_keyword)
+
+    search_product_list = (
+        db.query(models.Product.name)
+        .distinct()
+        .filter(models.Product.name.like(search))
+        .order_by(models.Product.extinction.desc())[:10]
+    )
+
+    search_product_list = [value for value, in search_product_list]
+
+    search_brand_list = (
+        db.query(models.Product.brand)
+        .distinct()
+        .filter(models.Product.brand.like(search))
+        .order_by(models.Product.extinction.desc())[:10]
+    )
+    search_brand_list = [value for value, in search_brand_list]
+
+    search_ingredient_list = (
+        db.query(models.Ingredient.ko_ingredient)
+        .distinct()
+        .filter(models.Ingredient.ko_ingredient.like(search))[:10]
+    )
+    search_ingredient_list = [value for value, in search_ingredient_list]
+
+    keywordList = schemas.KeywordAutocompleteList
+
+    keywordList.productList = search_product_list
+    keywordList.brandList = search_brand_list
+    keywordList.ingredientList = search_ingredient_list
+
+    return keywordList
+
+
+def get_ingredient_autocomplete(db: Session, request: schemas.Keyword):
+    search_keyword = request.keyword
+    search = "%{}%".format(search_keyword)
+
+    search_ingredient_list = (
+        db.query(models.Ingredient.ko_ingredient)
+        .distinct()
+        .filter(models.Ingredient.ko_ingredient.like(search))[:10]
+    )
+    search_ingredient_list = [value for value, in search_ingredient_list]
+
+    ingredientList = schemas.IngredientAutocompleteList
+    ingredientList.ingredientList = search_ingredient_list
+
+    return ingredientList
+
+
+def get_productList_category(db: Session, sort: str, request: schemas.SearchCategory):
+    largeCategory = request.largeCategory
+    smallCategory = request.smallCategory
+
+    searchLarge = "%{}%".format(largeCategory)
+    searchSmall = "%{}%".format(smallCategory)
+
     if sort == "name desc":
         productList = (
             db.query(models.Product)
@@ -82,27 +195,14 @@ def get_product_by_category(db: Session, request: schemas.SearchCategory):
             .all()
         )
 
-    showList = productList[offset:limit]
-
-    listLen = len(productList)
-    searchResult = schemas.SearchResult
-    searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
-    searchResult.currentPage = request.requestPage
-    searchResult.result = showList
-    return searchResult
+    return productList
 
 
-def get_product_by_keyword(db: Session, request: schemas.SearchKeyword):
+def get_productList_keyword(
+    db: Session, sort: str, searchType: str, request: schemas.SearchKeyword
+):
     search_keyword = request.keyword
-    searchType = request.searchResultType
     search = "%{}%".format(search_keyword)
-    sort = request.sort
-
-    currentPage = request.requestPage
-    perPage = request.maxItemCountByPage
-
-    offset = currentPage * perPage
-    limit = offset + perPage
     if searchType == "product":
         if sort == "name desc":
             productList = (
@@ -229,29 +329,14 @@ def get_product_by_keyword(db: Session, request: schemas.SearchKeyword):
                 .order_by(models.Product.price)
                 .all()
             )
-
-    showList = productList[offset:limit]
-
-    listLen = len(productList)
-    searchResult = schemas.SearchResultKeyword
-    searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
-    searchResult.currentPage = request.requestPage
-
-    searchResult.result = showList
-    return searchResult
+    return productList
 
 
-def get_product_by_ingredient(db: Session, request: schemas.SearchIngredients):
+def get_productList_ingredient(
+    db: Session, sort: str, request: schemas.SearchIngredients
+):
     includeIngredient = request.includeIngredient
     excludeIngredient = request.excludeIngredient
-    sort = request.sort
-
-    currentPage = request.requestPage
-    perPage = request.maxItemCountByPage
-
-    offset = currentPage * perPage
-    limit = offset + perPage
-
     if sort == "name desc":
         productList = (
             db.query(models.Product)
@@ -303,66 +388,4 @@ def get_product_by_ingredient(db: Session, request: schemas.SearchIngredients):
             .order_by(models.Product.price)
             .all()
         )
-
-    showList = productList[offset:limit]
-    listLen = len(productList)
-    searchResult = schemas.SearchResult
-    searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
-    searchResult.currentPage = request.requestPage
-
-    searchResult.result = showList
-    return searchResult
-
-
-def get_keyword_autocomplete(db: Session, request: schemas.Keyword):
-    search_keyword = request.keyword
-    search = "%{}%".format(search_keyword)
-
-    search_product_list = (
-        db.query(models.Product.name)
-        .distinct()
-        .filter(models.Product.name.like(search))
-        .order_by(models.Product.extinction.desc())[:10]
-    )
-
-    search_product_list = [value for value, in search_product_list]
-
-    search_brand_list = (
-        db.query(models.Product.brand)
-        .distinct()
-        .filter(models.Product.brand.like(search))
-        .order_by(models.Product.extinction.desc())[:10]
-    )
-    search_brand_list = [value for value, in search_brand_list]
-
-    search_ingredient_list = (
-        db.query(models.Ingredient.ko_ingredient)
-        .distinct()
-        .filter(models.Ingredient.ko_ingredient.like(search))[:10]
-    )
-    search_ingredient_list = [value for value, in search_ingredient_list]
-
-    keywordList = schemas.KeywordAutocompleteList
-
-    keywordList.productList = search_product_list
-    keywordList.brandList = search_brand_list
-    keywordList.ingredientList = search_ingredient_list
-
-    return keywordList
-
-
-def get_ingredient_autocomplete(db: Session, request: schemas.Keyword):
-    search_keyword = request.keyword
-    search = "%{}%".format(search_keyword)
-
-    search_ingredient_list = (
-        db.query(models.Ingredient.ko_ingredient)
-        .distinct()
-        .filter(models.Ingredient.ko_ingredient.like(search))[:10]
-    )
-    search_ingredient_list = [value for value, in search_ingredient_list]
-
-    ingredientList = schemas.IngredientAutocompleteList
-    ingredientList.ingredientList = search_ingredient_list
-
-    return ingredientList
+    return productList

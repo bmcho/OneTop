@@ -10,7 +10,7 @@ from util import *
 
 class Relation(BaseClass):
   def __init__(self) :
-    self.pd_data = self.read_data("Relation")
+    self.pd_data = self.read_data("relation")
 
   def __del__(self) :
     print("delete class : Relation")
