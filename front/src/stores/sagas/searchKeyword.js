@@ -8,6 +8,8 @@ import {
   SET_SEARCH_KEYWORD,
   SET_AUTO_COMPLETE_KEYWORD,
   clearAutoCompleteDataAction,
+  SET_REQUEST_DATA,
+  setResultTotalPage,
 } from '../modules/searchKeyword';
 import { finishLoading, startLoading } from '../modules/loading';
 
@@ -16,11 +18,11 @@ const delay = 500;
 function searchKeywordResultAPI(data) {
   console.log('keyword saga', data);
   const reqParam = {
-    keyword: data,
+    keyword: data.keyword,
     searchResultType: 'product',
-    requestPage: 0,
+    requestPage: data.requestPage,
     maxItemCountByPage: 10,
-    sort: 'name asc',
+    sort: data.sort,
   };
   return axios.post('http://localhost/api/search/keyword', reqParam);
 }
@@ -40,11 +42,12 @@ function* loadKeywordSearchData(action) {
   yield put(clearAutoCompleteDataAction());
   yield put(startLoading());
   try {
-    console.log(action.data);
+    console.log('keywordsearch', action.data);
     if (action.data.length !== 0) {
       const result = yield call(searchKeywordResultAPI, action.data);
       console.log(result);
       yield put(loadDataSuccessAction(result.data.result));
+      yield put(setResultTotalPage(result.data.totalPageCount));
     }
   } catch (e) {
     console.error(e);
@@ -55,7 +58,7 @@ function* loadKeywordSearchData(action) {
 
 function* loadAutoCompleteData(action) {
   try {
-    console.log(action);
+    console.log(action, action.data.length, 'action.data.length');
     if (action.data.length !== 0) {
       const result = yield call(searchKeywordAutoCompleteAPI, action.data);
       console.log('auto api result', result);
@@ -68,7 +71,7 @@ function* loadAutoCompleteData(action) {
 }
 
 function* watchSearchResultData() {
-  yield takeLatest(SET_SEARCH_KEYWORD, loadKeywordSearchData);
+  yield takeLatest(SET_REQUEST_DATA, loadKeywordSearchData);
 }
 
 function* watchAutoCompleteData() {

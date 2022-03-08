@@ -6,6 +6,8 @@ import {
   setSearchKeywordAction,
   setAutoCompleteKeywordAction,
   clearAutoCompleteDataAction,
+  setRequestPageAction,
+  setRequestDataAction,
 } from '../../../../stores/modules/searchKeyword';
 const SearchBar = (props) => {
   const inputRef = useRef();
@@ -75,11 +77,22 @@ const SearchBar = (props) => {
   const resetSearchKeyword = () => {
     dispatch(setAutoCompleteKeywordAction(''));
     dispatch(setSearchKeywordAction(''));
+    dispatch(clearAutoCompleteDataAction());
   };
 
   const requestSearchResult = (keyword) => {
     //keyword history 저장, 검색결과 요청
+    const requestPage = 0;
+    const sort = 'name asc';
+    dispatch(setRequestPageAction(requestPage));
     dispatch(setSearchKeywordAction(keyword));
+    dispatch(
+      setRequestDataAction({
+        requestPage: requestPage,
+        sort: sort,
+        keyword: keyword,
+      })
+    );
     setSearchHistoryInLocal(keyword);
     dispatch(setAutoCompleteKeywordAction(keyword));
   };
