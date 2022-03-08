@@ -9,7 +9,6 @@ import {
   clearIncludeAutoCompleteDataAction,
   clearExcludeAutoCompleteDataAction,
 } from '../../../stores/modules/searchIngredient';
-import { setAutoCompleteKeywordAction } from '../../../stores/modules/searchKeyword';
 import SearchBlock from './searchBlock/SearchBlock';
 import SearchIngredientResult from './searchIngredientResult/SearchIngredientResult';
 
