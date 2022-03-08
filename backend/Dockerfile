@@ -1,4 +1,4 @@
-FROM python:3.9-alpine
+FROM python:3.9-slim-buster
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -8,9 +8,13 @@ WORKDIR /srv/server
  
 COPY . /srv/server
 
-RUN apk update \
-    && apk add --virtual build-deps gcc python3-dev musl-dev build-base\
-    && apk add --no-cache bash 
+# RUN apk update \
+#     && apk add --virtual build-deps gcc python3-dev musl-dev build-base\
+#     && apk add --no-cache bash 
+
+RUN apt update  && \
+    apt install -y \
+    gcc gfortran musl-dev g++ bash wget
 
 # ENV ALLOWED_HOSTS 127.0.0.1
 

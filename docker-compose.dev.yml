@@ -1,9 +1,12 @@
 version: "3.2"
 
 # docker-compose.dev.yml build 방법
+# docker-compose -f docker-compose.dev.yml build --no-cache
 # docker-compose -f docker-compose.dev.yml up
 
 # 원활한 개발을 위해 nginx를 사용하지 않으셔도됩니다. Docker Service의 외부로부터의 Port는 모두 열어 놓았습니다.
+# 불필요한 service는 주석 처리해주시면됩니다.
+# migration의 경우 최초 1회만 실행 시켜주세요
 
 services:
   server:
@@ -56,7 +59,7 @@ services:
       - client
     networks:
       - nginx_bridge
-
+      
   database:
     image: mysql:5.7
     #platform: linux/x86_64
@@ -70,8 +73,8 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
+     - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+     - MYSQL_DATABASE=${MYSQL_DATABASE}
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci

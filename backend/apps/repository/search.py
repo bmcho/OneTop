@@ -14,67 +14,6 @@ from .. import schemas
 자동완성: 글자 하나를 기준으로 product,brand,ingredient를 검색한 뒤 limit(10)으로
 10개씩 긁어서 총 3개의 배열형태로 넘겨준다.
 """
-# def return_keywords_list(db:Session,keyword:str):
-
-# def return_sort_list(db:Session, sort:str , type:str):
-#     if sort=="name desc":
-#         if type=="category":
-#             productList = (
-#             db.query(models.Product)
-#             .join(models.Descrip, models.Product._descriptions)
-#             .filter(
-#                 (models.Descrip.major_classification.like(searchLarge))
-#                 & (models.Descrip.medium_classification.like(searchSmall))
-#             )
-#             .order_by(models.Product.name.desc())
-#             .all()
-#             )
-#         # if type=="keyword":
-#         # if type=="ingredient":
-#     if sort=="name asc":
-#         if type=="category":
-#             productList = (
-#             db.query(models.Product)
-#             .join(models.Descrip, models.Product._descriptions)
-#             .filter(
-#                 (models.Descrip.major_classification.like(searchLarge))
-#                 & (models.Descrip.medium_classification.like(searchSmall))
-#             )
-#             .order_by(models.Product.name)
-#             .all()
-#             )
-#         # if type=="keyword":
-#         # if type=="ingredient":
-#     if sort=="price desc":
-#         if type=="category":
-#             productList = (
-#             db.query(models.Product)
-#             .join(models.Descrip, models.Product._descriptions)
-#             .filter(
-#                 (models.Descrip.major_classification.like(searchLarge))
-#                 & (models.Descrip.medium_classification.like(searchSmall))
-#             )
-#             .order_by(models.Product.price.desc())
-#             .all()
-#             )
-#         # if type=="keyword":
-#         # if type=="ingredient":
-#     if sort=="price asc":
-#         if type=="category":
-#             productList = (
-#             db.query(models.Product)
-#             .join(models.Descrip, models.Product._descriptions)
-#             .filter(
-#                 (models.Descrip.major_classification.like(searchLarge))
-#                 & (models.Descrip.medium_classification.like(searchSmall))
-#             )
-#             .order_by(models.Product.price)
-#             .all()
-#             )
-#         # if type=="keyword":
-#         # if type=="ingredient":
-
-#     return productList
 
 
 def get_product_by_category(db: Session, request: schemas.SearchCategory):
@@ -293,38 +232,10 @@ def get_product_by_keyword(db: Session, request: schemas.SearchKeyword):
 
     showList = productList[offset:limit]
 
-    # search_product_list = schemas.ProductList
-    # search_product_list = (
-    #     db.query(models.Product.name)
-    #     .distinct()
-    #     .filter(models.Product.name.like(search))[:10]
-    # )
-    # # search_product_list = search_product_list[:10]
-
-    # search_brand_list = schemas.ProductList
-    # search_brand_list = (
-    #     db.query(models.Product.brand)
-    #     .distinct()
-    #     .filter(models.Product.brand.like(search))[:10]
-    # )
-    # # search_brand_list = search_brand_list[:10]
-
-    # search_ingredient_list = schemas.KoIngredientList
-    # search_ingredient_list = (
-    #     db.query(models.Ingredient.ko_ingredient)
-    #     .distinct()
-    #     .filter(models.Ingredient.ko_ingredient.like(search))[:10]
-    # )
-    # # search_ingredient_list = list(search_ingredient_list)
-
     listLen = len(productList)
     searchResult = schemas.SearchResultKeyword
     searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
     searchResult.currentPage = request.requestPage
-
-    # searchResult.productList = search_product_list
-    # searchResult.brandList = search_brand_list
-    # searchResult.ingredientList = search_ingredient_list
 
     searchResult.result = showList
     return searchResult
@@ -392,13 +303,6 @@ def get_product_by_ingredient(db: Session, request: schemas.SearchIngredients):
             .order_by(models.Product.price)
             .all()
         )
-
-    # search_ingredient_list = schemas.KoIngredientList
-    # search_ingredient_list = (
-    #     db.query(models.Ingredient.ko_ingredient)
-    #     .distinct()
-    #     .filter(models.Ingredient.ko_ingredient.like(search))[:10]
-    # )
 
     showList = productList[offset:limit]
     listLen = len(productList)

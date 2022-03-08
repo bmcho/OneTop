@@ -10,7 +10,11 @@ import {
 import axios from 'axios';
 
 const getProductCompareInfoApi = async (id) => {
+<<<<<<< HEAD
+  const res = await axios.get(`http://localhost:3004/item/${id}`);
+=======
   const res = await axios.get(`${process.env.BASE_URL}/detail/${id}`);
+>>>>>>> 1a114de9b77e9d64305ad3b8d4cde2bcc1e1b1fc
   return res.data;
 };
 

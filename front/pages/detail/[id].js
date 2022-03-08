@@ -14,18 +14,14 @@ import DescriptionInfo from '../../src/components/detail/DescriptionInfo';
 import { useCallback, useEffect, useState } from 'react';
 import { addProductCompareInfoAction } from '../../src/stores/modules/productCompareInfo';
 
-const Detail = () => {
+const Detail = (props) => {
   const router = useRouter();
-  const {
-    loading,
-    data: productInfo,
-    error,
-  } = useSelector((state) => state.productInfo);
-
+  const { data: productInfo, error } = useSelector(
+    (state) => state.productInfo
+  );
   const { data: productCompareInfo } = useSelector(
     (state) => state.productCompareInfo
   );
-
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState({
     description: false,
@@ -53,16 +49,14 @@ const Detail = () => {
       alert('최대 3개까지 추가할수 있습니다.');
       return;
     }
-    if (productCompareInfo.find((info) => info.product_num === parseInt(id))) {
+    if (productCompareInfo.find((info) => info.id === id)) {
       alert('이미 추가된 제품입니다.');
       return;
     }
     dispatch(addProductCompareInfoAction(id));
-  }, [productCompareInfo, id]);
+  }, [productCompareInfo]);
 
-  if (loading) return <div>loading...</div>;
   if (error) return <div>error...</div>;
-  if (!productInfo) return <div>error...</div>;
 
   const { name, description, ingredientList, ...rest } = productInfo;
 
@@ -97,5 +91,32 @@ const DetailBlock = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
+export async function getStaticPaths() {
+  try {
+    const res = await axios.get('http://localhost:3004/item');
+    const items = res.data;
+    const paths = items.map((item) => ({ params: { id: item.id } }));
+    return {
+      paths,
+      fallback: false,
+    };
+  } catch (e) {
+    return {
+      paths: [],
+      fallback: false,
+    };
+  }
+}
+
+export const getStaticProps = wrapper.getStaticProps(
+  (store) =>
+    async ({ params }) => {
+      const { id } = params;
+      store.dispatch(getProductInfoAction(id));
+      store.dispatch(END);
+      await store.sagaTask.toPromise();
+    }
+);
 
 export default Detail;
