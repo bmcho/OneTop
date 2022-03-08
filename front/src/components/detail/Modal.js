@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 const Modal = ({ open, modalOpenHandle, children, kind }) => {

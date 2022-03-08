@@ -14,23 +14,26 @@ const IngredientInfo = ({ ingredients, open, modalOpenHandle }) => {
       <IngredientUl>
         <h5>성분 정보</h5>
         <StyledMdOutlineClose size="24" />
-        {ingredients?.map((ingredient) => {
-          const maxLevel = Math.max(...ingredient.score.split('-'));
-          const backgroundColor = colorByLevel(maxLevel);
-
-          return (
-            <IngredientLi key={ingredient.id}>
-              <GradeInfo background={theme.color[backgroundColor]}>
-                {ingredient.score}
-              </GradeInfo>
-              <IngredientName>
-                <h6>{ingredient.ko_ingredient}</h6>
-                <h6>{ingredient.en_ingredient}</h6>
-                <h6>{ingredient.use}</h6>
-              </IngredientName>
-            </IngredientLi>
-          );
-        })}
+        {ingredients.length ? (
+          ingredients.map((ingredient) => {
+            const maxLevel = Math.max(...ingredient.score.split('-'));
+            const backgroundColor = colorByLevel(maxLevel);
+            return (
+              <IngredientLi key={ingredient.id}>
+                <GradeInfo background={theme.color[backgroundColor]}>
+                  {ingredient.score}
+                </GradeInfo>
+                <IngredientName>
+                  <h6>{ingredient.ko_ingredient}</h6>
+                  <h6>{ingredient.en_ingredient}</h6>
+                  <h6>{ingredient.use}</h6>
+                </IngredientName>
+              </IngredientLi>
+            );
+          })
+        ) : (
+          <div>성분 정보가 없습니다.</div>
+        )}
       </IngredientUl>
     </Modal>
   );
@@ -64,6 +67,9 @@ const IngredientUl = styled.ul`
   flex-direction: column;
   background-color: white;
   overflow-y: scroll;
+  @media screen and (max-width: 500px) {
+    width: 250px;
+  }
 `;
 
 const IngredientLi = styled.li`
@@ -82,6 +88,9 @@ const IngredientName = styled.div`
   h6 {
     padding: 3px 0;
     letter-spacing: 1.2px;
+  }
+  @media screen and (max-width: 500px) {
+    width: 300px;
   }
 `;
 

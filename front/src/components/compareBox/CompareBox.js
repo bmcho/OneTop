@@ -20,6 +20,7 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
 
   useEffect(() => {
     dispatch(checkProductCompareInfoAction());
+    return () => dispatch(checkProductCompareInfoAction());
   }, []);
 
   return (
@@ -35,14 +36,17 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
         <ItemTable>
           <thead>
             <tr>
-              <th></th>
               {data.map((d, index) => {
                 return (
                   <th key={`${d.id}${index}`}>
-                    <RemoveButton onClick={() => productRemoveHandle(d.id)}>
+                    <RemoveButton
+                      onClick={() => productRemoveHandle(d.product_num)}
+                    >
                       삭제
                     </RemoveButton>
-                    <Image src={d.img} width={92.5} height={92.5} />
+                    <ImageWrapper>
+                      <Image src={d.img_url} width={123} height={123} />
+                    </ImageWrapper>
                   </th>
                 );
               })}
@@ -50,27 +54,31 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
           </thead>
           <tbody>
             <tr>
-              <th>Brand</th>
               {data.map((d, index) => {
                 return <td key={`${d.id}${index}`}>{d.brand}</td>;
               })}
             </tr>
             <tr>
-              <th>Name</th>
               {data.map((d, index) => {
                 return <td key={`${d.id}${index}`}>{d.name}</td>;
               })}
             </tr>
             <tr>
-              <th>Price</th>
               {data.map((d, index) => {
                 return <td key={`${d.id}${index}`}>{d.price}</td>;
               })}
             </tr>
             <tr>
-              <th>Size</th>
               {data.map((d, index) => {
                 return <td key={`${d.id}${index}`}>{d.capacity}</td>;
+              })}
+            </tr>
+            <tr>
+              {data.map((d, index) => {
+                const hashTag = d.hashtag
+                  .slice(1, d.hashtag.length - 1)
+                  .split(',');
+                return <td key={`${d.id}${index}`}>{hashTag.join('\n')}</td>;
               })}
             </tr>
           </tbody>
@@ -90,6 +98,7 @@ const CompareBoxAnimation = keyframes`
 `;
 
 const CompareBoxBlock = styled.div`
+  box-sizing: border-box;
   position: fixed;
   bottom: 25px;
   right: 25px;
@@ -101,6 +110,15 @@ const CompareBoxBlock = styled.div`
   padding: 17px 22px 0;
   transform-origin: 100% 100%;
   animation: ${CompareBoxAnimation} 0.5s ease;
+  @media screen and (max-width: 500px) {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 `;
 
 const StyledMdOutlineClose = styled(MdOutlineClose)`
@@ -130,67 +148,69 @@ const Header = styled.div`
 `;
 
 const TextBlock = styled.div`
-  height: 618px;
+  height: calc(100% - 61px);
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const ItemsUl = styled.ul`
-  display: flex;
-`;
-
-const ItemLi = styled.li`
-  width: 92.5px;
-  display: flex;
-  flex-direction: column;
-  > div {
-    height: 92.5px;
-    border: 1px solid ${({ theme }) => theme.color.black};
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`;
-
 const ItemTable = styled.table`
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: 1.2px;
+  border-collapse: separate;
+  border-spacing: 2px;
+
   td,
   th {
-    width: 92.5px;
-    height: 80px;
+    width: 120px;
     text-align: center;
     vertical-align: middle;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    white-space: pre-wrap;
   }
+
   th {
     position: relative;
-    background-color: #fcc419;
     background-color: rgba(252, 196, 25, 0.4);
   }
-  thead th {
-    background-color: rgba(0, 0, 0, 0);
-    border: none;
+
+  tbody td {
+    padding: 20px 0;
+  }
+
+  tbody tr:first-child td {
+    padding: 40px 0 20px;
+  }
+
+  @media screen and (max-width: 500px) {
+    td,
+    th {
+      width: 110px;
+    }
   }
 `;
 
 const RemoveButton = styled.button`
   position: absolute;
+  right: 0;
   bottom: 0;
-  width: 92.5px;
-  height: 12px;
-  font-size: 10px;
+  width: 120px;
+  height: 15px;
+  font-size: 12px;
   z-index: 99;
-  background-color: ${({ theme }) => theme.color.gray5};
+  font-weight: 900;
+  background-color: rgba(252, 196, 25, 0.4);
   transition: all 0.5s ease;
-  color: ${({ theme }) => theme.color.white};
+  border-radius: 10px;
   &:hover {
     height: 100%;
     font-size: 18px;
-    font-weight: 900;
   }
 `;
 
+const ImageWrapper = styled.div`
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
+  overflow: hidden;
+`;
 export default CompareBox;

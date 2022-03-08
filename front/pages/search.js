@@ -23,5 +23,6 @@ const search = (props) => {
 const SearchPageBlock = styled.div`
   max-width: 1024px;
   margin: 0 auto;
+  margin-bottom: 100px;
 `;
 export default search;
