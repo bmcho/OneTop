@@ -37,8 +37,23 @@ const SearchHistory = (props) => {
     dispatch(
       setAutoCompleteKeywordAction(searchHistory[e.currentTarget.dataset.index])
     );
+    setSearchHistoryInLocal(searchHistory[e.currentTarget.dataset.index]);
+    setSearchHistory((cur) => {
+      const newArr = [...cur];
+      newArr.splice(e.currentTarget.dataset.index);
+      newArr.unshift(cur[e.currentTarget.dataset.index]);
+      return newArr;
+    });
   };
+  const setSearchHistoryInLocal = (newKeyword) => {
+    console.log('set', newKeyword);
+    const keywords = JSON.parse(localStorage.getItem('keywords')) || [];
 
+    const idx = keywords.findIndex((keyword) => keyword === newKeyword);
+    keywords.splice(idx, 1);
+    keywords.unshift(newKeyword);
+    localStorage.setItem('keywords', JSON.stringify(keywords));
+  };
   return (
     <div>
       {searchHistory.length !== 0 ? (

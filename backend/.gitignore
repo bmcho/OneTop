@@ -3,3 +3,4 @@ __pycache__
 alembic/versions/*.py
 .static
 sql_app.db
+versions/*.py

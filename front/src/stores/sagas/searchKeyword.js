@@ -9,7 +9,16 @@ import {
   clearAutoCompleteDataAction,
 } from '../modules/searchKeyword';
 import { finishLoading, startLoading } from '../modules/loading';
-
+function searchKeywordResultAPI(data) {
+  console.log('keyword saga', data);
+  const reqParam = {
+    keyword: data,
+    searchResultType: 'product',
+    requestPage: 0,
+    maxItemCountByPage: 10,
+  };
+  return axios.post('http://localhost/api/search/keyword', reqParam);
+}
 function loadTvShowAPI(data) {
   return axios.get(`https://api.tvmaze.com/search/shows?q=${data}`);
 }
@@ -18,8 +27,10 @@ function* loadTvShow(action) {
   yield put(clearAutoCompleteDataAction());
   yield put(startLoading());
   try {
-    const result = yield call(loadTvShowAPI, action.data);
-    yield put(loadDataSuccessAction(result.data));
+    console.log(action.data);
+    const result = yield call(searchKeywordResultAPI, action.data);
+    console.log(result);
+    yield put(loadDataSuccessAction(result.data.result));
   } catch (e) {
     console.error(e);
     yield put(loadDataFailureAction(e));
@@ -45,6 +56,6 @@ function* watchSearchResultData() {
   yield takeLatest(SET_SEARCH_KEYWORD, loadTvShow);
 }
 
-export default function* searchData() {
+export default function* searchKeyword() {
   yield all([fork(watchSearchResultData), fork(watchAutoCompleteData)]);
 }

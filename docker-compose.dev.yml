@@ -83,7 +83,11 @@ services:
 
   # migration:
   #   container_name: migration
+<<<<<<< HEAD
   #   platform: linux/x86_64
+=======
+  #   # platform: linux/x86_64
+>>>>>>> 1a114de9b77e9d64305ad3b8d4cde2bcc1e1b1fc
   #   env_file: .env
   #   build:
   #     context: ./datamigration
