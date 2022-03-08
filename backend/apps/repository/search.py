@@ -52,7 +52,7 @@ def get_product_by_keyword(db: Session, request: schemas.SearchKeyword):
     showList = productList[offset:limit]
 
     listLen = len(productList)
-    searchResult = schemas.SearchResultKeyword
+    searchResult = schemas.SearchResult
     searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
     searchResult.currentPage = request.requestPage
 

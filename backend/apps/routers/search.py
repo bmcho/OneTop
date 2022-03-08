@@ -29,7 +29,7 @@ def get_keyword_autocomplete(request: schemas.Keyword, db: Session = Depends(get
     return search.get_keyword_autocomplete(db, request)
 
 
-@router.post("/ingredient", response_model=schemas.SearchResultIngredient)
+@router.post("/ingredient", response_model=schemas.SearchResult)
 def search_ingredient(
     request: schemas.SearchIngredients, db: Session = Depends(get_db)
 ):
