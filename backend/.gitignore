@@ -1,4 +1,4 @@
 .secrets.json
 __pycache__
-versions/*.py
+alembic/versions/*.py
 
