@@ -1,15 +1,22 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setRequestDataAction,
+  setRequestPageAction,
+} from '../../../../stores/modules/searchKeyword';
+import Pagination from '../../../commons/pagination/Pagination';
 import Pagenation from '../../searchCategory/Pagenation';
 import SearchResultItem from '../../searchResultItem/SearchResultItem';
 
 const SearchResult = (props) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const {
     searchResultData,
     searchKeyword,
     autoCompleteKeyword,
+    requestPage,
     resultTotalPage,
   } = useSelector((state) => state.searchKeyword);
   const { loadingStatus } = useSelector((state) => state.loading);
@@ -23,6 +30,19 @@ const SearchResult = (props) => {
     router.push({
       pathname: `/detail/${product_num}`,
     });
+  };
+
+  const setCurrentPage = (page) => {
+    const sort = 'name asc';
+    dispatch(setRequestPageAction(page));
+
+    dispatch(
+      setRequestDataAction({
+        requestPage: page,
+        sort: sort,
+        keyword: searchKeyword,
+      })
+    );
   };
   if (loadingStatus) return <div>loading</div>;
   return (
@@ -42,6 +62,12 @@ const SearchResult = (props) => {
                 </a>
               ))}
             </div>
+            <Pagination
+              totalPage={resultTotalPage}
+              currentPage={requestPage}
+              setCurrentPage={setCurrentPage}
+              countByStep={5}
+            />
             {/* <Pagenation
               pathname={router.pathname}
               totalPage={resultTotalPage}

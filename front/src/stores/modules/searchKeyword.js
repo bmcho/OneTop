@@ -75,8 +75,10 @@ const searchKeyword = (state = initialState, action) => {
       return { ...state, autoCompleteData: [] };
     case SET_SEARCH_KEYWORD:
       return { ...state, searchKeyword: action.data };
+    case SET_REQUEST_PAGE:
+      return { ...state, requestPage: action.data };
     case SET_REQUEST_DATA:
-      return { ...state, searchKeyword: action.data };
+      return { ...state, requestData: action.data };
     case SET_RESULT_TOTAL_PAGE:
       return { ...state, resultTotalPage: action.data };
     case LOAD_DATA_SUCCESS:
