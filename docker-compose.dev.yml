@@ -1,6 +1,7 @@
 version: "3.2"
 
 # docker-compose.dev.yml build 방법
+# docker-compose -f docker-compose.dev.yml build --no-cache
 # docker-compose -f docker-compose.dev.yml up
 
 # 원활한 개발을 위해 nginx를 사용하지 않으셔도됩니다. Docker Service의 외부로부터의 Port는 모두 열어 놓았습니다.
@@ -83,11 +84,7 @@ services:
 
   # migration:
   #   container_name: migration
-<<<<<<< HEAD
-  #   platform: linux/x86_64
-=======
   #   # platform: linux/x86_64
->>>>>>> 1a114de9b77e9d64305ad3b8d4cde2bcc1e1b1fc
   #   env_file: .env
   #   build:
   #     context: ./datamigration
