@@ -8,6 +8,8 @@ import {
   clearAutoCompleteDataAction,
   setRequestPageAction,
   setRequestDataAction,
+  setResultTypeAction,
+  setSortAction,
 } from '../../../../stores/modules/searchKeyword';
 const SearchBar = (props) => {
   const inputRef = useRef();
@@ -80,16 +82,20 @@ const SearchBar = (props) => {
     dispatch(clearAutoCompleteDataAction());
   };
 
-  const requestSearchResult = (keyword) => {
+  const requestSearchResult = (keyword, type = 'product') => {
     //keyword history 저장, 검색결과 요청
     const requestPage = 0;
     const sort = 'name asc';
     dispatch(setRequestPageAction(requestPage));
     dispatch(setSearchKeywordAction(keyword));
+    dispatch(setResultTypeAction(type));
+    dispatch(setSortAction(sort));
+
     dispatch(
       setRequestDataAction({
         requestPage: requestPage,
         sort: sort,
+        searchResultType: type,
         keyword: keyword,
       })
     );

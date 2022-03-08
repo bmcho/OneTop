@@ -19,7 +19,7 @@ function searchKeywordResultAPI(data) {
   console.log('keyword saga', data);
   const reqParam = {
     keyword: data.keyword,
-    searchResultType: 'product',
+    searchResultType: data.searchResultType,
     requestPage: data.requestPage,
     maxItemCountByPage: 10,
     sort: data.sort,
@@ -42,8 +42,8 @@ function* loadKeywordSearchData(action) {
   yield put(clearAutoCompleteDataAction());
   yield put(startLoading());
   try {
-    console.log('keywordsearch', action.data);
-    if (action.data.length !== 0) {
+    console.log('keyword search', action.data);
+    if (action.data.keyword.length !== 0) {
       const result = yield call(searchKeywordResultAPI, action.data);
       console.log(result);
       yield put(loadDataSuccessAction(result.data.result));
