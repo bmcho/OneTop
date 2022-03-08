@@ -2,12 +2,25 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { setIngredientForSearchAction } from '../../../stores/modules/searchIngredient';
-import SearchBar from './searchBar/SearchBar';
+import {
+  setExcludeAutoCompleteKeywordAction,
+  setIncludeAutoCompleteKeywordAction,
+  setIngredientForSearchAction,
+  clearIncludeAutoCompleteDataAction,
+  clearExcludeAutoCompleteDataAction,
+} from '../../../stores/modules/searchIngredient';
+import { setAutoCompleteKeywordAction } from '../../../stores/modules/searchKeyword';
+import SearchBlock from './searchBlock/SearchBlock';
 import SearchIngredientResult from './searchIngredientResult/SearchIngredientResult';
 
 const SearchIngredient = (props) => {
   const dispatch = useDispatch();
+  const {
+    includeAutoCompleteKeyword,
+    excludeAutoCompleteKeyword,
+    includeAutoCompleteData,
+    excludeAutoCompleteData,
+  } = useSelector((state) => state.searchIngredient);
   const [includeKeywords, setIncludeKeywords] = useState([]);
   const [excludeKeywords, setExcludeKeywords] = useState([]);
   const getResult = () => {
@@ -23,15 +36,23 @@ const SearchIngredient = (props) => {
 
   return (
     <SearchIngredientBlock>
-      <SearchBar
+      <SearchBlock
         inputTitle={'포함할 성분'}
         keywords={includeKeywords}
         setKeywords={setIncludeKeywords}
+        setAutoKeywords={setIncludeAutoCompleteKeywordAction}
+        autoCompleteKeyword={includeAutoCompleteKeyword}
+        autoCompleteData={includeAutoCompleteData}
+        clearAutoCompleteData={clearIncludeAutoCompleteDataAction}
       />
-      <SearchBar
+      <SearchBlock
         inputTitle={'제외할 성분'}
         keywords={excludeKeywords}
         setKeywords={setExcludeKeywords}
+        setAutoKeywords={setExcludeAutoCompleteKeywordAction}
+        autoCompleteKeyword={excludeAutoCompleteKeyword}
+        autoCompleteData={excludeAutoCompleteData}
+        clearAutoCompleteData={clearExcludeAutoCompleteDataAction}
       />
       <SearchButtonWrap>
         <SearchButton onClick={getResult}>검색</SearchButton>
