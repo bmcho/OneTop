@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
 
 const ReviewItem = ({ name, date, rating, text }) => {
   const ref = useRef();
