@@ -245,10 +245,15 @@ class ReviewReturn(BaseModel):
     current_page: int
 
 
+"""
+recommand schema
+"""
+
+
 class KeywordList(BaseModel):
-    keyword: str
+    keyword: List[str]
 
 
 class KeywordCategoryList(BaseModel):
     category: str
-    keywords: List[KeywordList]
+    keywords: List[str]
