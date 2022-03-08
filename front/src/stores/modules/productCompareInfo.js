@@ -59,7 +59,7 @@ const productCompareInfo = (state = initialState, action) => {
     case REMOVE_PRODUCT_COMPARE_INFO:
       return {
         ...state,
-        data: state.data.filter((info) => info.product_num !== action.id),
+        data: state.data.filter((info) => info.id !== action.id),
       };
     case CHECK_PRODUCT_COMPARE_INFO:
       return {

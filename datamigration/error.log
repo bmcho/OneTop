@@ -1,54 +1,38 @@
-2022-03-02 18:18:14,877 - root - INFO - migration product
-2022-03-02 18:21:46,598 - root - INFO - migration ingredient
-2022-03-02 18:23:25,711 - root - INFO - migration descrip
-2022-03-02 18:32:44,434 - root - INFO - migration product_ingredient_relation
-2022-03-02 19:18:33,507 - root - INFO - migration product
-2022-03-02 19:25:07,350 - root - INFO - migration ingredient
-2022-03-02 19:26:06,047 - root - INFO - migration descrip
-2022-03-02 19:35:59,180 - root - INFO - migration product_ingredient_relation
-2022-03-03 13:04:07,628 - root - INFO - migration product
-2022-03-03 13:10:28,439 - root - INFO - migration ingredient
-2022-03-03 13:10:36,297 - root - INFO - descrip - 'product_num'
-2022-03-03 13:19:11,084 - root - INFO - migration product
-2022-03-03 13:25:41,251 - root - INFO - migration ingredient
-2022-03-03 13:25:49,059 - root - INFO - descrip - (1054, "Unknown column 'product_num' in 'where clause'")
-2022-03-03 13:29:47,994 - root - INFO - migration product
-2022-03-03 13:36:16,428 - root - INFO - migration ingredient
-2022-03-03 13:36:19,202 - root - INFO - descrip - 'product_num'
-2022-03-03 13:50:29,682 - root - INFO - migration product
-2022-03-03 13:56:51,375 - root - INFO - migration ingredient
-2022-03-03 13:56:54,138 - root - INFO - descrip - 'product_num'
-2022-03-03 14:11:19,689 - root - INFO - product - 'rating'
-2022-03-03 14:18:46,897 - root - INFO - migration product
-2022-03-03 14:21:50,934 - root - INFO - migration ingredient
-2022-03-03 14:21:53,755 - root - INFO - descrip - 'product_num'
-2022-03-03 14:24:14,964 - root - INFO - migration product
-2022-03-03 14:30:20,664 - root - INFO - migration ingredient
-2022-03-03 14:30:23,447 - root - INFO - descrip - (1054, "Unknown column 'product_num' in 'where clause'")
-2022-03-03 14:34:54,563 - root - INFO - migration product
-2022-03-03 14:40:56,759 - root - INFO - migration ingredient
-2022-03-03 14:42:34,607 - root - INFO - migration descrip
-2022-03-03 14:51:22,146 - root - INFO - migration product_ingredient_relation
-2022-03-04 07:35:06,462 - root - INFO - migration product
-2022-03-04 07:35:39,072 - root - INFO - migration ingredient
-2022-03-04 07:37:49,805 - root - INFO - migration descrip
-2022-03-04 08:50:50,649 - root - INFO - migration product
-2022-03-04 08:51:27,190 - root - INFO - migration ingredient
-2022-03-04 08:53:49,563 - root - INFO - migration descrip
-2022-03-04 09:03:15,062 - root - INFO - migration product
-2022-03-04 09:03:48,242 - root - INFO - migration ingredient
-2022-03-04 09:05:44,236 - root - INFO - migration descrip
-2022-03-04 09:22:58,933 - root - INFO - migration product
-2022-03-04 09:23:29,924 - root - INFO - migration ingredient
-2022-03-04 09:25:19,657 - root - INFO - migration descrip
-2022-03-04 09:36:25,967 - root - INFO - migration product_ingredient_relation
-2022-03-04 21:53:49,529 - root - INFO - migration product
-2022-03-04 21:54:16,625 - root - INFO - migration ingredient
-2022-03-04 21:55:40,486 - root - INFO - migration descrip
-2022-03-04 22:04:13,647 - root - INFO - migration product_ingredient_relation
-2022-03-07 05:09:17,464 - root - INFO - product - (1146, "Table 'onetop.product' doesn't exist")
-2022-03-07 05:16:03,165 - root - INFO - product - (1146, "Table 'onetop.product' doesn't exist")
-2022-03-07 05:23:11,707 - root - INFO - migration product
-2022-03-07 05:23:41,234 - root - INFO - migration ingredient
-2022-03-07 05:25:20,311 - root - INFO - migration descrip
-2022-03-07 05:36:24,054 - root - INFO - migration product_ingredient_relation
+2022-03-05 16:04:01,939 - root - INFO - product - (1054, "Unknown column 'capaciry' in 'field list'")
+2022-03-05 16:05:07,765 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:08:02,477 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:09:12,014 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:16:09,645 - root - INFO - migration product
+2022-03-05 16:16:30,042 - root - INFO - migration ingredient
+2022-03-05 16:17:21,887 - root - INFO - migration descrip
+2022-03-05 16:22:51,474 - root - INFO - migration product_ingredient_relation
+2022-03-05 16:25:29,031 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:27:58,447 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:29:20,332 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:30:05,677 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:30:17,025 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:30:31,616 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:30:36,786 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:30:42,010 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:30:55,287 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:31:01,202 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:31:06,084 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:31:17,791 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:32:16,202 - root - INFO - product - (1054, "Unknown column '가격미정' in 'field list'")
+2022-03-05 16:34:16,701 - root - INFO - migration product
+2022-03-05 16:37:29,945 - root - INFO - migration product
+2022-03-05 16:37:48,365 - root - INFO - migration ingredient
+2022-03-05 16:38:41,408 - root - INFO - product - (1054, "Unknown column '2g' in 'field list'")
+2022-03-05 16:39:16,442 - root - INFO - product - (1054, "Unknown column '2g' in 'field list'")
+2022-03-05 16:40:28,600 - root - INFO - product - [OperationalError(1054, "Unknown column '2g' in 'field list'"), ['2.5g', '2g ', ' 68,000원']]
+2022-03-05 17:19:40,262 - root - INFO - migration product
+2022-03-06 02:38:25,898 - root - INFO - product - (1146, "Table 'onetop.product' doesn't exist")
+2022-03-06 02:40:36,129 - root - INFO - product - (1146, "Table 'onetop.product' doesn't exist")
+2022-03-06 02:42:18,641 - root - INFO - product - (1146, "Table 'onetop.product' doesn't exist")
+2022-03-06 02:43:40,444 - root - INFO - product - (1146, "Table 'onetop.product' doesn't exist")
+2022-03-06 02:47:11,423 - root - INFO - product - (1146, "Table 'onetop.product' doesn't exist")
+2022-03-06 02:58:37,985 - root - INFO - migration product
+2022-03-06 02:58:56,414 - root - INFO - migration ingredient
+2022-03-06 02:59:46,426 - root - INFO - migration descrip
+2022-03-06 03:04:51,611 - root - INFO - migration product
+2022-03-06 03:09:30,382 - root - INFO - migration product

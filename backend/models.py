@@ -1,4 +1,8 @@
+import datetime
+from typing import Counter
+
 from sqlalchemy import (
+    DATETIME,
     TEXT,
     Boolean,
     Column,
@@ -33,9 +37,9 @@ class Product(Base):
     name = Column(String(100), nullable=False)
     img_url = Column(String(500), nullable=False)
     brand = Column(String(50), nullable=False)
-    average_rating = Column(Numeric)
+    average_rating = Column(Numeric(10, 2))
     capacity = Column(String(50))
-    price = Column(Integer())
+    price = Column(Integer)
     extinction = Column(Boolean, default=True)
 
     _descriptions = relationship("Descrip", back_populates="_products")
@@ -102,3 +106,30 @@ class Ingredient(Base):
 #     _ingredients = relationship(
 #         "Ingredient", backref=backref("productingredientrelation")
 #     )
+
+"""
+화장품 리뷰(익명성)
+"""
+
+
+class Review(Base):
+    __tablename__ = "review"
+
+    id = Column(Integer, primary_key=True, index=True)
+    fk_product_num = Column(Integer, ForeignKey("product.product_num"), index=True)
+    hashed_password = Column(String(200))
+    comment = Column(TEXT, nullable=False)
+    hash_tag = Column(TEXT, nullable=True)
+    create_date = Column(DATETIME, nullable=False, default=datetime.datetime.now)
+    modify_date = Column(DATETIME, nullable=True)
+    use_flag = Column(Boolean, default=True)
+
+    review_images = relationship("ReviewImage", backref="review", cascade="all,delete")
+
+
+class ReviewImage(Base):
+    __tablename__ = "review_image"
+
+    id = Column(Integer, primary_key=True, index=True)
+    fk_review_id = Column(Integer, ForeignKey("review.id"), index=True)
+    img_path = Column(String(200))
