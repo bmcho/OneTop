@@ -6,15 +6,15 @@ const ReviewItem = ({ name, date, rating, text }) => {
   const [isOverText, setIsOverText] = useState();
   const [moreText, setMoreText] = useState(false);
   const lineLimit = 5;
-  const lineHeight = 18;
+  const lineheight = 18;
 
   const moreTextHandle = () => {
     setMoreText((prev) => !prev);
   };
 
   useEffect(() => {
-    if (ref.current.clientHeight > lineHeight * lineLimit) {
-      ref.current.style.maxHeight = `${lineHeight * lineLimit}px`;
+    if (ref.current.clientHeight > lineheight * lineLimit) {
+      ref.current.style.maxHeight = `${lineheight * lineLimit}px`;
       ref.current.style.overflowY = 'hidden';
       setIsOverText(true);
     }
@@ -25,7 +25,7 @@ const ReviewItem = ({ name, date, rating, text }) => {
       ref.current.style.maxHeight = ``;
       ref.current.style.overflowY = '';
     } else {
-      ref.current.style.maxHeight = `${lineHeight * lineLimit}px`;
+      ref.current.style.maxHeight = `${lineheight * lineLimit}px`;
       ref.current.style.overflowY = 'hidden';
     }
   }, [moreText]);
@@ -37,7 +37,7 @@ const ReviewItem = ({ name, date, rating, text }) => {
         <span className="write_date">{date}</span>
       </div>
       <div className="review_rating">{rating}</div>
-      <p ref={ref} lineHeight={lineHeight}>
+      <p ref={ref} lineheight={lineheight}>
         {text}
       </p>
       {isOverText && <button onClick={moreTextHandle}>더보기</button>}
@@ -56,9 +56,9 @@ const ReviewItemLi = styled.li`
   .review_rating {
     margin-bottom: 20px;
   }
-  ${({ lineHeight }) => css`
+  ${({ lineheight }) => css`
     p {
-      line-height: ${lineHeight}px;
+      line-height: ${lineheight}px;
     }
   `}
   border: 1px solid ${({ theme }) => theme.color.lightGray1};

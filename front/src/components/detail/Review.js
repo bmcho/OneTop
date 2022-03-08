@@ -61,7 +61,7 @@ const ReviewHeader = styled.div`
   display: flex;
   justify-content: center;
   position: sticky;
-  padding: 15px;
+  padding: 15px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   background-color: ${({ theme }) => theme.color.yellow2};
   top: 0;

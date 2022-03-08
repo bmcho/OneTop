@@ -8,6 +8,7 @@ const Slider = ({ children }) => {
   const [currentSlide, setCurrentSlide] = useState(10);
   const [duration, setDuration] = useState(0);
   const [isMoving, setIsMoving] = useState(false);
+  const swipSize = 3;
 
   const ref = useRef();
 
@@ -20,22 +21,22 @@ const Slider = ({ children }) => {
   const next = () => {
     if (isMoving) return;
     setIsMoving(true);
-    setCurrentSlide((cur) => cur + 3);
+    setCurrentSlide((cur) => cur + swipSize);
   };
 
   const prev = () => {
     if (isMoving) return;
     setIsMoving(true);
-    setCurrentSlide((cur) => cur - 3);
+    setCurrentSlide((cur) => cur - swipSize);
   };
 
   const roof = () => {
     if (!isMoving) return;
 
-    if (currentSlide + 3 >= SLIDER_LENGTH + 10) {
+    if (currentSlide + swipSize >= SLIDER_LENGTH + 10) {
       setDuration(0);
       setCurrentSlide((cur) => cur - SLIDER_LENGTH);
-    } else if (currentSlide - 3 < 10) {
+    } else if (currentSlide - swipSize < 10) {
       setDuration(0);
       setCurrentSlide((cur) => cur + SLIDER_LENGTH);
     }
@@ -44,7 +45,7 @@ const Slider = ({ children }) => {
 
   return (
     <Wrapper>
-      <Btn onClick={prev}>
+      <Btn onClick={prev} className="left">
         <MdChevronLeft />
       </Btn>
       <Container>
@@ -59,7 +60,7 @@ const Slider = ({ children }) => {
             })}
         </SliderContainer>
       </Container>
-      <Btn onClick={next}>
+      <Btn onClick={next} className="right">
         <MdChevronRight />
       </Btn>
     </Wrapper>
@@ -70,7 +71,8 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  margin: 0 auto;
 `;
 
 const Container = styled.div`
@@ -79,6 +81,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   overflow-x: hidden;
+  position: relative;
 
   @media screen and (max-width: 1200px) {
     width: calc(130px * 6);
@@ -88,6 +91,9 @@ const Container = styled.div`
   }
   @media screen and (max-width: 600px) {
     width: calc(130px * 3);
+  }
+  @media screen and (max-width: 500px) {
+    width: 375px;
   }
 `;
 
@@ -121,6 +127,16 @@ const Btn = styled.div`
   border-radius: 30px;
   background-color: rgba(0, 0, 0, 0.2);
   cursor: pointer;
+  @media screen and (max-width: 500px) {
+    position: absolute;
+    z-index: 99;
+    &.left {
+      right: calc(100% - 40px);
+    }
+    &.right {
+      left: calc(100% - 40px);
+    }
+  }
 `;
 
 export default Slider;

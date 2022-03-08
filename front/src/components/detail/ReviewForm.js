@@ -10,6 +10,12 @@ const ReviewForm = () => {
             <input type="password" placeholder="비밀번호" />
           </ReviewWriterInfo>
           <ReviewTextArea placeholder="리뷰를 입력해주세요"></ReviewTextArea>
+          <ImageInputWrapper>
+            <label className="input-file-button" for="input-file">
+              업로드
+            </label>
+            <input type="file" id="input-file" style={{ display: 'none' }} />
+          </ImageInputWrapper>
         </InputWrapper>
         <SubmitWrapper>
           <button type="submit">등록</button>
@@ -29,23 +35,22 @@ const ReviewFormBlock = styled.div`
 
 const ReviewInput = styled.form`
   width: 100%;
-  height: 200px;
   display: flex;
   flex-direction: column;
 `;
 
 const InputWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   margin-bottom: 10px;
 `;
 
 const ReviewWriterInfo = styled.div`
   display: flex;
-  flex-direction: column;
   width: 20%;
-  padding: 0 20px 0 0;
+  margin-bottom: 5px;
   input + input {
-    margin-top: 5px;
+    margin-left: 5px;
   }
 `;
 
@@ -54,9 +59,16 @@ const ReviewTextArea = styled.textarea`
   height: 100px;
 `;
 
+const ImageInputWrapper = styled.div`
+  input {
+    width: 100px;
+    height: 100px;
+  }
+`;
+
 const SubmitWrapper = styled.div`
   display: flex;
-  flex-direction: row-reverse;
+  justify-content: center;
   button {
     padding: 5px 20px;
     border: 1px solid black;

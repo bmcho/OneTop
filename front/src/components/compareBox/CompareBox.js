@@ -98,6 +98,7 @@ const CompareBoxAnimation = keyframes`
 `;
 
 const CompareBoxBlock = styled.div`
+  box-sizing: border-box;
   position: fixed;
   bottom: 25px;
   right: 25px;
@@ -109,6 +110,15 @@ const CompareBoxBlock = styled.div`
   padding: 17px 22px 0;
   transform-origin: 100% 100%;
   animation: ${CompareBoxAnimation} 0.5s ease;
+  @media screen and (max-width: 500px) {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 `;
 
 const StyledMdOutlineClose = styled(MdOutlineClose)`
@@ -138,27 +148,10 @@ const Header = styled.div`
 `;
 
 const TextBlock = styled.div`
-  height: 618px;
+  height: calc(100% - 61px);
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const ItemsUl = styled.ul`
-  display: flex;
-`;
-
-const ItemLi = styled.li`
-  width: 92.5px;
-  display: flex;
-  flex-direction: column;
-  > div {
-    height: 92.5px;
-    border: 1px solid ${({ theme }) => theme.color.black};
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 `;
 
 const ItemTable = styled.table`
@@ -187,6 +180,13 @@ const ItemTable = styled.table`
 
   tbody tr:first-child td {
     padding: 40px 0 20px;
+  }
+
+  @media screen and (max-width: 500px) {
+    td,
+    th {
+      width: 110px;
+    }
   }
 `;
 
