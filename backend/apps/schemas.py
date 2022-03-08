@@ -31,39 +31,10 @@ class ProductList(BaseModel):
         orm_mode = True
 
 
-class ProductIdList(BaseModel):
-    product_id: List[int]
-
-
-class IngredientIdList(BaseModel):
-    ingredient_id: int
-
-
 class SearchResult(BaseModel):
     totalPageCount: int
     currentPage: int
     result: List[ProductList]
-
-    class Config:
-        orm_mode = True
-
-
-class ProductNameList(BaseModel):
-    name: str
-
-    class Config:
-        orm_mode = True
-
-
-class ProductBrandList(BaseModel):
-    brand: str
-
-    class Config:
-        orm_mode = True
-
-
-class KoIngredientList(BaseModel):
-    ko_ingredient: str
 
     class Config:
         orm_mode = True
@@ -84,28 +55,6 @@ class KeywordAutocompleteList(BaseModel):
 
 class IngredientAutocompleteList(BaseModel):
     ingredientList: List[str]
-
-    class Config:
-        orm_mode = True
-
-
-class SearchResultKeyword(BaseModel):
-    totalPageCount: int
-    currentPage: int
-    result: List[ProductList]
-    productList: List[str]
-    brandList: List[str]
-    ingredientList: List[str]
-
-    class Config:
-        orm_mode = True
-
-
-class SearchResultIngredient(BaseModel):
-    totalPageCount: int
-    currentPage: int
-    result: List[ProductList]
-    ingredientList: List[KoIngredientList]
 
     class Config:
         orm_mode = True
@@ -134,10 +83,6 @@ class SearchIngredients(BaseModel):
     maxItemCountByPage: int
     sort: str
     # requestPage, maxItemCountByPage,sort가 공통 인자. 상속관계 만들기 가능.
-
-
-class DetailId(BaseModel):
-    id: int
 
 
 class IngredientList(BaseModel):
