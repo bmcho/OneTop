@@ -30,7 +30,9 @@ def get_keyword_autocomplete(request: schemas.Keyword, db: Session = Depends(get
 
 
 @router.post("/ingredient", response_model=schemas.SearchResultIngredient)
-def search_ingredient(request: schemas.Keyword, db: Session = Depends(get_db)):
+def search_ingredient(
+    request: schemas.SearchIngredients, db: Session = Depends(get_db)
+):
     return search.get_product_by_ingredient(db, request)
 
 
