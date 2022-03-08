@@ -14,7 +14,7 @@ export const GlobalStyle = createGlobalStyle`
     html{
         font-size: 16px;
         -webkit-text-size-adjust: none;
-        font-family:  Montserrat,-apple-system,BlinkMacSystemFont,helvetica,Apple SD Gothic Neo,sans-serif;       
+        font-family: -apple-system,BlinkMacSystemFont,helvetica,Apple SD Gothic Neo,sans-serif;       
         font-display: fallback;
         ${media.tablet}{
             font-size: 14px;

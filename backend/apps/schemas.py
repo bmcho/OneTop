@@ -1,7 +1,21 @@
+from datetime import datetime
 from typing import List, Optional
 
 from fastapi import Depends
 from pydantic import BaseModel
+
+"""
+create_date, modify_data
+"""
+
+
+class BaseClass(BaseModel):
+    create_data: datetime
+    modify_data: Optional[datetime] = None
+
+
+class Message(BaseModel):
+    message: str
 
 
 class ProductList(BaseModel):
@@ -168,10 +182,64 @@ class ProductDescription(BaseModel):
         orm_mode = True
 
 
-class KeywordList(BaseModel):
-    keyword: str
+"""
+review schema
+"""
+
+"""
+base
+"""
 
 
-class KeywordCategoryList(BaseModel):
-    category: str
-    keywordList: List[str]
+class ReviewBase(BaseModel):
+    id: Optional[int] = None
+    fk_product_num: int
+
+
+"""
+create, modify, delete
+"""
+
+
+class ReviewManipulation(ReviewBase):
+    password: str
+    comment: str = None
+    images: List[Optional[str]] = None
+
+    class Config:
+        orm_mode = True
+
+
+class ReviewDelete(ReviewBase):
+    password: str
+
+    class Config:
+        orm_mode = True
+
+
+"""
+search
+"""
+
+
+class ReviewSearchImage(BaseModel):
+    img_path: Optional[str] = None
+
+    class Config:
+        orm_mode = True
+
+
+class ReviewSearch(ReviewBase):
+    comment: str
+    review_images: List[Optional[ReviewSearchImage]] = None
+    create_date: datetime
+    modify_data: Optional[datetime] = None
+
+    class Config:
+        orm_mode = True
+
+
+class ReviewReturn(BaseModel):
+    data: List[Optional[ReviewSearch]] = None
+    total_page: int
+    current_page: int

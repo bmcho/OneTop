@@ -15,8 +15,6 @@ WORKDIR /srv/client
 
 COPY . /srv/client
 
-RUN apk update && apk add bash
-
 ENTRYPOINT ["sh", "entrypoint.sh"]
 
 #만약 필요한 ENV(환경변수)가 있다면
