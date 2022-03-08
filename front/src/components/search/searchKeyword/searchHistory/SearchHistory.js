@@ -7,6 +7,7 @@ import { AiOutlineFileSearch } from 'react-icons/ai';
 import {
   setAutoCompleteKeywordAction,
   setSearchKeywordAction,
+  setRequestDataAction,
 } from '../../../../stores/modules/searchKeyword';
 import { theme } from '../../../../../styles/theme';
 
@@ -31,13 +32,19 @@ const SearchHistory = (props) => {
   };
 
   const clickHistoryItem = (e) => {
+    const requestPage = 0;
+    const sort = 'name asc';
+    const keyword = searchHistory[e.currentTarget.dataset.index];
+    dispatch(setSearchKeywordAction(keyword));
     dispatch(
-      setSearchKeywordAction(searchHistory[e.currentTarget.dataset.index])
+      setRequestDataAction({
+        requestPage: requestPage,
+        sort: sort,
+        keyword: keyword,
+      })
     );
-    dispatch(
-      setAutoCompleteKeywordAction(searchHistory[e.currentTarget.dataset.index])
-    );
-    setSearchHistoryInLocal(searchHistory[e.currentTarget.dataset.index]);
+    dispatch(setAutoCompleteKeywordAction(keyword));
+    setSearchHistoryInLocal(keyword);
     setSearchHistory((cur) => {
       const newArr = [...cur];
       newArr.splice(e.currentTarget.dataset.index);

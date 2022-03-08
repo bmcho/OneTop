@@ -5,24 +5,28 @@ import { theme } from '../../../styles/theme';
 import { useRouter } from 'next/router';
 
 const ProductInfo = ({
-  img,
-  hashTag,
+  img_url,
+  hashtag,
   name,
   brand,
-  capacity,
   price,
+  capacity,
   modalOpenHandle,
   addCompareBoxHandle,
 }) => {
+  const hashTag = hashtag.slice(1, hashtag.length - 1).split(',');
   return (
     <Container>
-      <Image
-        src={img}
-        alt={'상품이미지'}
-        width={450}
-        height={450}
-        layout="fixed"
-      />
+      <ImageWrapper>
+        <Image
+          src={img_url}
+          alt={'상품이미지'}
+          width={450}
+          height={450}
+          layout="responsive"
+        />
+      </ImageWrapper>
+
       <InfoContainer>
         <TagUl>
           {hashTag &&
@@ -66,11 +70,24 @@ const Container = styled.div`
   display: flex;
   padding: 0 40px;
   justify-content: space-between;
-  margin-top: 100px;
+  margin-top: 50px;
   margin-bottom: 100px;
   @media screen and (max-width: 860px) {
+    width: 100%;
     flex-direction: column;
     align-items: center;
+    padding: 0;
+  }
+`;
+
+const ImageWrapper = styled.div`
+  display: block;
+  overflow: hidden;
+  width: 450px;
+  height: 450px;
+  @media screen and (max-width: 500px) {
+    width: 350px;
+    height: 350px;
   }
 `;
 
@@ -89,6 +106,9 @@ const InfoContainer = styled.ul`
   @media screen and (max-width: 860px) {
     margin-right: 0;
     width: 380px;
+  }
+  @media screen and (max-width: 500px) {
+    width: 350px;
   }
 `;
 

@@ -3,7 +3,9 @@ export const initialState = {
   searchKeyword: '',
   autoCompleteData: [],
   searchResultData: [],
-  searchKeywordHistory: [],
+  requestPage: 0,
+  resultTotalPage: 0,
+  requestData: {},
   searchKeywordError: '',
 };
 
@@ -12,10 +14,11 @@ export const SET_SEARCH_KEYWORD = 'SET_SEARCH_KEYWORD';
 export const LOAD_AUTO_COMPLETE_DATA_SUCCESS =
   'LOAD_AUTO_COMPLETE_DATA_SUCCESS';
 export const CLEAR_AUTO_COMPLETE_DATA = 'CLEAR_AUTO_COMPLETE_DATA';
+export const SET_REQUEST_PAGE = 'SET_REQUEST_PAGE';
+export const SET_REQUEST_DATA = 'SET_REQUEST_DATA';
+export const SET_RESULT_TOTAL_PAGE = 'SET_RESULT_TOTAL_PAGE';
 export const LOAD_DATA_SUCCESS = 'LOAD_DATA_SUCCESS';
 export const LOAD_DATA_FAILURE = 'LOAD_DATA_FAILURE';
-export const SET_SEARCH_KEYWORD_HISTORY = 'SET_SEARCH_KEYWORD_HISTORY';
-export const DELETE_SEARCH_KEYWORD_HISTORY = 'DELETE_SEARCH_KEYWORD_HISTORY';
 
 export const setAutoCompleteKeywordAction = (data) => ({
   type: SET_AUTO_COMPLETE_KEYWORD,
@@ -36,6 +39,19 @@ export const clearAutoCompleteDataAction = () => ({
   type: CLEAR_AUTO_COMPLETE_DATA,
 });
 
+export const setRequestPageAction = (data) => ({
+  type: SET_REQUEST_PAGE,
+  data,
+});
+
+export const setRequestDataAction = (data) => ({
+  type: SET_REQUEST_DATA,
+  data,
+});
+export const setResultTotalPage = (data) => ({
+  type: SET_RESULT_TOTAL_PAGE,
+  data,
+});
 export const loadDataSuccessAction = (data) => ({
   type: LOAD_DATA_SUCCESS,
   data,
@@ -46,37 +62,29 @@ export const loadDataFailureAction = (error) => ({
   error,
 });
 
-export const setSearchKeywordHistoryAction = (data) => ({
-  type: SET_SEARCH_KEYWORD_HISTORY,
-  data,
-});
-export const deleteSearchKeywordHistoryAction = (data) => ({
-  type: DELETE_SEARCH_KEYWORD_HISTORY,
-  data,
-});
-
 const searchKeyword = (state = initialState, action) => {
   switch (action.type) {
     case SET_AUTO_COMPLETE_KEYWORD:
       return { ...state, autoCompleteKeyword: action.data };
     case LOAD_AUTO_COMPLETE_DATA_SUCCESS:
-      const autoCompleteData = action.data.map((tvShow) => ({
-        id: tvShow.show.id,
-        name: tvShow.show.name,
-      }));
-      return { ...state, autoCompleteData: autoCompleteData };
+      console.log(action.data);
+      const result = [...action.data.productList, ...action.data.brandList];
+      console.log(result);
+      return { ...state, autoCompleteData: result };
     case CLEAR_AUTO_COMPLETE_DATA:
       return { ...state, autoCompleteData: [] };
     case SET_SEARCH_KEYWORD:
       return { ...state, searchKeyword: action.data };
+    case SET_REQUEST_PAGE:
+      return { ...state, requestPage: action.data };
+    case SET_REQUEST_DATA:
+      return { ...state, requestData: action.data };
+    case SET_RESULT_TOTAL_PAGE:
+      return { ...state, resultTotalPage: action.data };
     case LOAD_DATA_SUCCESS:
       return { ...state, searchResultData: action.data };
     case LOAD_DATA_FAILURE:
       return { ...state, searchKeywordError: action.error };
-    case DELETE_SEARCH_KEYWORD_HISTORY:
-      const keywords = [...state.searchKeywordHistory];
-      keywords.splice(parseInt(action.data), 1);
-      return { ...state, searchKeywordHistory: keywords };
     default:
       return state;
   }

@@ -6,11 +6,15 @@ import SearchHistory from './searchHistory/SearchHistory';
 import SearchResult from './searchResult/SearchResult';
 import styled from 'styled-components';
 import SearchBar from '../searchKeyword/searchBar/SearchBar';
+import Pagenation from '../searchCategory/Pagenation';
+import { useRouter } from 'next/router';
 
 const SearchKeyword = (props) => {
+  const router = useRouter();
   const { searchKeyword, autoCompleteKeyword } = useSelector(
     (state) => state.searchKeyword
   );
+
   return (
     <SearchKeywordBlock>
       <SearchBar />
@@ -18,6 +22,7 @@ const SearchKeyword = (props) => {
       {autoCompleteKeyword.length === 0 && searchKeyword.length === 0 && (
         <SearchHistory />
       )}
+      {/* <Pagenation  path={router.pathname}/> */}
     </SearchKeywordBlock>
   );
 };

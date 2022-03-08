@@ -1,4 +1,5 @@
-import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
+import { all, fork, takeLatest, call, put, debounce } from 'redux-saga/effects';
+// import { delay } from 'redux-saga';
 import axios from 'axios';
 import {
   loadAutoCompleteDataSuccessAction,
@@ -7,30 +8,47 @@ import {
   SET_SEARCH_KEYWORD,
   SET_AUTO_COMPLETE_KEYWORD,
   clearAutoCompleteDataAction,
+  SET_REQUEST_DATA,
+  setResultTotalPage,
 } from '../modules/searchKeyword';
 import { finishLoading, startLoading } from '../modules/loading';
+
+const delay = 500;
+
 function searchKeywordResultAPI(data) {
   console.log('keyword saga', data);
   const reqParam = {
-    keyword: data,
+    keyword: data.keyword,
     searchResultType: 'product',
-    requestPage: 0,
+    requestPage: data.requestPage,
     maxItemCountByPage: 10,
+    sort: data.sort,
   };
   return axios.post('http://localhost/api/search/keyword', reqParam);
 }
-function loadTvShowAPI(data) {
-  return axios.get(`https://api.tvmaze.com/search/shows?q=${data}`);
+
+function searchKeywordAutoCompleteAPI(data) {
+  console.log('saga', data);
+  const reqParam = {
+    keyword: data,
+  };
+  return axios.post(
+    `http://localhost/api/search/keyword/autocomplete`,
+    reqParam
+  );
 }
 
-function* loadTvShow(action) {
+function* loadKeywordSearchData(action) {
   yield put(clearAutoCompleteDataAction());
   yield put(startLoading());
   try {
-    console.log(action.data);
-    const result = yield call(searchKeywordResultAPI, action.data);
-    console.log(result);
-    yield put(loadDataSuccessAction(result.data.result));
+    console.log('keywordsearch', action.data);
+    if (action.data.length !== 0) {
+      const result = yield call(searchKeywordResultAPI, action.data);
+      console.log(result);
+      yield put(loadDataSuccessAction(result.data.result));
+      yield put(setResultTotalPage(result.data.totalPageCount));
+    }
   } catch (e) {
     console.error(e);
     yield put(loadDataFailureAction(e));
@@ -40,20 +58,24 @@ function* loadTvShow(action) {
 
 function* loadAutoCompleteData(action) {
   try {
-    const result = yield call(loadTvShowAPI, action.data);
-    yield put(loadAutoCompleteDataSuccessAction(result.data));
+    console.log(action, action.data.length, 'action.data.length');
+    if (action.data.length !== 0) {
+      const result = yield call(searchKeywordAutoCompleteAPI, action.data);
+      console.log('auto api result', result);
+      yield put(loadAutoCompleteDataSuccessAction(result.data));
+    }
   } catch (e) {
     console.error(e);
     yield put(loadDataFailureAction(e));
   }
 }
 
-function* watchAutoCompleteData() {
-  yield takeLatest(SET_AUTO_COMPLETE_KEYWORD, loadAutoCompleteData);
+function* watchSearchResultData() {
+  yield takeLatest(SET_REQUEST_DATA, loadKeywordSearchData);
 }
 
-function* watchSearchResultData() {
-  yield takeLatest(SET_SEARCH_KEYWORD, loadTvShow);
+function* watchAutoCompleteData() {
+  yield debounce(delay, SET_AUTO_COMPLETE_KEYWORD, loadAutoCompleteData);
 }
 
 export default function* searchKeyword() {
