@@ -14,7 +14,7 @@ router = APIRouter(
 )
 
 
-@router.get("/{category}", response_model=List[schemas.KeywordList])
+@router.get("/{category}", response_model=schemas.KeywordList)
 def call_keywords(category: str):
     return home.call_keywords(category)
 

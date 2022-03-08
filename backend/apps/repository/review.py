@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from models import Review, ReviewImage
 
-from ..core import hashing_password, utill
+from ..core import hashing_password, util
 from ..schemas import ReviewDelete, ReviewManipulation
 
 """
@@ -34,7 +34,7 @@ def get_reviews(product_num: int, page: int, db: Session):
     )
     for review in return_review:
         for review_image in review.review_images:
-            review_image.img_path = utill.encoding_base64(review_image.img_path)
+            review_image.img_path = util.encoding_base64(review_image.img_path)
 
     return {"data": return_review, "total_page": totalPage, "current_page": currentPage}
 
@@ -56,7 +56,7 @@ def post_reviews_create(request: ReviewManipulation, db: Session):
         )
         image_list = []
         for image in request.images:
-            review_image = ReviewImage(img_path=utill.IMAGE_DIR + "/" + image)
+            review_image = ReviewImage(img_path=util.IMAGE_DIR + "/" + image)
             image_list.append(review_image)
             db.add(review_image)
 
@@ -65,7 +65,6 @@ def post_reviews_create(request: ReviewManipulation, db: Session):
         db.commit()
     except Exception as ex:
         print(ex)
-
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Error, In running the Database",
@@ -73,7 +72,7 @@ def post_reviews_create(request: ReviewManipulation, db: Session):
 
     return_review = db.query(Review).filter(Review.id == reveiw_data.id).first()
     for review_image in return_review.review_images:
-        review_image.img_path = utill.encoding_base64(review_image.img_path)
+        review_image.img_path = util.encoding_base64(review_image.img_path)
 
     return return_review
 
@@ -82,9 +81,10 @@ def post_image_upload(files: List[UploadFile]):
 
     try:
         for file in files:
-            with open(utill.IMAGE_DIR + "/" + file.filename, "wb") as file_object:
+            with open(util.IMAGE_DIR + "/" + file.filename, "wb") as file_object:
                 file_object.write(file.file.read())
-    except:
+    except Exception as ex:
+        print(ex)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Error, uploading image",
@@ -134,7 +134,7 @@ def post_reviews_modify(request: ReviewManipulation, db: Session):
 
         image_list = []
         for image in request.images:
-            review_image = ReviewImage(img_path=utill.IMAGE_DIR + "/" + image)
+            review_image = ReviewImage(img_path=util.IMAGE_DIR + "/" + image)
             image_list.append(review_image)
             db.add(review_image)
 
