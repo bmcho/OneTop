@@ -18,7 +18,7 @@ class Message(BaseModel):
     message: str
 
 
-class ProductList(BaseModel):
+class Product(BaseModel):
     product_num: int
     name: str
     img_url: str
@@ -26,6 +26,14 @@ class ProductList(BaseModel):
     average_rating: float
     capacity: str
     price: int
+    keywords: List[Optional[str]] = None
+
+    class Config:
+        orm_mode = True
+
+
+class ProductList(Product):
+    hashtag: Optional[str] = ""
 
     class Config:
         orm_mode = True
@@ -77,8 +85,8 @@ class SearchCategory(BaseModel):
 
 
 class SearchIngredients(BaseModel):
-    includeIngredient: List[str]
-    excludeIngredient: List[str]
+    includeIngredient: List[Optional[str]] = None
+    excludeIngredient: List[Optional[str]] = None
     requestPage: int
     maxItemCountByPage: int
     sort: str
