@@ -28,7 +28,7 @@ def get_product_by_category(db: Session, request: schemas.SearchCategory):
     productList = get_productList_category(db, sort, request)
 
     showList = productList[offset:limit]
-
+    print(showList)
     listLen = len(productList)
     searchResult = schemas.SearchResult
     searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
@@ -144,7 +144,18 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
 
     if sort == "name desc":
         productList = (
-            db.query(models.Product)
+            db.query(
+                models.Product.product_num,
+                models.Product.name,
+                models.Product.img_url,
+                models.Product.brand,
+                models.Product.average_rating,
+                models.Product.capacity,
+                models.Product.price,
+                models.Product.extinction,
+                models.Product.keywords,
+                models.Descrip.hashtag,
+            )
             .join(models.Descrip, models.Product._descriptions)
             .filter(
                 (models.Descrip.major_classification.like(searchLarge))
@@ -157,7 +168,18 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
         )
     if sort == "name asc":
         productList = (
-            db.query(models.Product)
+            db.query(
+                models.Product.product_num,
+                models.Product.name,
+                models.Product.img_url,
+                models.Product.brand,
+                models.Product.average_rating,
+                models.Product.capacity,
+                models.Product.price,
+                models.Product.extinction,
+                models.Product.keywords,
+                models.Descrip.hashtag,
+            )
             .join(models.Descrip, models.Product._descriptions)
             .filter(
                 (models.Descrip.major_classification.like(searchLarge))
@@ -168,9 +190,21 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
             .order_by(models.Product.name)
             .all()
         )
+
     if sort == "price desc":
         productList = (
-            db.query(models.Product)
+            db.query(
+                models.Product.product_num,
+                models.Product.name,
+                models.Product.img_url,
+                models.Product.brand,
+                models.Product.average_rating,
+                models.Product.capacity,
+                models.Product.price,
+                models.Product.extinction,
+                models.Product.keywords,
+                models.Descrip.hashtag,
+            )
             .join(models.Descrip, models.Product._descriptions)
             .filter(
                 (models.Descrip.major_classification.like(searchLarge))
@@ -183,7 +217,18 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
         )
     if sort == "price asc":
         productList = (
-            db.query(models.Product)
+            db.query(
+                models.Product.product_num,
+                models.Product.name,
+                models.Product.img_url,
+                models.Product.brand,
+                models.Product.average_rating,
+                models.Product.capacity,
+                models.Product.price,
+                models.Product.extinction,
+                models.Product.keywords,
+                models.Descrip.hashtag,
+            )
             .join(models.Descrip, models.Product._descriptions)
             .filter(
                 (models.Descrip.major_classification.like(searchLarge))
@@ -206,7 +251,19 @@ def get_productList_keyword(
     if searchType == "product":
         if sort == "name desc":
             productList = (
-                db.query(models.Product)
+                db.query(
+                    models.Product.product_num,
+                    models.Product.name,
+                    models.Product.img_url,
+                    models.Product.brand,
+                    models.Product.average_rating,
+                    models.Product.capacity,
+                    models.Product.price,
+                    models.Product.extinction,
+                    models.Product.keywords,
+                    models.Descrip.hashtag,
+                )
+                .join(models.Descrip, models.Product._descriptions)
                 .filter((models.Product.name.like(search)) & (models.Product.price > 0))
                 .order_by(models.Product.extinction.desc())
                 .order_by(models.Product.name.desc())
@@ -214,7 +271,19 @@ def get_productList_keyword(
             )
         if sort == "name asc":
             productList = (
-                db.query(models.Product)
+                db.query(
+                    models.Product.product_num,
+                    models.Product.name,
+                    models.Product.img_url,
+                    models.Product.brand,
+                    models.Product.average_rating,
+                    models.Product.capacity,
+                    models.Product.price,
+                    models.Product.extinction,
+                    models.Product.keywords,
+                    models.Descrip.hashtag,
+                )
+                .join(models.Descrip, models.Product._descriptions)
                 .filter((models.Product.name.like(search)) & (models.Product.price > 0))
                 .order_by(models.Product.extinction.desc())
                 .order_by(models.Product.name)
@@ -222,7 +291,19 @@ def get_productList_keyword(
             )
         if sort == "price desc":
             productList = (
-                db.query(models.Product)
+                db.query(
+                    models.Product.product_num,
+                    models.Product.name,
+                    models.Product.img_url,
+                    models.Product.brand,
+                    models.Product.average_rating,
+                    models.Product.capacity,
+                    models.Product.price,
+                    models.Product.extinction,
+                    models.Product.keywords,
+                    models.Descrip.hashtag,
+                )
+                .join(models.Descrip, models.Product._descriptions)
                 .filter((models.Product.name.like(search)) & (models.Product.price > 0))
                 .order_by(models.Product.extinction.desc())
                 .order_by(models.Product.price.desc())
@@ -230,7 +311,19 @@ def get_productList_keyword(
             )
         if sort == "price asc":
             productList = (
-                db.query(models.Product)
+                db.query(
+                    models.Product.product_num,
+                    models.Product.name,
+                    models.Product.img_url,
+                    models.Product.brand,
+                    models.Product.average_rating,
+                    models.Product.capacity,
+                    models.Product.price,
+                    models.Product.extinction,
+                    models.Product.keywords,
+                    models.Descrip.hashtag,
+                )
+                .join(models.Descrip, models.Product._descriptions)
                 .filter((models.Product.name.like(search)) & (models.Product.price > 0))
                 .order_by(models.Product.extinction.desc())
                 .order_by(models.Product.price)
@@ -240,7 +333,19 @@ def get_productList_keyword(
         search = search.upper()
         if sort == "name desc":
             productList = (
-                db.query(models.Product)
+                db.query(
+                    models.Product.product_num,
+                    models.Product.name,
+                    models.Product.img_url,
+                    models.Product.brand,
+                    models.Product.average_rating,
+                    models.Product.capacity,
+                    models.Product.price,
+                    models.Product.extinction,
+                    models.Product.keywords,
+                    models.Descrip.hashtag,
+                )
+                .join(models.Descrip, models.Product._descriptions)
                 .filter(
                     (models.Product.brand.like(search)) & (models.Product.price > 0)
                 )
@@ -250,7 +355,19 @@ def get_productList_keyword(
             )
         if sort == "name asc":
             productList = (
-                db.query(models.Product)
+                db.query(
+                    models.Product.product_num,
+                    models.Product.name,
+                    models.Product.img_url,
+                    models.Product.brand,
+                    models.Product.average_rating,
+                    models.Product.capacity,
+                    models.Product.price,
+                    models.Product.extinction,
+                    models.Product.keywords,
+                    models.Descrip.hashtag,
+                )
+                .join(models.Descrip, models.Product._descriptions)
                 .filter(
                     (models.Product.brand.like(search)) & (models.Product.price > 0)
                 )
@@ -260,7 +377,19 @@ def get_productList_keyword(
             )
         if sort == "price desc":
             productList = (
-                db.query(models.Product)
+                db.query(
+                    models.Product.product_num,
+                    models.Product.name,
+                    models.Product.img_url,
+                    models.Product.brand,
+                    models.Product.average_rating,
+                    models.Product.capacity,
+                    models.Product.price,
+                    models.Product.extinction,
+                    models.Product.keywords,
+                    models.Descrip.hashtag,
+                )
+                .join(models.Descrip, models.Product._descriptions)
                 .filter(
                     (models.Product.brand.like(search)) & (models.Product.price > 0)
                 )
@@ -270,7 +399,19 @@ def get_productList_keyword(
             )
         if sort == "price asc":
             productList = (
-                db.query(models.Product)
+                db.query(
+                    models.Product.product_num,
+                    models.Product.name,
+                    models.Product.img_url,
+                    models.Product.brand,
+                    models.Product.average_rating,
+                    models.Product.capacity,
+                    models.Product.price,
+                    models.Product.extinction,
+                    models.Product.keywords,
+                    models.Descrip.hashtag,
+                )
+                .join(models.Descrip, models.Product._descriptions)
                 .filter(
                     (models.Product.brand.like(search)) & (models.Product.price > 0)
                 )
@@ -283,7 +424,19 @@ def get_productList_keyword(
     elif searchType == "ingredient":
         if sort == "name desc":
             productList = (
-                db.query(models.Product)
+                db.query(
+                    models.Product.product_num,
+                    models.Product.name,
+                    models.Product.img_url,
+                    models.Product.brand,
+                    models.Product.average_rating,
+                    models.Product.capacity,
+                    models.Product.price,
+                    models.Product.extinction,
+                    models.Product.keywords,
+                    models.Descrip.hashtag,
+                )
+                .join(models.Descrip, models.Product._descriptions)
                 .join(models.Ingredient, models.Product._ingredients)
                 .filter(
                     models.Ingredient.ko_ingredient.like(search)
@@ -295,7 +448,19 @@ def get_productList_keyword(
             )
         if sort == "name asc":
             productList = (
-                db.query(models.Product)
+                db.query(
+                    models.Product.product_num,
+                    models.Product.name,
+                    models.Product.img_url,
+                    models.Product.brand,
+                    models.Product.average_rating,
+                    models.Product.capacity,
+                    models.Product.price,
+                    models.Product.extinction,
+                    models.Product.keywords,
+                    models.Descrip.hashtag,
+                )
+                .join(models.Descrip, models.Product._descriptions)
                 .join(models.Ingredient, models.Product._ingredients)
                 .filter(
                     models.Ingredient.ko_ingredient.like(search)
@@ -307,7 +472,19 @@ def get_productList_keyword(
             )
         if sort == "price desc":
             productList = (
-                db.query(models.Product)
+                db.query(
+                    models.Product.product_num,
+                    models.Product.name,
+                    models.Product.img_url,
+                    models.Product.brand,
+                    models.Product.average_rating,
+                    models.Product.capacity,
+                    models.Product.price,
+                    models.Product.extinction,
+                    models.Product.keywords,
+                    models.Descrip.hashtag,
+                )
+                .join(models.Descrip, models.Product._descriptions)
                 .join(models.Ingredient, models.Product._ingredients)
                 .filter(
                     models.Ingredient.ko_ingredient.like(search)
@@ -319,7 +496,19 @@ def get_productList_keyword(
             )
         if sort == "price asc":
             productList = (
-                db.query(models.Product)
+                db.query(
+                    models.Product.product_num,
+                    models.Product.name,
+                    models.Product.img_url,
+                    models.Product.brand,
+                    models.Product.average_rating,
+                    models.Product.capacity,
+                    models.Product.price,
+                    models.Product.extinction,
+                    models.Product.keywords,
+                    models.Descrip.hashtag,
+                )
+                .join(models.Descrip, models.Product._descriptions)
                 .join(models.Ingredient, models.Product._ingredients)
                 .filter(
                     models.Ingredient.ko_ingredient.like(search)
@@ -339,7 +528,19 @@ def get_productList_ingredient(
     excludeIngredient = request.excludeIngredient
     if sort == "name desc":
         productList = (
-            db.query(models.Product)
+            db.query(
+                models.Product.product_num,
+                models.Product.name,
+                models.Product.img_url,
+                models.Product.brand,
+                models.Product.average_rating,
+                models.Product.capacity,
+                models.Product.price,
+                models.Product.extinction,
+                models.Product.keywords,
+                models.Descrip.hashtag,
+            )
+            .join(models.Descrip, models.Product._descriptions)
             .join(models.Ingredient, models.Product._ingredients)
             .filter(
                 (models.Ingredient.ko_ingredient.in_(includeIngredient))
@@ -351,7 +552,19 @@ def get_productList_ingredient(
         )
     if sort == "name asc":
         productList = (
-            db.query(models.Product)
+            db.query(
+                models.Product.product_num,
+                models.Product.name,
+                models.Product.img_url,
+                models.Product.brand,
+                models.Product.average_rating,
+                models.Product.capacity,
+                models.Product.price,
+                models.Product.extinction,
+                models.Product.keywords,
+                models.Descrip.hashtag,
+            )
+            .join(models.Descrip, models.Product._descriptions)
             .join(models.Ingredient, models.Product._ingredients)
             .filter(
                 models.Ingredient.ko_ingredient.in_(includeIngredient)
@@ -364,7 +577,19 @@ def get_productList_ingredient(
         )
     if sort == "price desc":
         productList = (
-            db.query(models.Product)
+            db.query(
+                models.Product.product_num,
+                models.Product.name,
+                models.Product.img_url,
+                models.Product.brand,
+                models.Product.average_rating,
+                models.Product.capacity,
+                models.Product.price,
+                models.Product.extinction,
+                models.Product.keywords,
+                models.Descrip.hashtag,
+            )
+            .join(models.Descrip, models.Product._descriptions)
             .join(models.Ingredient, models.Product._ingredients)
             .filter(
                 models.Ingredient.ko_ingredient.in_(includeIngredient)
@@ -377,7 +602,19 @@ def get_productList_ingredient(
         )
     if sort == "price asc":
         productList = (
-            db.query(models.Product)
+            db.query(
+                models.Product.product_num,
+                models.Product.name,
+                models.Product.img_url,
+                models.Product.brand,
+                models.Product.average_rating,
+                models.Product.capacity,
+                models.Product.price,
+                models.Product.extinction,
+                models.Product.keywords,
+                models.Descrip.hashtag,
+            )
+            .join(models.Descrip, models.Product._descriptions)
             .join(models.Ingredient, models.Product._ingredients)
             .filter(
                 models.Ingredient.ko_ingredient.in_(includeIngredient)
