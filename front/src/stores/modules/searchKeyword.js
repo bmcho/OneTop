@@ -70,54 +70,9 @@ const searchKeyword = (state = initialState, action) => {
     case SET_SEARCH_KEYWORD:
       return { ...state, searchKeyword: action.data };
     case LOAD_DATA_SUCCESS:
-      // const tvShows = action.data.map((tvShow) => ({
-      //   id: tvShow.show.id,
-      //   score: tvShow.score,
-      //   url: tvShow.show.url,
-      //   name: tvShow.show.name,
-      //   type: tvShow.show.type,
-      //   language: tvShow.show.language,
-      // }));
       return { ...state, searchResultData: action.data };
     case LOAD_DATA_FAILURE:
       return { ...state, searchKeywordError: action.error };
-    case SET_SEARCH_KEYWORD_HISTORY:
-      if (state.searchKeywordHistory.length === 0) {
-        if (typeof action.data === 'string') {
-          if (action.data.length === 0) {
-            return state;
-          } else {
-            return { ...state, searchKeywordHistory: [action.data] };
-          }
-        } else {
-          if (action.data.length === 0) {
-            return state;
-          } else {
-            return { ...state, searchKeywordHistory: [...action.data] };
-          }
-        }
-      } else {
-        if (typeof action.data === 'string') {
-          if (action.data.length === 0) {
-            return state;
-          } else {
-            return {
-              ...state,
-              searchKeywordHistory: [
-                ...state.searchKeywordHistory,
-                action.data,
-              ],
-            };
-          }
-        } else {
-          return state;
-          // if (action.data.length === 0) {
-          //   return state
-          // } else {
-          //   return { ...state, searchKeywordHistory: [...state.searchKeywordHistory, ...action.data] }
-          // }
-        }
-      }
     case DELETE_SEARCH_KEYWORD_HISTORY:
       const keywords = [...state.searchKeywordHistory];
       keywords.splice(parseInt(action.data), 1);
