@@ -243,3 +243,12 @@ class ReviewReturn(BaseModel):
     data: List[Optional[ReviewSearch]] = None
     total_page: int
     current_page: int
+
+
+class KeywordList(BaseModel):
+    keyword: str
+
+
+class KeywordCategoryList(BaseModel):
+    category: str
+    keywords: List[KeywordList]

@@ -232,38 +232,10 @@ def get_product_by_keyword(db: Session, request: schemas.SearchKeyword):
 
     showList = productList[offset:limit]
 
-    # search_product_list = schemas.ProductList
-    # search_product_list = (
-    #     db.query(models.Product.name)
-    #     .distinct()
-    #     .filter(models.Product.name.like(search))[:10]
-    # )
-    # # search_product_list = search_product_list[:10]
-
-    # search_brand_list = schemas.ProductList
-    # search_brand_list = (
-    #     db.query(models.Product.brand)
-    #     .distinct()
-    #     .filter(models.Product.brand.like(search))[:10]
-    # )
-    # # search_brand_list = search_brand_list[:10]
-
-    # search_ingredient_list = schemas.KoIngredientList
-    # search_ingredient_list = (
-    #     db.query(models.Ingredient.ko_ingredient)
-    #     .distinct()
-    #     .filter(models.Ingredient.ko_ingredient.like(search))[:10]
-    # )
-    # # search_ingredient_list = list(search_ingredient_list)
-
     listLen = len(productList)
     searchResult = schemas.SearchResultKeyword
     searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
     searchResult.currentPage = request.requestPage
-
-    # searchResult.productList = search_product_list
-    # searchResult.brandList = search_brand_list
-    # searchResult.ingredientList = search_ingredient_list
 
     searchResult.result = showList
     return searchResult
