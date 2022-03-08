@@ -5,14 +5,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   setSearchKeywordAction,
   setAutoCompleteKeywordAction,
+  clearAutoCompleteDataAction,
 } from '../../../../stores/modules/searchKeyword';
 const SearchBar = (props) => {
   const inputRef = useRef();
   const resultsRef = useRef();
 
   const dispatch = useDispatch();
-  const { autoCompleteData, autoCompleteKeyword, searchResultData } =
-    useSelector((state) => state.searchKeyword);
+  const { autoCompleteData, autoCompleteKeyword, searchKeyword } = useSelector(
+    (state) => state.searchKeyword
+  );
 
   useEffect(() => {
     inputRef.current.focus();
@@ -30,6 +32,7 @@ const SearchBar = (props) => {
   }, [autoCompleteData]);
 
   const onKeyDown = (event) => {
+    if (event.isComposing) return;
     if (resultsRef.current) {
       const resultsItems = Array.from(resultsRef.current.children);
       const activeResultIndex = resultsItems.findIndex((child) => {
@@ -58,8 +61,15 @@ const SearchBar = (props) => {
     }
   };
   const changeSearchValue = (e) => {
-    dispatch(setAutoCompleteKeywordAction(e.currentTarget.value));
-    // dispatch(setSearchKeywordAction(''));
+    const keyword = e.currentTarget.value;
+    if (searchKeyword.length > autoCompleteKeyword.length) {
+      dispatch(setSearchKeywordAction(''));
+    } else if (keyword.length === 0) {
+      dispatch(clearAutoCompleteDataAction());
+      dispatch(setAutoCompleteKeywordAction(''));
+    } else {
+      dispatch(setAutoCompleteKeywordAction(keyword));
+    }
   };
 
   const resetSearchKeyword = () => {
@@ -95,11 +105,10 @@ const SearchBar = (props) => {
         changeSearchValue={changeSearchValue}
         requestSearchResult={requestSearchResult}
         resetSearchKeyword={resetSearchKeyword}
+        onKeyDown={onKeyDown}
       />
       <AutoComplete
         resultsRef={resultsRef}
-        autoCompleteData={autoCompleteData}
-        searchResultData={searchResultData}
         requestSearchResult={requestSearchResult}
       />
     </div>

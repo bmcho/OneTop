@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-const AutoComplete = ({
-  resultsRef,
-  autoCompleteData,
-  searchResultData,
-  requestSearchResult,
-}) => {
+const AutoComplete = ({ resultsRef, requestSearchResult }) => {
+  const { autoCompleteData, searchKeyword } = useSelector(
+    (state) => state.searchKeyword
+  );
   useEffect(() => {
     console.log('autocomplete mounted');
     return () => console.log('autocomplete unmounted');
@@ -14,15 +13,15 @@ const AutoComplete = ({
 
   return (
     <div>
-      {searchResultData.length === 0 && autoCompleteData && (
+      {searchKeyword.length === 0 && autoCompleteData.length !== 0 && (
         <AutoCompleteList ref={resultsRef}>
-          {autoCompleteData.map((show, idx) => (
+          {autoCompleteData.map((item, idx) => (
             <AutoCompleteItem
-              key={show.id}
-              onClick={() => requestSearchResult(show.name)}
+              key={idx}
+              onClick={() => requestSearchResult(item)}
             >
               <AutoCompleteItemButton>
-                <span>{show.name}</span>
+                <span>{item}</span>
                 <span>검색</span>
               </AutoCompleteItemButton>
             </AutoCompleteItem>

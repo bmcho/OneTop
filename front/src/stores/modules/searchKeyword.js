@@ -60,11 +60,10 @@ const searchKeyword = (state = initialState, action) => {
     case SET_AUTO_COMPLETE_KEYWORD:
       return { ...state, autoCompleteKeyword: action.data };
     case LOAD_AUTO_COMPLETE_DATA_SUCCESS:
-      const autoCompleteData = action.data.map((tvShow) => ({
-        id: tvShow.show.id,
-        name: tvShow.show.name,
-      }));
-      return { ...state, autoCompleteData: autoCompleteData };
+      console.log(action.data);
+      const result = [...action.data.productList, ...action.data.brandList];
+      console.log(result);
+      return { ...state, autoCompleteData: result };
     case CLEAR_AUTO_COMPLETE_DATA:
       return { ...state, autoCompleteData: [] };
     case SET_SEARCH_KEYWORD:

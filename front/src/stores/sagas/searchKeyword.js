@@ -1,4 +1,5 @@
-import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
+import { all, fork, takeLatest, call, put, debounce } from 'redux-saga/effects';
+// import { delay } from 'redux-saga';
 import axios from 'axios';
 import {
   loadAutoCompleteDataSuccessAction,
@@ -9,6 +10,9 @@ import {
   clearAutoCompleteDataAction,
 } from '../modules/searchKeyword';
 import { finishLoading, startLoading } from '../modules/loading';
+
+const delay = 500;
+
 function searchKeywordResultAPI(data) {
   console.log('keyword saga', data);
   const reqParam = {
@@ -16,21 +20,32 @@ function searchKeywordResultAPI(data) {
     searchResultType: 'product',
     requestPage: 0,
     maxItemCountByPage: 10,
+    sort: 'name asc',
   };
   return axios.post('http://localhost/api/search/keyword', reqParam);
 }
-function loadTvShowAPI(data) {
-  return axios.get(`https://api.tvmaze.com/search/shows?q=${data}`);
+
+function searchKeywordAutoCompleteAPI(data) {
+  console.log('saga', data);
+  const reqParam = {
+    keyword: data,
+  };
+  return axios.post(
+    `http://localhost/api/search/keyword/autocomplete`,
+    reqParam
+  );
 }
 
-function* loadTvShow(action) {
+function* loadKeywordSearchData(action) {
   yield put(clearAutoCompleteDataAction());
   yield put(startLoading());
   try {
     console.log(action.data);
-    const result = yield call(searchKeywordResultAPI, action.data);
-    console.log(result);
-    yield put(loadDataSuccessAction(result.data.result));
+    if (action.data.length !== 0) {
+      const result = yield call(searchKeywordResultAPI, action.data);
+      console.log(result);
+      yield put(loadDataSuccessAction(result.data.result));
+    }
   } catch (e) {
     console.error(e);
     yield put(loadDataFailureAction(e));
@@ -40,20 +55,24 @@ function* loadTvShow(action) {
 
 function* loadAutoCompleteData(action) {
   try {
-    const result = yield call(loadTvShowAPI, action.data);
-    yield put(loadAutoCompleteDataSuccessAction(result.data));
+    console.log(action);
+    if (action.data.length !== 0) {
+      const result = yield call(searchKeywordAutoCompleteAPI, action.data);
+      console.log('auto api result', result);
+      yield put(loadAutoCompleteDataSuccessAction(result.data));
+    }
   } catch (e) {
     console.error(e);
     yield put(loadDataFailureAction(e));
   }
 }
 
-function* watchAutoCompleteData() {
-  yield takeLatest(SET_AUTO_COMPLETE_KEYWORD, loadAutoCompleteData);
+function* watchSearchResultData() {
+  yield takeLatest(SET_SEARCH_KEYWORD, loadKeywordSearchData);
 }
 
-function* watchSearchResultData() {
-  yield takeLatest(SET_SEARCH_KEYWORD, loadTvShow);
+function* watchAutoCompleteData() {
+  yield debounce(delay, SET_AUTO_COMPLETE_KEYWORD, loadAutoCompleteData);
 }
 
 export default function* searchKeyword() {

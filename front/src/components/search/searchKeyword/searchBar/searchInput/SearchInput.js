@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { TiDelete } from 'react-icons/ti';
 import { theme } from '../../../../../../styles/theme';
+import { useSelector } from 'react-redux';
 
 const SearchInput = ({
   inputRef,
-  autoCompleteKeyword,
   changeSearchValue,
   requestSearchResult,
   resetSearchKeyword,
+  onKeyDown,
 }) => {
+  const { autoCompleteKeyword } = useSelector((state) => state.searchKeyword);
   const enterInput = (e) => {
     if (e.key === 'Enter') {
       requestSearchResult(e.currentTarget.value);
     }
   };
+
   return (
     <SearchInputBlock>
       <Input
