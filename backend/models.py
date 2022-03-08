@@ -118,7 +118,18 @@ class Review(Base):
     id = Column(Integer, primary_key=True, index=True)
     fk_product_num = Column(Integer, ForeignKey("product.product_num"), index=True)
     hashed_password = Column(String(200))
-    comment = Column(TEXT)
-    img = Column(TEXT, nullable=True)
+    comment = Column(TEXT, nullable=False)
+    hash_tag = Column(TEXT, nullable=True)
     create_date = Column(DATETIME, nullable=False, default=datetime.datetime.now)
     modify_date = Column(DATETIME, nullable=True)
+    use_flag = Column(Boolean, default=True)
+
+    review_images = relationship("ReviewImage", backref="review", cascade="all,delete")
+
+
+class ReviewImage(Base):
+    __tablename__ = "review_image"
+
+    id = Column(Integer, primary_key=True, index=True)
+    fk_review_id = Column(Integer, ForeignKey("review.id"), index=True)
+    img_path = Column(String(200))

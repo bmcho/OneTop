@@ -133,8 +133,8 @@ create, modify, delete
 
 class ReviewManipulation(ReviewBase):
     password: str
-    comment: Optional[str] = None
-    img_url: Optional[str] = None
+    comment: str = None
+    images: List[Optional[str]] = None
 
     class Config:
         orm_mode = True
@@ -152,9 +152,16 @@ search
 """
 
 
+class ReviewSearchImage(BaseModel):
+    img_path: Optional[str] = None
+
+    class Config:
+        orm_mode = True
+
+
 class ReviewSearch(ReviewBase):
     comment: str
-    img: Optional[str] = None
+    review_images: List[Optional[ReviewSearchImage]] = None
     create_date: datetime
     modify_data: Optional[datetime] = None
 
@@ -163,6 +170,6 @@ class ReviewSearch(ReviewBase):
 
 
 class ReviewReturn(BaseModel):
-    data: List[ReviewSearch]
+    data: List[Optional[ReviewSearch]] = None
     total_page: int
     current_page: int

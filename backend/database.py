@@ -12,8 +12,8 @@ secrets = json.loads(open(SECRET_FILE).read())
 DB = secrets["DB"]
 env = os.environ
 
-# DB_PASSWORD = os.environ["MYSQL_PASSWORD"]
-# DB_NAME = os.environ["MYSQL_DATABASE"]
+DB_PASSWORD = os.environ["MYSQL_PASSWORD"]
+DB_NAME = os.environ["MYSQL_DATABASE"]
 
 # user=os.getenv("MYSQL_USER")
 # password=os.getenv("MYSQL_PASSWORD")
@@ -23,8 +23,8 @@ env = os.environ
 
 # DB_URL = f"mysql+pymysql://{DB['user']}:{DB['password']}@{DB['host']}:{DB['port']}/{DB['database']}?charset=utf8"  # noqa
 # DB_URL=f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}?charset=utf8"
-# DB_URL = f"mysql+pymysql://root:{DB_PASSWORD}@database:3306/{DB_NAME}"
-DB_URL = "sqlite:///./sql_app.db"
+DB_URL = f"mysql+pymysql://root:{DB_PASSWORD}@database:3306/{DB_NAME}"
+# DB_URL = "sqlite:///./sql_app.db"
 engine = create_engine(DB_URL, encoding="utf-8")
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

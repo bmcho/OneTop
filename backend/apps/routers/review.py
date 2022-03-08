@@ -1,10 +1,7 @@
-import os
 from typing import List, Optional
 
 from fastapi import APIRouter, Body, Depends, File, Response, UploadFile
 from fastapi.responses import JSONResponse
-
-# from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -69,14 +66,10 @@ def delete_review(
     return JSONResponse(status_code=202, content={"message": "Success, delete review"})
 
 
-# @router.post("/image")
-# def create_upload_files(files: List[UploadFile] = File(...)):
-#     UPLOAD_DIRECTORY = "./.static"
-#     for file in files:
-#         with open(os.path.join(UPLOAD_DIRECTORY, file.filename), "wb") as file_object:
-#             file_object.write(file.file.read())
-
-#     return {"filenames": "success"}
+@router.post("/images")
+def upload_images(files: List[UploadFile] = File(...)):
+    post_image_upload(files)
+    return JSONResponse(status_code=202, content={"message": "Success, upload images"})
 
 
 # @router.get("/image")
