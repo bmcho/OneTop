@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { END } from 'redux-saga';
 import { getProductInfoAction } from '../../src/stores/modules/productInfo';
 import { useSelector, useDispatch } from 'react-redux';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import axios from 'axios';
 
 import ProductInfo from '../../src/components/detail/productInfo';
@@ -65,7 +65,6 @@ const Detail = () => {
   if (!productInfo) return <div>error...</div>;
 
   const { name, description, ingredientList, ...rest } = productInfo;
-
   return (
     <DetailBlock>
       <ProductInfo
@@ -96,6 +95,10 @@ const DetailBlock = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media screen and (max-width: 860px) {
+    width: 100%;
+  }
 `;
 
 export default Detail;

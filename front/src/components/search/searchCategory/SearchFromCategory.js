@@ -83,6 +83,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 20px 0;
+  gap: 30px;
 `;
 
 const LargeCategory = styled.button`

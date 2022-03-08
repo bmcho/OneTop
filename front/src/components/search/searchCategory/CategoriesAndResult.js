@@ -6,19 +6,19 @@ import { categories, categories3 } from '../../../utils/categoryUtil';
 import { useRouter } from 'next/router';
 import Pagenation from './Pagenation';
 import { useSelector } from 'react-redux';
+import { MdChevronLeft } from 'react-icons/md';
 
 const CategoriesAndResult = () => {
   const router = useRouter();
   const { largeCategory, smallCategory } = router.query;
   const { data } = useSelector((state) => state.searchCategory);
 
-  const [largeCategoryIndex, setLargeCategoryIndex] = useState(null);
+  const [largeCategoryIndex, setLargeCategoryIndex] = useState(1);
   const [smallCategoryIndex, setSmallCategoryIndex] = useState(null);
   const [loading, setLoading] = useState(true);
   const [sortingStandard, setSortingStandard] = useState('name asc');
 
   const itemPerPage = 5;
-  const [nowPage, setNowPage] = useState(1);
   const totalPageCount = data?.totalPageCount;
 
   const selectLargeCategory = (idx) => {
@@ -31,7 +31,7 @@ const CategoriesAndResult = () => {
   };
 
   const resetCategory = () => {
-    setLargeCategoryIndex(null);
+    setLargeCategoryIndex(1);
     setSmallCategoryIndex(null);
     router.push({
       pathname: router.pathname,
@@ -61,6 +61,16 @@ const CategoriesAndResult = () => {
       {largeCategoryIndex && smallCategoryIndex ? (
         <>
           <Wrapper size={itemPerPage}>
+            <ResultHeader>
+              <button onClick={resetCategory}>
+                <MdChevronLeft size={20} />
+                뒤로
+              </button>
+              <div>
+                <span className="largeCategory">{largeCategory}</span>·
+                <span>{smallCategory}</span>
+              </div>
+            </ResultHeader>
             <SearchResultFromCategory
               largeCategory={categories3[largeCategoryIndex - 1].large}
               smallCategory={
@@ -69,10 +79,7 @@ const CategoriesAndResult = () => {
                 ].label
               }
               itemPerPage={itemPerPage}
-              nowPage={nowPage}
               sortingStandard={sortingStandard}
-              resetCategory={resetCategory}
-              setNowPage={setNowPage}
             />
           </Wrapper>
           <Pagenation
@@ -106,6 +113,32 @@ const Wrapper = styled.div`
     css`
       height: calc(120px * ${parseInt(props.size) + 0.5});
     `};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ResultHeader = styled.div`
+  padding-top: 30px;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 25px;
+  button {
+    display: flex;
+    justify-content: center;
+    font-size: 15px;
+    border-radius: 10px;
+    position: absolute;
+    left: 0;
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 export default CategoriesAndResult;
