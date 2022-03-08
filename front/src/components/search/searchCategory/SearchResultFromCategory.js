@@ -14,6 +14,7 @@ const SearchResultFromCategory = ({
   nowPage,
   setNowPage,
   itemPerPage,
+  sortingStandard,
 }) => {
   const { loading, data, error } = useSelector((state) => state.searchCategory);
   const dispatch = useDispatch();
@@ -21,13 +22,13 @@ const SearchResultFromCategory = ({
   const { page } = router.query;
 
   useEffect(() => {
-    if (data?.currentPage === nowPage - 1) return;
     dispatch(
       getProductInfoByCategoryAction({
         requestPage: nowPage - 1,
         maxItemCountByPage: itemPerPage,
         largeCategory,
         smallCategory,
+        sort: sortingStandard,
       })
     );
   }, [nowPage]);
@@ -37,17 +38,6 @@ const SearchResultFromCategory = ({
       setNowPage(parseInt(page));
     }
   }, [page]);
-
-  const NextPageHandle = (pageNum) => {
-    router.push({
-      pathname: router.pathname,
-      query: {
-        largeCategory,
-        smallCategory,
-        page: pageNum,
-      },
-    });
-  };
 
   const LinkDetailPageHandle = (product_num) => {
     router.push({

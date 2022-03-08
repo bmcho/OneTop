@@ -70,6 +70,11 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
             </tr>
             <tr>
               {data.map((d, index) => {
+                return <td key={`${d.id}${index}`}>{d.capacity}</td>;
+              })}
+            </tr>
+            <tr>
+              {data.map((d, index) => {
                 const hashTag = d.hashtag
                   .slice(1, d.hashtag.length - 1)
                   .split(',');
@@ -157,30 +162,31 @@ const ItemLi = styled.li`
 `;
 
 const ItemTable = styled.table`
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: 1.2px;
   border-collapse: separate;
   border-spacing: 2px;
+
   td,
   th {
     width: 120px;
-    height: 80px;
     text-align: center;
     vertical-align: middle;
     white-space: pre-wrap;
   }
+
   th {
     position: relative;
-    background-color: #fcc419;
     background-color: rgba(252, 196, 25, 0.4);
   }
-  thead th {
-    background-color: rgba(0, 0, 0, 0);
-    border: none;
+
+  tbody td {
+    padding: 20px 0;
   }
-  tbody {
-    margin-top: 30px;
+
+  tbody tr:first-child td {
+    padding: 40px 0 20px;
   }
 `;
 

@@ -9,11 +9,11 @@ const ProductInfo = ({
   hashtag,
   name,
   brand,
-  price: priceInfo,
+  price,
+  capacity,
   modalOpenHandle,
   addCompareBoxHandle,
 }) => {
-  const [capacity, price] = priceInfo.split('/');
   const hashTag = hashtag.slice(1, hashtag.length - 1).split(',');
   return (
     <Container>
@@ -67,7 +67,7 @@ const Container = styled.div`
   display: flex;
   padding: 0 40px;
   justify-content: space-between;
-  margin-top: 100px;
+  margin-top: 50px;
   margin-bottom: 100px;
   @media screen and (max-width: 860px) {
     flex-direction: column;

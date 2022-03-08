@@ -36,7 +36,7 @@ const SearchFromCategory = ({
         {categories3.map((category) => (
           <LargeCategory
             key={category.id}
-            active={largeCategoryIndex === category.id}
+            active={largeCategoryIndex === parseInt(category.id)}
             onClick={() => selectLargeCategory(parseInt(category.id))}
           >
             <div className="img-wrapper">

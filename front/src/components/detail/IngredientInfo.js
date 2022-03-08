@@ -14,23 +14,26 @@ const IngredientInfo = ({ ingredients, open, modalOpenHandle }) => {
       <IngredientUl>
         <h5>성분 정보</h5>
         <StyledMdOutlineClose size="24" />
-        {ingredients?.map((ingredient) => {
-          const maxLevel = Math.max(...ingredient.score.split('-'));
-          const backgroundColor = colorByLevel(maxLevel);
-
-          return (
-            <IngredientLi key={ingredient.id}>
-              <GradeInfo background={theme.color[backgroundColor]}>
-                {ingredient.score}
-              </GradeInfo>
-              <IngredientName>
-                <h6>{ingredient.ko_ingredient}</h6>
-                <h6>{ingredient.en_ingredient}</h6>
-                <h6>{ingredient.use}</h6>
-              </IngredientName>
-            </IngredientLi>
-          );
-        })}
+        {!ingredients.length ? (
+          ingredients.map((ingredient) => {
+            const maxLevel = Math.max(...ingredient.score.split('-'));
+            const backgroundColor = colorByLevel(maxLevel);
+            return (
+              <IngredientLi key={ingredient.id}>
+                <GradeInfo background={theme.color[backgroundColor]}>
+                  {ingredient.score}
+                </GradeInfo>
+                <IngredientName>
+                  <h6>{ingredient.ko_ingredient}</h6>
+                  <h6>{ingredient.en_ingredient}</h6>
+                  <h6>{ingredient.use}</h6>
+                </IngredientName>
+              </IngredientLi>
+            );
+          })
+        ) : (
+          <div>성분 정보가 없습니다.</div>
+        )}
       </IngredientUl>
     </Modal>
   );

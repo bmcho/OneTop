@@ -15,6 +15,7 @@ const CategoriesAndResult = () => {
   const [largeCategoryIndex, setLargeCategoryIndex] = useState(null);
   const [smallCategoryIndex, setSmallCategoryIndex] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [sortingStandard, setSortingStandard] = useState('name asc');
 
   const itemPerPage = 5;
   const [nowPage, setNowPage] = useState(1);
@@ -32,10 +33,12 @@ const CategoriesAndResult = () => {
   const resetCategory = () => {
     setLargeCategoryIndex(null);
     setSmallCategoryIndex(null);
+    router.push({
+      pathname: router.pathname,
+    });
   };
 
   useEffect(() => {
-    const { largeCategory, smallCategory } = router.query;
     if (largeCategory && smallCategory) {
       const largeIndex = categories3.findIndex(
         (category) => category.large === largeCategory
@@ -67,6 +70,7 @@ const CategoriesAndResult = () => {
               }
               itemPerPage={itemPerPage}
               nowPage={nowPage}
+              sortingStandard={sortingStandard}
               resetCategory={resetCategory}
               setNowPage={setNowPage}
             />
