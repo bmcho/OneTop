@@ -1,3 +1,4 @@
+import random
 from typing import List
 
 from fastapi import HTTPException, Request, Response, status
@@ -28,7 +29,6 @@ def get_product_by_category(db: Session, request: schemas.SearchCategory):
     productList = get_productList_category(db, sort, request)
 
     showList = productList[offset:limit]
-    print(showList)
     listLen = len(productList)
     searchResult = schemas.SearchResult
     searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
@@ -88,11 +88,12 @@ def get_keyword_autocomplete(db: Session, request: schemas.Keyword):
     search_product_list = (
         db.query(models.Product.name)
         .distinct()
-        .filter(models.Product.name.like(search))
-        .order_by(models.Product.extinction.desc())[:10]
+        .filter((models.Product.name.like(search)) & (models.Product.extinction != 0))
+        .all()
     )
 
     search_product_list = [value for value, in search_product_list]
+    search_product_list = random.sample(search_product_list, 10)
 
     search_brand_list = (
         db.query(models.Product.brand)
@@ -526,6 +527,7 @@ def get_productList_ingredient(
 ):
     includeIngredient = request.includeIngredient
     excludeIngredient = request.excludeIngredient
+
     if sort == "name desc":
         productList = (
             db.query(
