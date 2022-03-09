@@ -1,12 +1,12 @@
 const initState = {
   get: {
     loading: false,
-    reviews: [],
+    reviews: null,
     error: null,
   },
   post: {
     loading: false,
-    reviews: [],
+    reviews: null,
     error: null,
   },
 };
@@ -52,7 +52,7 @@ const productReview = (state = initState, action) => {
         ...state,
         get: {
           loading: true,
-          reviews: [],
+          reviews: null,
           error: null,
         },
       };
@@ -70,7 +70,7 @@ const productReview = (state = initState, action) => {
         ...state,
         get: {
           loading: false,
-          reviews: [],
+          reviews: null,
           error: action.error,
         },
       };
@@ -80,7 +80,7 @@ const productReview = (state = initState, action) => {
         ...state,
         post: {
           loading: true,
-          reviews: [],
+          reviews: null,
           error: null,
         },
       };
@@ -98,7 +98,7 @@ const productReview = (state = initState, action) => {
         ...stete,
         post: {
           loading: false,
-          reviews: [],
+          reviews: null,
           error: null,
         },
       };

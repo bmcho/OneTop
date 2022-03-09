@@ -3,10 +3,14 @@ import { useSelector, dispatch, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getProductReviewAction } from '../../stores/modules/productReview';
 import { useRouter } from 'next/router';
+import ReviewItem from './ReviewItem';
 
 const ReviewMain = () => {
   const { loading, reviews, error } = useSelector(
     (state) => state.productReview.get
+  );
+  const { reviews: newReview } = useSelector(
+    (state) => state.productReview.post
   );
   const dispatch = useDispatch();
   const router = useRouter();
@@ -14,16 +18,17 @@ const ReviewMain = () => {
 
   useEffect(() => {
     dispatch(getProductReviewAction(id, 1));
-  }, []);
+  }, [newReview]);
+
   if (loading) return <div>loading...</div>;
 
   return (
     <ReviewMainBlock>
-      {reviews.length ? (
+      {reviews ? (
         <>
           <Line>
             <ReviewUl>
-              {reviews
+              {reviews?.data
                 .filter((_, idx) => idx % 3 === 0)
                 .map((review) => (
                   <ReviewItem key={review.id} {...review} />
@@ -32,7 +37,7 @@ const ReviewMain = () => {
           </Line>
           <Line>
             <ReviewUl>
-              {reviews
+              {reviews?.data
                 .filter((_, idx) => idx % 3 === 1)
                 .map((review) => (
                   <ReviewItem key={review.id} {...review} />
@@ -41,7 +46,7 @@ const ReviewMain = () => {
           </Line>
           <Line>
             <ReviewUl>
-              {reviews
+              {reviews?.data
                 .filter((_, idx) => idx % 3 === 2)
                 .map((review) => (
                   <ReviewItem key={review.id} {...review} />
@@ -57,6 +62,7 @@ const ReviewMain = () => {
 };
 
 const ReviewMainBlock = styled.div`
+  width: 100%;
   display: flex;
   justify-content: center;
   @media screen and (max-width: 768px) {

@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { postProductReviewAction } from '../../stores/modules/productReview';
 import { useRouter } from 'next/router';
+
 const ReviewForm = () => {
   const [inputValues, setInputValues] = useState({
     nickName: '',
@@ -22,11 +23,11 @@ const ReviewForm = () => {
   };
 
   const postReview = (e) => {
+    e.preventDefault();
     if (!inputValues.nickName) return alert('닉네임을 입력해주세요.');
     if (!inputValues.password) return alert('비밀번호을 입력해주세요.');
     if (!inputValues.comment) return alert('리뷰을 입력해주세요.');
 
-    e.preventDefault();
     dispatch(
       postProductReviewAction({
         review_data: {

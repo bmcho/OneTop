@@ -36,6 +36,7 @@ const ReviewHeader = styled.div`
   padding: 15px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   background-color: ${({ theme }) => theme.color.yellow2};
+  z-index: 99;
   top: 0;
   left: 0;
   right: 0;
