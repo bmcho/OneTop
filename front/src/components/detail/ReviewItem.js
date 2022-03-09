@@ -27,7 +27,9 @@ const ReviewItem = ({
     setIsEtcOpen((prev) => !prev);
   };
 
-  const modifyReviewHandle = (id) => {};
+  const modifyReviewHandle = (id) => {
+    dispatch()
+  };
 
   useEffect(() => {
     if (ref.current.clientHeight > lineheight * lineLimit) {

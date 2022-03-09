@@ -24,7 +24,7 @@ function searchKeywordResultAPI(data) {
     maxItemCountByPage: 10,
     sort: data.sort,
   };
-  return axios.post('http://localhost/api/search/keyword', reqParam);
+  return axios.post(`${process.env.BASE_URL}/search/keyword`, reqParam);
 }
 
 function searchKeywordAutoCompleteAPI(data) {
@@ -33,7 +33,7 @@ function searchKeywordAutoCompleteAPI(data) {
     keyword: data,
   };
   return axios.post(
-    `http://localhost/api/search/keyword/autocomplete`,
+    `${process.env.BASE_URL}/search/keyword/autocomplete`,
     reqParam
   );
 }
