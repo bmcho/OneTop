@@ -9,6 +9,11 @@ const initState = {
     reviews: null,
     error: null,
   },
+  modify: {
+    loading: false,
+    reviews: null,
+    error: null,
+  },
 };
 
 export const GET_PRODUCT_REVIEW = 'GET_PRODUCT_REVIEW';

@@ -17,6 +17,7 @@ const ReviewItem = ({
   const [isEtcOpen, setIsEtcOpen] = useState(false);
   const lineLimit = 5;
   const lineheight = 18;
+  const dispatch = useDispatch();
 
   const moreTextHandle = () => {
     setMoreText((prev) => !prev);
@@ -25,6 +26,9 @@ const ReviewItem = ({
   const openEtcHandle = () => {
     setIsEtcOpen((prev) => !prev);
   };
+
+  const modifyReviewHandle = (id) => {};
+
   useEffect(() => {
     if (ref.current.clientHeight > lineheight * lineLimit) {
       ref.current.style.maxHeight = `${lineheight * lineLimit}px`;
@@ -99,13 +103,17 @@ const EtcBlock = styled.div`
   top: 48px;
   right: 12px;
   display: flex;
-  flex-direction: column ;
+  flex-direction: column;
   box-shadow: 10px 2px 12px 0 rgb(0 0 0 / 6%);
   background-color: white;
-  padding: 20px
+  padding: 10px 0;
+  border-radius: 10px;
   z-index: 2;
   button {
-    padding: 5px 10px;
+    padding: 5px 20px;
+  }
+  button:hover {
+    background-color: rgba(0, 0, 0, 0.2);
   }
 `;
 
