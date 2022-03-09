@@ -8,6 +8,8 @@ import {
   setIngredientForSearchAction,
   clearIncludeAutoCompleteDataAction,
   clearExcludeAutoCompleteDataAction,
+  setResultRequestParamsAction,
+  setIngredientInRequestParamsAction,
 } from '../../../stores/modules/searchIngredient';
 import SearchBlock from './searchBlock/SearchBlock';
 import SearchIngredientResult from './searchIngredientResult/SearchIngredientResult';
@@ -15,6 +17,7 @@ import SearchIngredientResult from './searchIngredientResult/SearchIngredientRes
 const SearchIngredient = (props) => {
   const dispatch = useDispatch();
   const {
+    resultRequestParams,
     includeAutoCompleteKeyword,
     excludeAutoCompleteKeyword,
     includeAutoCompleteData,
@@ -22,16 +25,15 @@ const SearchIngredient = (props) => {
   } = useSelector((state) => state.searchIngredient);
   const [includeKeywords, setIncludeKeywords] = useState([]);
   const [excludeKeywords, setExcludeKeywords] = useState([]);
+  useEffect(() => console.log(resultRequestParams, 'component param'), []);
   const getResult = () => {
-    const reqParam = {
+    const ingredient = {
       includeIngredient: includeKeywords,
       excludeIngredient: excludeKeywords,
       requestPage: 0,
-      maxItemCountByPage: 10,
       sort: 'name asc',
     };
-    console.log('request point', reqParam);
-    dispatch(setIngredientForSearchAction(reqParam));
+    dispatch(setIngredientInRequestParamsAction(ingredient));
   };
 
   return (
