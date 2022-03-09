@@ -17,7 +17,7 @@ import {
 const delay = 500;
 
 function searchIngredientResultAPI(data) {
-  return axios.post('http://localhost/api/search/ingredient', data);
+  return axios.post(`${process.env.BASE_URL}/search/ingredient`, data);
 }
 
 function searchIngredientAutoCompleteAPI(data) {
@@ -25,7 +25,7 @@ function searchIngredientAutoCompleteAPI(data) {
     keyword: data,
   };
   return axios.post(
-    `http://localhost/api/search/ingredient/autocomplete`,
+    `${process.env.BASE_URL}/search/ingredient/autocomplete`,
     reqParam
   );
 }

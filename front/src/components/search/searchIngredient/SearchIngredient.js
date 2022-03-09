@@ -28,6 +28,7 @@ const SearchIngredient = (props) => {
       excludeIngredient: excludeKeywords,
       requestPage: 0,
       maxItemCountByPage: 10,
+      sort: 'name asc',
     };
     console.log('request point', reqParam);
     dispatch(setIngredientForSearchAction(reqParam));
