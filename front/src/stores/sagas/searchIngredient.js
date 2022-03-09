@@ -10,23 +10,27 @@ import {
   SET_INCLUDE_AUTO_COMPLETE_KEYWORD,
   LOAD_INCLUDE_AUTO_COMPLETE_DATA_SUCCESS,
   loadIncludeAutoCompleteDataSuccessAction,
+  SET_EXCLUDE_AUTO_COMPLETE_KEYWORD,
+  loadExcludeAutoCompleteDataSuccessAction,
 } from '../modules/searchIngredient';
 
 const delay = 500;
 
 function searchIngredientResultAPI(data) {
-  return axios.post('http://localhost/api/search/ingredient', data);
+  return axios.post(`${process.env.BASE_URL}/search/ingredient`, data);
 }
+
 function searchIngredientAutoCompleteAPI(data) {
   const reqParam = {
     keyword: data,
   };
   return axios.post(
-    `http://localhost/api/search/ingredient/autocomplete`,
+    `${process.env.BASE_URL}/search/ingredient/autocomplete`,
     reqParam
   );
 }
 
+//load data
 function* loadSearchIngredientResult(action) {
   console.log('saga', action);
 
@@ -41,12 +45,13 @@ function* loadSearchIngredientResult(action) {
   yield put(finishLoading());
 }
 
-function* loadAutoCompleteData(action) {
+//load auto
+function* loadIncludeAutoCompleteData(action) {
   console.log('auto saga', action);
   try {
     if (action.data.length !== 0) {
       const result = yield call(searchIngredientAutoCompleteAPI, action.data);
-      console.log(result, 'gogo auto result');
+      console.log(result, 'include auto result');
       yield put(
         loadIncludeAutoCompleteDataSuccessAction(result.data.ingredientList)
       );
@@ -57,21 +62,47 @@ function* loadAutoCompleteData(action) {
   }
 }
 
+function* loadExcludeAutoCompleteData(action) {
+  console.log('auto saga', action);
+  try {
+    if (action.data.length !== 0) {
+      const result = yield call(searchIngredientAutoCompleteAPI, action.data);
+      console.log(result, 'exclude auto result');
+      yield put(
+        loadExcludeAutoCompleteDataSuccessAction(result.data.ingredientList)
+      );
+    }
+  } catch (e) {
+    console.error(e);
+    yield put(loadIngredientDataFailureAction(e));
+  }
+}
+
+// watch data
 function* watchIngredientSearchResultData() {
   yield takeLatest(SET_INGREDIENT_FOR_SEARCH, loadSearchIngredientResult);
 }
 
-function* watchIngredientAutoCompleteData() {
+//watch auto
+function* watchIncludeAutoCompleteData() {
   yield debounce(
     delay,
     SET_INCLUDE_AUTO_COMPLETE_KEYWORD,
-    loadAutoCompleteData
+    loadIncludeAutoCompleteData
+  );
+}
+function* watchExcludeAutoCompleteData() {
+  yield debounce(
+    delay,
+    SET_EXCLUDE_AUTO_COMPLETE_KEYWORD,
+    loadExcludeAutoCompleteData
   );
 }
 
 export default function* searchIngredient() {
   yield all([
     fork(watchIngredientSearchResultData),
-    fork(watchIngredientAutoCompleteData),
+    fork(watchIncludeAutoCompleteData),
+    fork(watchExcludeAutoCompleteData),
   ]);
 }

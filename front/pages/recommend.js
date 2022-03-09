@@ -5,45 +5,60 @@ import RecommendTitle from '../src/components/recommend/RecommendTitle';
 import { useEffect, useState } from 'react';
 import SelectFromKeyword from '../src/components/recommend/SelectFromKeyword';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import RecommendResult from '../src/components/recommend/RecommendResult';
 
 const recommend = (props) => {
   const router = useRouter();
-  const [largeCategoryIndex, setLargeCategoryIndex] = useState(null);
-
-  const selectLargeCategory = (index) => {
-    setLargeCategoryIndex(index);
-  };
-
-  const resetCategory = () => {
-    setLargeCategoryIndex(null);
-  };
+  const [category, setCategory] = useState('');
+  const [isResult, setIsResult] = useState(false);
+  const { selectKeywords } = useSelector((state) => state.productRecommend);
 
   return (
     <RecommendBlock>
       <RecommendTitle />
       <SurveyBlock>
-        {largeCategoryIndex === null ? (
-          <EssentialBlock>
-            <EssentialTitle>
-              <span>필수</span>
-              필수 선택 항목입니다
-            </EssentialTitle>
-            <Essential>
-              <dt>어떤 화장품을 찾고 계신가요?</dt>
-              <dd>
+        <EssentialBlock>
+          {/* <EssentialTitle>
+            <span>필수</span>
+            필수 선택 항목입니다
+          </EssentialTitle> */}
+          <Essential>
+            <dt>{!category ? '어떤 화장품을 찾고 계신가요?' : '카테고리'}</dt>
+            <dd>
+              {!category ? (
                 <SelectFromCategory
-                  largeCategoryIndex={largeCategoryIndex}
-                  selectLargeCategory={selectLargeCategory}
+                  category={category}
+                  setCategory={setCategory}
                 />
-              </dd>
-            </Essential>
-          </EssentialBlock>
-        ) : (
-          <SelectFromKeyword
-            largeCategoryIndex={largeCategoryIndex}
-            resetCategory={resetCategory}
-          />
-        )}
+              ) : (
+                <SelectedCategory>
+                  <Category>{category}</Category>
+                </SelectedCategory>
+              )}
+            </dd>
+            {category && (
+              <>
+                <dt>{!isResult ? '키워드를 선택해주세요!' : '키워드'}</dt>
+                <dd>
+                  {!isResult ? (
+                    <SelectFromKeyword
+                      category={category}
+                      setIsResult={setIsResult}
+                    />
+                  ) : (
+                    <SelectedCategory>
+                      {selectKeywords?.map((keyword) => {
+                        return <Category>#{keyword}</Category>;
+                      })}
+                    </SelectedCategory>
+                  )}
+                </dd>
+              </>
+            )}
+            {isResult && <RecommendResult />}
+          </Essential>
+        </EssentialBlock>
       </SurveyBlock>
     </RecommendBlock>
   );
@@ -58,11 +73,26 @@ const RecommendBlock = styled.section`
   align-items: center;
 `;
 
+const SelectedCategory = styled.div`
+  width: 100%;
+`;
+
 const SurveyBlock = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const Category = styled.div`
+  display: inline-block;
+  padding: 9px 20px;
+  border-radius: 20px;
+  font-size: 20px;
+  background-color: ${({ theme }) => theme.color.yellow2};
+  & + & {
+    margin-left: 5px;
+  }
 `;
 
 const EssentialBlock = styled.article`
@@ -91,7 +121,14 @@ const Essential = styled.dl`
     font-weight: 900;
     margin-bottom: 30px;
   }
+  dd {
+    margin-bottom: 30px;
+  }
+  width: 90%;
   padding: 40px;
+  @media screen and (max-width: 500px) {
+    padding: 20px;
+  }
 `;
 
 export default recommend;

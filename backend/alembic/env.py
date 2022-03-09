@@ -33,7 +33,7 @@ target_metadata = models.Base.metadata
 # ... etc.
 
 #database url
-url = f'mysql+pymysql://root:{os.environ["MYSQL_PASSWORD"]}@database:3306/{os.environ["MYSQL_PASSWORD"]}'
+url = f'mysql+pymysql://root:{os.environ["MYSQL_PASSWORD"]}@database:3306/{os.environ["MYSQL_DATABASE"]}'
 
 def run_migrations_offline():
     """Run migrations in 'offline' mode.

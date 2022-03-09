@@ -25,4 +25,5 @@ const SearchPageBlock = styled.div`
   margin: 0 auto;
   margin-bottom: 100px;
 `;
+
 export default search;

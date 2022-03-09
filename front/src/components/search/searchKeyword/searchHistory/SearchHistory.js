@@ -8,6 +8,9 @@ import {
   setAutoCompleteKeywordAction,
   setSearchKeywordAction,
   setRequestDataAction,
+  setResultTypeAction,
+  setSortAction,
+  setRequestPageAction,
 } from '../../../../stores/modules/searchKeyword';
 import { theme } from '../../../../../styles/theme';
 
@@ -34,12 +37,17 @@ const SearchHistory = (props) => {
   const clickHistoryItem = (e) => {
     const requestPage = 0;
     const sort = 'name asc';
+    const resultType = 'product';
     const keyword = searchHistory[e.currentTarget.dataset.index];
     dispatch(setSearchKeywordAction(keyword));
+    dispatch(setResultTypeAction(resultType));
+    dispatch(setSortAction(sort));
+    dispatch(setRequestPageAction(requestPage));
     dispatch(
       setRequestDataAction({
         requestPage: requestPage,
         sort: sort,
+        searchResultType: resultType,
         keyword: keyword,
       })
     );

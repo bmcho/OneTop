@@ -19,12 +19,12 @@ function searchKeywordResultAPI(data) {
   console.log('keyword saga', data);
   const reqParam = {
     keyword: data.keyword,
-    searchResultType: 'product',
+    searchResultType: data.searchResultType,
     requestPage: data.requestPage,
     maxItemCountByPage: 10,
     sort: data.sort,
   };
-  return axios.post('http://localhost/api/search/keyword', reqParam);
+  return axios.post(`${process.env.BASE_URL}/search/keyword`, reqParam);
 }
 
 function searchKeywordAutoCompleteAPI(data) {
@@ -33,7 +33,7 @@ function searchKeywordAutoCompleteAPI(data) {
     keyword: data,
   };
   return axios.post(
-    `http://localhost/api/search/keyword/autocomplete`,
+    `${process.env.BASE_URL}/search/keyword/autocomplete`,
     reqParam
   );
 }
@@ -42,8 +42,8 @@ function* loadKeywordSearchData(action) {
   yield put(clearAutoCompleteDataAction());
   yield put(startLoading());
   try {
-    console.log('keywordsearch', action.data);
-    if (action.data.length !== 0) {
+    console.log('keyword search', action.data);
+    if (action.data.keyword.length !== 0) {
       const result = yield call(searchKeywordResultAPI, action.data);
       console.log(result);
       yield put(loadDataSuccessAction(result.data.result));

@@ -9,7 +9,6 @@ import {
   clearIncludeAutoCompleteDataAction,
   clearExcludeAutoCompleteDataAction,
 } from '../../../stores/modules/searchIngredient';
-import { setAutoCompleteKeywordAction } from '../../../stores/modules/searchKeyword';
 import SearchBlock from './searchBlock/SearchBlock';
 import SearchIngredientResult from './searchIngredientResult/SearchIngredientResult';
 
@@ -29,6 +28,7 @@ const SearchIngredient = (props) => {
       excludeIngredient: excludeKeywords,
       requestPage: 0,
       maxItemCountByPage: 10,
+      sort: 'name asc',
     };
     console.log('request point', reqParam);
     dispatch(setIngredientForSearchAction(reqParam));

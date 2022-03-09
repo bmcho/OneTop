@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   loadIngredientAutoCompleteDataSuccessAction,
   setIngredientAutoCompleteKeywordAction,
 } from '../../../../stores/modules/searchIngredient';
-import SearchBar from '../searchBar/SearchBar';
 
 const SearchBlock = ({
   inputTitle,
@@ -17,12 +16,55 @@ const SearchBlock = ({
   clearAutoCompleteData,
 }) => {
   const dispatch = useDispatch();
+  const inputRef = useRef();
+  const resultsRef = useRef();
   const [inputText, setInputText] = useState('');
-  const listData = inputTitle + 'Ingredient';
 
   useEffect(() => {
     console.log(inputText, 'block');
   }, []);
+
+  useEffect(() => {
+    if (autoCompleteData.length > 0) {
+      document.body.addEventListener('keydown', onKeyDown);
+    } else {
+      document.body.removeEventListener('keydown', onKeyDown);
+    }
+    return () => {
+      document.body.removeEventListener('keydown', onKeyDown);
+    };
+  }, [autoCompleteData]);
+
+  const onKeyDown = (event) => {
+    if (event.isComposing) return;
+    if (resultsRef.current) {
+      const resultsItems = Array.from(resultsRef.current.children);
+      const activeResultIndex = resultsItems.findIndex((child) => {
+        return child.querySelector('button') === document.activeElement;
+      });
+
+      if (event.key === 'ArrowUp') {
+        if (document.activeElement === inputRef.current) {
+          resultsItems[resultsItems.length - 1].querySelector('button').focus();
+        } else if (resultsItems[activeResultIndex - 1]) {
+          resultsItems[activeResultIndex - 1].querySelector('button').focus();
+        } else {
+          inputRef.current.focus();
+        }
+      }
+
+      if (event.key === 'ArrowDown') {
+        if (document.activeElement === inputRef.current) {
+          resultsItems[0].querySelector('button').focus();
+        } else if (resultsItems[activeResultIndex + 1]) {
+          resultsItems[activeResultIndex + 1].querySelector('button').focus();
+        } else {
+          inputRef.current.focus();
+        }
+      }
+    }
+  };
+
   const changeInputText = (e) => {
     const keyword = e.currentTarget.value;
     setInputText(keyword);
@@ -39,12 +81,13 @@ const SearchBlock = ({
     dispatch(setAutoKeywords(keyword));
     // }
   };
-  const addKeyword = (e) => {
-    if (e.key === 'Enter' && inputText !== '') {
-      setKeywords((cur) => [...cur, inputText]);
-      setInputText('');
-      dispatch(clearAutoCompleteData());
-    }
+  const addKeyword = (item) => {
+    // if (e.key === 'Enter' && inputText !== '') {
+    setKeywords((cur) => [...cur, item]);
+    setInputText('');
+    dispatch(clearAutoCompleteData());
+    inputRef.current.focus();
+    // }
   };
   const deleteLastKeyword = (e) => {
     if (e.key === 'Backspace' && inputText === '') {
@@ -63,24 +106,25 @@ const SearchBlock = ({
         {keywords.map((word, idx) => (
           <KeywordItem key={idx}>{word}</KeywordItem>
         ))}
-        <SearchBar
-          inputText={inputText}
-          changeInputText={changeInputText}
-          addKeyword={addKeyword}
-          deleteLastKeyword={deleteLastKeyword}
-        />
-        <ul>
-          {autoCompleteData.length !== 0 &&
-            autoCompleteData.map((e) => <div>{e}</div>)}
-        </ul>
-        {/* <Input
-          value={inputText}
-          type="text"
-          placeholder="성분을 입력하세요"
-          onChange={changeInputText}
-          onKeyPress={addKeyword}
-          onKeyDown={deleteLastKeyword}
-        /> */}
+        <SearchBar>
+          <Input
+            value={inputText}
+            ref={inputRef}
+            type="text"
+            placeholder="성분을 입력하세요"
+            onChange={changeInputText}
+            // onKeyPress={addKeyword}
+            onKeyDown={deleteLastKeyword}
+          />
+          <AutoCompleteList ref={resultsRef}>
+            {autoCompleteData.length !== 0 &&
+              autoCompleteData.map((item, idx) => (
+                <AutoCompleteItem key={idx} onClick={() => addKeyword(item)}>
+                  <AutoCompleteItemButton>{item}</AutoCompleteItemButton>
+                </AutoCompleteItem>
+              ))}
+          </AutoCompleteList>
+        </SearchBar>
       </div>
     </SearchBarBlock>
   );
@@ -99,7 +143,29 @@ const KeywordItem = styled.div`
   border-radius: 16px;
   color: ${(props) => props.theme.color.purple};
 `;
+const SearchBar = styled.div`
+  display: inline-block;
+`;
 const Input = styled.input`
   border: none;
+`;
+const AutoCompleteList = styled.ul`
+  position: absolute;
+  background-color: white;
+`;
+const AutoCompleteItem = styled.li`
+  background-color: ${(props) => (props.selected ? 'red' : 'white')};
+`;
+const AutoCompleteItemButton = styled.button`
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  &:hover {
+    background-color: ${(props) => props.theme.color.lightGray3};
+  }
+  &:focus {
+    background-color: ${(props) => props.theme.color.lightGray3};
+  }
 `;
 export default SearchBlock;

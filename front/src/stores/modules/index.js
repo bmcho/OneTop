@@ -8,6 +8,8 @@ import loading from './loading';
 import productInfo from './productInfo';
 import productCompareInfo from './productCompareInfo';
 import searchCategory from './searchCategory';
+import productReview from './productReview';
+import productRecommend from './productRecommend';
 
 const combineReducer = combineReducers({
   tvShow,
@@ -18,6 +20,8 @@ const combineReducer = combineReducers({
   productInfo,
   productCompareInfo,
   searchCategory,
+  productReview,
+  productRecommend,
 });
 
 const rootReducer = (state, action) => {

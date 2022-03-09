@@ -14,14 +14,18 @@ import DescriptionInfo from '../../src/components/detail/DescriptionInfo';
 import { useCallback, useEffect, useState } from 'react';
 import { addProductCompareInfoAction } from '../../src/stores/modules/productCompareInfo';
 
-const Detail = (props) => {
+const Detail = () => {
   const router = useRouter();
-  const { data: productInfo, error } = useSelector(
-    (state) => state.productInfo
-  );
+  const {
+    loading,
+    data: productInfo,
+    error,
+  } = useSelector((state) => state.productInfo);
+
   const { data: productCompareInfo } = useSelector(
     (state) => state.productCompareInfo
   );
+
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState({
     description: false,
@@ -49,14 +53,16 @@ const Detail = (props) => {
       alert('최대 3개까지 추가할수 있습니다.');
       return;
     }
-    if (productCompareInfo.find((info) => info.id === id)) {
+    if (productCompareInfo.find((info) => info.product_num === parseInt(id))) {
       alert('이미 추가된 제품입니다.');
       return;
     }
     dispatch(addProductCompareInfoAction(id));
-  }, [productCompareInfo]);
+  }, [productCompareInfo, id]);
 
+  if (loading) return <div>loading...</div>;
   if (error) return <div>error...</div>;
+  if (!productInfo) return <div>error...</div>;
 
   const { name, description, ingredientList, ...rest } = productInfo;
   return (
@@ -94,32 +100,5 @@ const DetailBlock = styled.div`
     width: 100%;
   }
 `;
-
-export async function getStaticPaths() {
-  try {
-    const res = await axios.get('http://localhost:3004/item');
-    const items = res.data;
-    const paths = items.map((item) => ({ params: { id: item.id } }));
-    return {
-      paths,
-      fallback: false,
-    };
-  } catch (e) {
-    return {
-      paths: [],
-      fallback: false,
-    };
-  }
-}
-
-export const getStaticProps = wrapper.getStaticProps(
-  (store) =>
-    async ({ params }) => {
-      const { id } = params;
-      store.dispatch(getProductInfoAction(id));
-      store.dispatch(END);
-      await store.sagaTask.toPromise();
-    }
-);
 
 export default Detail;
