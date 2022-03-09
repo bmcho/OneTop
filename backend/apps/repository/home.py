@@ -3,7 +3,7 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-from fastapi import HTTPException, Request, Response, status
+from fastapi import HTTPException, status
 from sklearn.metrics.pairwise import cosine_similarity
 from sqlalchemy.orm import Session
 
@@ -15,8 +15,11 @@ from ..core import util
 
 def call_keywords(category: str):
     # 선택 목록에서 제거할 시 if 문 제거
-    if category in ["이너뷰티", "생활용품", "베이비", "디바이스"]:
-        return False  # 선택 시 다른 문구출력(예, 상품이 부족하여 추천할 수 없습니다.)
+    if category in ["이너뷰티", "생활용품", "베이비", "디바이스", "렌즈"]:
+        raise HTTPException(
+            status_code=status.HTTP_406_NOT_ACCEPTABLE,
+            detail="Error, Message : 상품이 부족하여 추천할 수 없습니다.",
+        )  # 선택 시 다른 문구출력(예, 상품이 부족하여 추천할 수 없습니다.)
 
     # db 에서 category_keywords읽기
     category_keywords = pd.read_csv(f"{util.BASE_DIR}/recommand/category_keywords.csv")
@@ -55,18 +58,25 @@ def keywords_similarity(request: schemas.KeywordCategoryList, db: Session):
     product_embedding = product_embedding[
         product_embedding.category == request.category
     ]
+
+    if len(product_embedding) == 0 :
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Error, Not FoundData : {request.category}",
+        )
+
     product_embedding.embedding = product_embedding.embedding.apply(
         lambda x: ast.literal_eval(x)
     )
     product_embedding.embedding = product_embedding["embedding"].apply(
         lambda x: np.array(x)
     )
-
+    
     # 단종 상품 제외 !!
     product_embedding = product_embedding[
         product_embedding.Discontinued == False  # noqa
     ]
-
+    
     # 선택한 키워드 벡터 계산
     vector = np.zeros((100,))
     for keyword in request.keywords:
@@ -86,7 +96,7 @@ def keywords_similarity(request: schemas.KeywordCategoryList, db: Session):
     product_num_list = list(
         cos_df.sort_values("similarity", ascending=False)[0:11].product_num
     )
-
+    print(product_num_list)
     product = (
         db.query(models.Product)
         .filter(models.Product.product_num.in_(product_num_list))
