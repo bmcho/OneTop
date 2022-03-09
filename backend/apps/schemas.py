@@ -26,7 +26,7 @@ class Product(BaseModel):
     average_rating: float
     capacity: str
     price: int
-    keywords: List[Optional[str]] = None
+    keywords: Optional[str] = ""
 
     class Config:
         orm_mode = True
