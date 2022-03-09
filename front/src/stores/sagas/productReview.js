@@ -26,12 +26,10 @@ const postPoductReviewApi = async (body) => {
 
 function* loadProductReview(action) {
   const { id, page } = action;
-  console.log(id);
   try {
     const reviews = yield call(getProductReviewApi, id, page);
     yield put(getProductReviewSuccessAction(reviews));
   } catch (e) {
-    console.log(e);
     yield put(getProductReviewFailureAction(e));
   }
 }

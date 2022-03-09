@@ -6,6 +6,7 @@ import productInfo from './productInfo';
 import productCompareInfo from './productCompareInfo';
 import productInfoByCategory from './searchCategory';
 import productReview from './productReview';
+import productRecommend from './productRecommend';
 
 export default function* rootSaga() {
   yield all([
@@ -16,5 +17,6 @@ export default function* rootSaga() {
     call(productCompareInfo),
     call(productInfoByCategory),
     call(productReview),
+    call(productRecommend),
   ]);
 }
