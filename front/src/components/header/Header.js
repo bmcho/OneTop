@@ -1,35 +1,46 @@
 import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
+import HeaderWrap from './HeaderWrap';
 
-const Header = (props) => (
-  <HeaderBlock>
-    <Link href="/">
-      <a>TITLE</a>
-    </Link>
-    <NavBlock>
-      <li>
-        <Link href="/search">
-          <a>search</a>
+const Header = (props) => {
+  return (
+    <HeaderWrap>
+      <HeaderItemWrap>
+        <Link href="/">
+          <a>
+            <Logo src="/images/logo.png" />
+          </a>
         </Link>
-      </li>
-      <li>
-        <Link href="/recommend">
-          <a>recommend</a>
-        </Link>
-      </li>
-    </NavBlock>
-  </HeaderBlock>
-);
-const HeaderBlock = styled.div`
-  max-width: 1024px;
-  margin: 0 auto;
-  height: 100px;
-  padding: 20px;
-  box-sizing: border-box;
+        <NavBlock>
+          <li>
+            <Link href="/search">
+              <a>search</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/recommend">
+              <a>recommend</a>
+            </Link>
+          </li>
+        </NavBlock>
+      </HeaderItemWrap>
+    </HeaderWrap>
+  );
+};
+
+const HeaderItemWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: 1024px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+`;
+const Logo = styled.img`
+  width: 50px;
+  height: 50px;
 `;
 const NavBlock = styled.nav`
   display: flex;

@@ -3,6 +3,13 @@ import { MdOutlineCategory } from 'react-icons/md';
 import { VscSymbolKeyword } from 'react-icons/vsc';
 import { FaCarrot } from 'react-icons/fa';
 import styled, { css } from 'styled-components';
+import { categories } from '../../../utils/categoryUtil';
+import { gsap } from 'gsap/dist/gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import FadeIn from './fadeIn/FadeIn';
+import ProductItem from './productItem/ProductItem';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Search = (props) => {
   const [tapState, setTapState] = useState(0);
@@ -34,7 +41,7 @@ const Search = (props) => {
               <IconWrap active={tapState === 1}>
                 <VscSymbolKeyword size={16} />
               </IconWrap>
-              {tapState === 1 && <span>카테고리</span>}
+              {tapState === 1 && <span>키워드</span>}
             </Button>
           </Item>
           <Item>
@@ -42,23 +49,49 @@ const Search = (props) => {
               <IconWrap active={tapState === 2}>
                 <FaCarrot size={16} />
               </IconWrap>
-              {tapState === 2 && <span>카테고리</span>}
+              {tapState === 2 && <span>성분</span>}
             </Button>
           </Item>
         </List>
       </div>
-      <div>
-        {tapState === 0 && <div>category search</div>}
-        {tapState === 1 && <div>keyword search</div>}
-        {tapState === 2 && <div>ingredient search</div>}
-      </div>
+      <ListSection>
+        {tapState === 0 && (
+          <FadeIn stagger={0.1} x={100}>
+            <Category>
+              <ProductItem />
+              <ProductItem />
+              <ProductItem />
+            </Category>
+          </FadeIn>
+        )}
+        {tapState === 1 && (
+          <FadeIn stagger={0.1} x={100}>
+            <Category>
+              <ProductItem />
+              <ProductItem />
+              <ProductItem />
+            </Category>
+          </FadeIn>
+        )}
+        {tapState === 2 && (
+          <FadeIn stagger={0.1} x={100}>
+            <Category>
+              <ProductItem />
+              <ProductItem />
+              <ProductItem />
+            </Category>
+          </FadeIn>
+        )}
+      </ListSection>
     </SearchBlock>
   );
 };
 
 const SearchBlock = styled.div`
   width: 100%;
-  height: 100vh;
+  // height: 100vh;
+  // margin-top: 100vh;
+  background
 `;
 const Title = styled.h2`
   font-size: 27px;
@@ -66,17 +99,22 @@ const Title = styled.h2`
   letter-spacing: -1.5px;
   transition: font-size 1s,line-height 1s,letter-spacing 1s;
   text-align: center;
+  
 }`;
 const Text = styled.p`
-  padding-top: 15px;
+  padding-top: 20px;
   font-size: 15px;
   line-height: 24px;
   letter-spacing: -1px;
   text-align: center;
 `;
+const ListSection = styled.div`
+  padding-bottom: 100px;
+`;
 const List = styled.ul`
   display: flex;
   justify-content: center;
+  padding-top: 40px;
 `;
 const Item = styled.li`
   padding-right: 10px;
@@ -119,4 +157,15 @@ const IconWrap = styled.span`
       `;
   }}
 `;
+const Category = styled.ul`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 350px;
+  margin-top: 15px;
+  padding: 0 10px;
+`;
+
 export default Search;
