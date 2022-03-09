@@ -116,7 +116,7 @@ const searchIngredient = (state = initialState, action) => {
     case CLEAR_INCLUDE_AUTO_COMPLETE_DATA:
       return { ...state, includeAutoCompleteData: [] };
     case CLEAR_EXCLUDE_AUTO_COMPLETE_DATA:
-      return { ...state, inExcludeAutoCompleteData: [] };
+      return { ...state, excludeAutoCompleteData: [] };
     default:
       return state;
   }

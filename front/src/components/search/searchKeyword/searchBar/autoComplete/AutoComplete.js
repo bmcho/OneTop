@@ -13,15 +13,16 @@ const AutoComplete = ({ resultsRef, requestSearchResult }) => {
 
   return (
     <div>
-      {searchKeyword.length === 0 && autoCompleteData.length !== 0 && (
+      {searchKeyword.length === 0 && (
+        // autoCompleteData.length !== 0 &&
         <AutoCompleteList ref={resultsRef}>
-          {autoCompleteData.map((item, idx) => (
+          {autoCompleteData.map(({ type, data }, idx) => (
             <AutoCompleteItem
               key={idx}
-              onClick={() => requestSearchResult(item)}
+              onClick={() => requestSearchResult(data, type)}
             >
               <AutoCompleteItemButton>
-                <span>{item}</span>
+                <span>{data}</span>
                 <span>검색</span>
               </AutoCompleteItemButton>
             </AutoCompleteItem>
