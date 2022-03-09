@@ -18,7 +18,7 @@ class Message(BaseModel):
     message: str
 
 
-class ProductList(BaseModel):
+class Product(BaseModel):
     product_num: int
     name: str
     img_url: str
@@ -26,44 +26,23 @@ class ProductList(BaseModel):
     average_rating: float
     capacity: str
     price: int
+    keywords: List[Optional[str]] = None
 
     class Config:
         orm_mode = True
 
 
-class ProductIdList(BaseModel):
-    product_id: List[int]
+class ProductList(Product):
+    hashtag: Optional[str] = ""
 
-
-class IngredientIdList(BaseModel):
-    ingredient_id: int
+    class Config:
+        orm_mode = True
 
 
 class SearchResult(BaseModel):
     totalPageCount: int
     currentPage: int
     result: List[ProductList]
-
-    class Config:
-        orm_mode = True
-
-
-class ProductNameList(BaseModel):
-    name: str
-
-    class Config:
-        orm_mode = True
-
-
-class ProductBrandList(BaseModel):
-    brand: str
-
-    class Config:
-        orm_mode = True
-
-
-class KoIngredientList(BaseModel):
-    ko_ingredient: str
 
     class Config:
         orm_mode = True
@@ -89,28 +68,6 @@ class IngredientAutocompleteList(BaseModel):
         orm_mode = True
 
 
-class SearchResultKeyword(BaseModel):
-    totalPageCount: int
-    currentPage: int
-    result: List[ProductList]
-    productList: List[str]
-    brandList: List[str]
-    ingredientList: List[str]
-
-    class Config:
-        orm_mode = True
-
-
-class SearchResultIngredient(BaseModel):
-    totalPageCount: int
-    currentPage: int
-    result: List[ProductList]
-    ingredientList: List[KoIngredientList]
-
-    class Config:
-        orm_mode = True
-
-
 class SearchKeyword(BaseModel):
     keyword: str
     searchResultType: str
@@ -128,16 +85,12 @@ class SearchCategory(BaseModel):
 
 
 class SearchIngredients(BaseModel):
-    includeIngredient: List[str]
-    excludeIngredient: List[str]
+    includeIngredient: List[Optional[str]] = None
+    excludeIngredient: List[Optional[str]] = None
     requestPage: int
     maxItemCountByPage: int
     sort: str
     # requestPage, maxItemCountByPage,sort가 공통 인자. 상속관계 만들기 가능.
-
-
-class DetailId(BaseModel):
-    id: int
 
 
 class IngredientList(BaseModel):
