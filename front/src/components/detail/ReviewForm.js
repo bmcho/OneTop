@@ -1,20 +1,78 @@
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { postProductReviewAction } from '../../stores/modules/productReview';
+import { useRouter } from 'next/router';
 
 const ReviewForm = () => {
+  const [inputValues, setInputValues] = useState({
+    nickName: '',
+    password: '',
+    comment: '',
+  });
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { id } = router.query;
+
+  const inputChangeHandle = (e) => {
+    const { name } = e.target;
+    setInputValues((inputvalue) => ({
+      ...inputvalue,
+      [name]: e.target.value,
+    }));
+  };
+
+  const postReview = (e) => {
+    e.preventDefault();
+    if (!inputValues.nickName) return alert('닉네임을 입력해주세요.');
+    if (!inputValues.password) return alert('비밀번호을 입력해주세요.');
+    if (!inputValues.comment) return alert('리뷰을 입력해주세요.');
+
+    dispatch(
+      postProductReviewAction({
+        review_data: {
+          fk_product_num: parseInt(id),
+          password: inputValues.password,
+          comment: inputValues.comment,
+          images: [],
+        },
+        action: 'create',
+      })
+    );
+    setInputValues({
+      nickName: '',
+      password: '',
+      comment: '',
+    });
+  };
   return (
     <ReviewFormBlock>
-      <ReviewInput>
+      <ReviewInput onSubmit={postReview}>
         <InputWrapper>
           <ReviewWriterInfo>
-            <input type="text" placeholder="닉네임" />
-            <input type="password" placeholder="비밀번호" />
+            <input
+              type="text"
+              name="nickName"
+              placeholder="닉네임"
+              value={inputValues.nickName}
+              onChange={inputChangeHandle}
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="비밀번호"
+              value={inputValues.password}
+              onChange={inputChangeHandle}
+            />
           </ReviewWriterInfo>
-          <ReviewTextArea placeholder="리뷰를 입력해주세요"></ReviewTextArea>
+          <ReviewTextArea
+            placeholder="리뷰를 입력해주세요"
+            value={inputValues.comment}
+            name="comment"
+            onChange={inputChangeHandle}
+          ></ReviewTextArea>
           <ImageInputWrapper>
-            <label className="input-file-button" for="input-file">
-              업로드
-            </label>
-            <input type="file" id="input-file" style={{ display: 'none' }} />
+            <input type="file" id="input-file" />
           </ImageInputWrapper>
         </InputWrapper>
         <SubmitWrapper>
