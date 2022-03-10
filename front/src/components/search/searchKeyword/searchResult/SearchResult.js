@@ -11,6 +11,7 @@ import {
 } from '../../../../stores/modules/searchKeyword';
 import NoResult from '../../../commons/noResult/NoResult';
 import Pagination from '../../../commons/pagination/Pagination';
+import ResultSort from '../../../commons/resultSort/ResultSort';
 import SearchResultItem from '../../searchResultItem/SearchResultItem';
 import Tab from './tab/Tab';
 
@@ -70,13 +71,7 @@ const SearchResult = (props) => {
     <div>
       <TabSection>
         <Tab resultType={resultType} />
-
-        <Select onChange={changeSort} value={sort}>
-          <option value="name asc">가나다 오름차순</option>
-          <option value="name desc">가나다 내림차순</option>
-          <option value="price asc">가격 낮은순</option>
-          <option value="price desc">가격 높은순</option>
-        </Select>
+        <ResultSort onChange={changeSort} value={sort} />
       </TabSection>
       {searchKeyword.length !== 0 &&
         (searchResultData.length === 0 ? (

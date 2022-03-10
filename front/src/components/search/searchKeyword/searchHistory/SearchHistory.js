@@ -37,7 +37,7 @@ const SearchHistory = (props) => {
 
   const clickHistoryItem = (e) => {
     const requestPage = 0;
-    const sort = 'name asc';
+    const sort = 'id desc';
     const resultType = 'product';
     const keyword = searchHistory[e.currentTarget.dataset.index];
     dispatch(setSearchKeywordAction(keyword));

@@ -26,12 +26,13 @@ const SearchIngredient = (props) => {
   const [includeKeywords, setIncludeKeywords] = useState([]);
   const [excludeKeywords, setExcludeKeywords] = useState([]);
   useEffect(() => console.log(resultRequestParams, 'component param'), []);
+
   const getResult = () => {
     const ingredient = {
       includeIngredient: includeKeywords,
       excludeIngredient: excludeKeywords,
       requestPage: 0,
-      sort: 'name asc',
+      sort: 'id desc',
     };
     dispatch(setIngredientInRequestParamsAction(ingredient));
   };

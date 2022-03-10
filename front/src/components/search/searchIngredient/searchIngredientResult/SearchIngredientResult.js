@@ -7,6 +7,8 @@ import {
 } from '../../../../stores/modules/searchIngredient';
 import NoResult from '../../../commons/noResult/NoResult';
 import Pagination from '../../../commons/pagination/Pagination';
+import ResultSort from '../../../commons/resultSort/ResultSort';
+// import ResultSort from '../../../commons/resultSort/ResultSort';
 import SearchResultItem from '../../searchResultItem/SearchResultItem';
 
 const SearchIngredientResult = (props) => {
@@ -40,12 +42,7 @@ const SearchIngredientResult = (props) => {
   return (
     <div>
       <SelectBlock>
-        <Select onChange={changeSort} value={resultRequestParams.sort}>
-          <option value="name asc">가나다 오름차순</option>
-          <option value="name desc">가나다 내림차순</option>
-          <option value="price asc">가격 낮은순</option>
-          <option value="price desc">가격 높은순</option>
-        </Select>
+        <ResultSort onChange={changeSort} value={resultRequestParams.sort} />
       </SelectBlock>
       {searchIngredientResultData.length === 0 ? (
         <NoResult />

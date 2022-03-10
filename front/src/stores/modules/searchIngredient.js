@@ -4,7 +4,7 @@ export const initialState = {
     excludeIngredient: [],
     requestPage: 0,
     maxItemCountByPage: 10,
-    sort: 'name asc',
+    sort: 'id desc',
   },
   searchIngredientResultData: [],
   searchIngredientResultTotalPage: 0,
