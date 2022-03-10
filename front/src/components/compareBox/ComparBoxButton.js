@@ -43,6 +43,7 @@ const CompareBoxButtonBlock = styled.div`
     rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
   cursor: pointer;
   animation: ${ButtonAnimation} 0.5s ease;
+  z-index: 3;
 `;
 
 const NonCheckAlerm = styled.div`
