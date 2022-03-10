@@ -12,20 +12,25 @@ const ReviewMain = () => {
   const { reviews: newReview } = useSelector(
     (state) => state.productReview.post
   );
-  const { result } = useSelector((state) => state.productReview.modify);
+  const { result: modifyUpdate } = useSelector(
+    (state) => state.productReview.modify
+  );
+  const { result: deleteUpdate } = useSelector(
+    (state) => state.productReview.delete
+  );
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
 
   useEffect(() => {
     dispatch(getProductReviewAction(id, 1));
-  }, [newReview, result]);
+  }, [newReview, modifyUpdate, deleteUpdate]);
 
-  if (loading) return <div>loading...</div>;
+  if (loading) return <LoadingBlock>loading...</LoadingBlock>;
 
   return (
     <ReviewMainBlock>
-      {reviews ? (
+      {reviews?.data?.length ? (
         <>
           <ReviewUl>
             {reviews.data.map((review) => (
@@ -48,19 +53,15 @@ const ReviewMainBlock = styled.div`
   align-items: center;
 `;
 
-const Line = styled.div`
-  width: 30%;
-  margin: 10px;
-  @media screen and (max-width: 768px) {
-    width: 90%;
-    margin: 0 10px;
-  }
-`;
-
 const ReviewUl = styled.ul`
   width: 100%;
   display: flex;
   flex-direction: column;
+`;
+
+const LoadingBlock = styled.div`
+  width: 100vw;
+  height: 100vh;
 `;
 
 export default ReviewMain;

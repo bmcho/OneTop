@@ -27,15 +27,7 @@ const postProductReviewApi = async (body) => {
   return res.data;
 };
 const postProductReviewImageApi = async (files) => {
-  const formData = new FormData();
-  files.forEach((file) => formData.append('files', file));
-
-  const res = await axios.post(
-    `${process.env.BASE_URL}/reviews/images`,
-    formData,
-    { headers: { 'content-Type': 'multipart/form-data' } }
-  );
-  console.log('res', res);
+  const res = await axios.post(`${process.env.BASE_URL}/reviews/images`, files);
   return res.data;
 };
 
