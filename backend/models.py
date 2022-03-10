@@ -120,7 +120,7 @@ class Review(Base):
     fk_product_num = Column(Integer, ForeignKey("product.product_num"), index=True)
     hashed_password = Column(String(200))
     comment = Column(TEXT, nullable=False)
-    hash_tag = Column(TEXT, nullable=True)
+    hashtag = Column(String(200), nullable=True)
     create_date = Column(DATETIME, nullable=False, default=datetime.datetime.now)
     modify_date = Column(DATETIME, nullable=True)
     use_flag = Column(Boolean, default=True)
@@ -133,4 +133,4 @@ class ReviewImage(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     fk_review_id = Column(Integer, ForeignKey("review.id"), index=True)
-    img_path = Column(String(200))
+    img_path = Column(TEXT)
