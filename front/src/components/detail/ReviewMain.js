@@ -57,6 +57,7 @@ const ReviewUl = styled.ul`
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const LoadingBlock = styled.div`

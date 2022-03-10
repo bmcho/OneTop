@@ -98,6 +98,12 @@ const ReviewItem = ({
     setModifyImages(modifyImages.filter((img) => img.img_path !== imgPath));
   };
 
+  const modifyReviewCommentHandle = (e) => {
+    if (e.target.value.length > 2000)
+      return alert('리뷰는 2000자 까지 입력이 가능합니다.');
+    setModifyValue(e.target.value);
+  };
+
   const addFileHandle = (e) => {
     e.preventDefault();
     const { files } = e.target;
@@ -231,10 +237,14 @@ const ReviewItem = ({
       <DefaltComment active={!isModifyOpen}>
         <p ref={ref}>{comment}</p>
         {isOverText && <button onClick={moreTextHandle}>더보기</button>}
-        {hashtag &&
-          hashtag.split(',').map((tag) => {
-            return <span>{tag}</span>;
-          })}
+        {hashtag && (
+          <HashTagsBlock>
+            {hashtag.split(',').map((tag) => {
+              return <HashTagWrapper>{tag}</HashTagWrapper>;
+            })}
+          </HashTagsBlock>
+        )}
+
         {review_images.length !== 0 && (
           <ImageWrapper>
             {review_images.map(({ img_path }) => {
@@ -274,7 +284,7 @@ const ReviewItem = ({
         <ReviewTextArea
           placeholder="리뷰를 입력해주세요"
           value={modifyValue}
-          onChange={(e) => setModifyValue(e.target.value)}
+          onChange={modifyReviewCommentHandle}
           disabled={!isModifyOpen}
         />
         <HashTagsBlock>
@@ -340,6 +350,9 @@ const ReviewItemLi = styled.li`
   padding: 30px;
   margin: 10px 0;
   line-height: 18px;
+  @media screen and (max-width: 1080px) {
+    width: 90%;
+  }
 `;
 
 const StyledMdOutlineMoreVert = styled(MdOutlineMoreVert)`
