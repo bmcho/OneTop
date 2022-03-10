@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { media } from '../../../../../styles/theme';
 import {
   setRequestDataAction,
   setRequestPageAction,
@@ -68,6 +69,7 @@ const SearchResult = (props) => {
     <div>
       <TabSection>
         <Tab resultType={resultType} />
+
         <Select onChange={changeSort} value={sort}>
           <option value="name asc">가나다 오름차순</option>
           <option value="name desc">가나다 내림차순</option>
@@ -111,6 +113,12 @@ const TabSection = styled.div`
   font-size: 14px;
   border: none;
   margin-left: 10px;
+  ${media.mobile} {
+    flex-direction: column;
+    margin-left: 0;
+    padding-left: 0;
+    height: auto;
+  }
 `;
 const Select = styled.select`
   height: 35px;
@@ -120,6 +128,12 @@ const Select = styled.select`
   font-size: 14px;
   border: none;
   margin-left: 10px;
+  ${media.mobile} {
+    width: 50%;
+    padding: 10px 0;
+    margin-top: 10px;
+    align-self: flex-end;
+  }
 `;
 const TabItem = styled.div`
   background-color: ${(props) => props.active && 'red'};

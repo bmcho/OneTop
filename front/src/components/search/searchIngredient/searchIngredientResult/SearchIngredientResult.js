@@ -38,14 +38,14 @@ const SearchIngredientResult = (props) => {
 
   return (
     <div>
-      <div>
+      <SelectBlock>
         <Select onChange={changeSort} value={resultRequestParams.sort}>
           <option value="name asc">가나다 오름차순</option>
           <option value="name desc">가나다 내림차순</option>
           <option value="price asc">가격 낮은순</option>
           <option value="price desc">가격 높은순</option>
         </Select>
-      </div>
+      </SelectBlock>
       {searchIngredientResultData.length === 0 ? (
         <div>검색 결과가 없습니다</div>
       ) : (
@@ -66,6 +66,10 @@ const SearchIngredientResult = (props) => {
     </div>
   );
 };
+const SelectBlock = styled.div`
+  display: flex;
+  justify-content: end;
+`;
 const Select = styled.select`
   height: 35px;
   background: white;

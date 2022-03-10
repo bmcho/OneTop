@@ -123,6 +123,7 @@ const SearchKeywordHistoryItemTitle = styled.button`
   width: 100%;
   display: flex;
   align-items: center;
+  text-align: left;
   &:hover {
     cursor: pointer;
   }
