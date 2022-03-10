@@ -9,6 +9,7 @@ import {
   setResultTypeAction,
   setSortAction,
 } from '../../../../stores/modules/searchKeyword';
+import NoResult from '../../../commons/noResult/NoResult';
 import Pagination from '../../../commons/pagination/Pagination';
 import SearchResultItem from '../../searchResultItem/SearchResultItem';
 import Tab from './tab/Tab';
@@ -79,7 +80,7 @@ const SearchResult = (props) => {
       </TabSection>
       {searchKeyword.length !== 0 &&
         (searchResultData.length === 0 ? (
-          <div>검색 결과가 없습니다</div>
+          <NoResult />
         ) : (
           <div>
             <div>

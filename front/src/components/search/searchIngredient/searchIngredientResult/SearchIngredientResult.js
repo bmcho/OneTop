@@ -5,6 +5,7 @@ import {
   setPageInRequestParamsAction,
   setSortInRequestParamsAction,
 } from '../../../../stores/modules/searchIngredient';
+import NoResult from '../../../commons/noResult/NoResult';
 import Pagination from '../../../commons/pagination/Pagination';
 import SearchResultItem from '../../searchResultItem/SearchResultItem';
 
@@ -47,7 +48,7 @@ const SearchIngredientResult = (props) => {
         </Select>
       </SelectBlock>
       {searchIngredientResultData.length === 0 ? (
-        <div>검색 결과가 없습니다</div>
+        <NoResult />
       ) : (
         <div>
           <div>
