@@ -16,7 +16,7 @@ const CategoriesAndResult = () => {
   const [largeCategoryIndex, setLargeCategoryIndex] = useState(1);
   const [smallCategoryIndex, setSmallCategoryIndex] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [sortingStandard, setSortingStandard] = useState('name asc');
+  const [sortingStandard, setSortingStandard] = useState('id desc');
 
   const itemPerPage = 5;
   const totalPageCount = data?.totalPageCount;

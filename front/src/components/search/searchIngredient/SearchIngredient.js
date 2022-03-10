@@ -8,6 +8,8 @@ import {
   setIngredientForSearchAction,
   clearIncludeAutoCompleteDataAction,
   clearExcludeAutoCompleteDataAction,
+  setResultRequestParamsAction,
+  setIngredientInRequestParamsAction,
 } from '../../../stores/modules/searchIngredient';
 import SearchBlock from './searchBlock/SearchBlock';
 import SearchIngredientResult from './searchIngredientResult/SearchIngredientResult';
@@ -15,6 +17,7 @@ import SearchIngredientResult from './searchIngredientResult/SearchIngredientRes
 const SearchIngredient = (props) => {
   const dispatch = useDispatch();
   const {
+    resultRequestParams,
     includeAutoCompleteKeyword,
     excludeAutoCompleteKeyword,
     includeAutoCompleteData,
@@ -22,15 +25,16 @@ const SearchIngredient = (props) => {
   } = useSelector((state) => state.searchIngredient);
   const [includeKeywords, setIncludeKeywords] = useState([]);
   const [excludeKeywords, setExcludeKeywords] = useState([]);
+  useEffect(() => console.log(resultRequestParams, 'component param'), []);
+
   const getResult = () => {
-    const reqParam = {
+    const ingredient = {
       includeIngredient: includeKeywords,
       excludeIngredient: excludeKeywords,
       requestPage: 0,
-      maxItemCountByPage: 10,
+      sort: 'id desc',
     };
-    console.log('request point', reqParam);
-    dispatch(setIngredientForSearchAction(reqParam));
+    dispatch(setIngredientInRequestParamsAction(ingredient));
   };
 
   return (
@@ -75,7 +79,7 @@ const SearchButton = styled.button`
   border-radius: 2px;
   border: 2px solid ${(props) => props.theme.color.black};
   &:hover {
-    border: none;
+    border: 2px solid ${(props) => props.theme.color.purple};
     background-color: ${(props) => props.theme.color.purple};
     color: ${(props) => props.theme.color.white};
     // font-weight:bold;

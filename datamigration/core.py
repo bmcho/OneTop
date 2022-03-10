@@ -11,7 +11,6 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 file read
 '''
 def read_files(directory_name) :
-  print(BASE_DIR)
   file_names = os.listdir(f"{BASE_DIR}/{directory_name}")
 
   if len(file_names) > 0 :

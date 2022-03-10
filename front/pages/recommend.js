@@ -124,8 +124,11 @@ const Essential = styled.dl`
   dd {
     margin-bottom: 30px;
   }
-  width: 100%;
+  width: 90%;
   padding: 40px;
+  @media screen and (max-width: 500px) {
+    padding: 20px;
+  }
 `;
 
 export default recommend;

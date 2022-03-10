@@ -85,7 +85,7 @@ const SearchBar = (props) => {
   const requestSearchResult = (keyword, type = 'product') => {
     //keyword history 저장, 검색결과 요청
     const requestPage = 0;
-    const sort = 'name asc';
+    const sort = 'id desc';
     dispatch(setRequestPageAction(requestPage));
     dispatch(setSearchKeywordAction(keyword));
     dispatch(setResultTypeAction(type));

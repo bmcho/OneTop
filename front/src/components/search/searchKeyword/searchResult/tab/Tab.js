@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
+import { media } from '../../../../../../styles/theme';
 import {
   setRequestDataAction,
   setRequestPageAction,
@@ -52,6 +53,11 @@ const Tab = (props) => {
 };
 const TabBlock = styled.div`
   display: flex;
+  ${media.mobile} {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
 `;
 const TabItem = styled.div`
   width: 50px;
@@ -61,6 +67,7 @@ const TabItem = styled.div`
 
   &:hover {
     background-color: ${(props) => props.theme.color.yellow2};
+    cursor: pointer;
   }
   ${(props) => {
     if (props.active) {
@@ -72,6 +79,10 @@ const TabItem = styled.div`
       `;
     }
   }};
+  ${media.mobile} {
+    width: 33%;
+    box-sizing: border-box;
+  }
 `;
 
 export default Tab;

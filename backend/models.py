@@ -41,7 +41,7 @@ class Product(Base):
     capacity = Column(String(50))
     price = Column(Integer)
     extinction = Column(Boolean, default=True)
-    keywords = Column(String(100), nullable=True)
+    keywords = Column(String(500), nullable=True)
 
     _descriptions = relationship("Descrip", back_populates="_products")
     _ingredients = relationship(
