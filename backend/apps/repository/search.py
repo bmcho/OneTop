@@ -93,7 +93,10 @@ def get_keyword_autocomplete(db: Session, request: schemas.Keyword):
     )
 
     search_product_list = [value for value, in search_product_list]
-    search_product_list = random.sample(search_product_list, 10)
+    if len(search_product_list) >= 10:
+        search_product_list = random.sample(search_product_list, 10)
+    else:
+        pass
 
     search_brand_list = (
         db.query(models.Product.brand)
