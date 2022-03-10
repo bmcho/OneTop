@@ -27,17 +27,12 @@ import {
 
 const delay = 500;
 
-<<<<<<< HEAD
-function searchIngredientResultAPI(data) {
-  return axios.post(`${process.env.BASE_URL}/search/ingredient`, data);
-=======
 function searchIngredientResultAPI(origin, change) {
   const reqParam = {
     ...origin,
     ...change,
   };
   return axios.post(`${process.env.BASE_URL}/search/ingredient`, reqParam);
->>>>>>> 785ecb39d5393719fe914394cf098fe88b0fed29
 }
 
 function searchIngredientAutoCompleteAPI(data) {
