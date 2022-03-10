@@ -66,7 +66,6 @@ create
 def post_reviews_create(request: ReviewManipulation, db: Session):
     # password hashing
     hashed_password = hashing_password.get_password_hash(request.password)
-
     try:
         reveiw_data = Review(
             fk_product_num=request.fk_product_num,
@@ -136,6 +135,13 @@ def post_reviews_modify(request: ReviewManipulation, db: Session):
     validation_review_data(return_review, request)
 
     try:
+        # 기존 review_image 삭제
+
+        delete_review_images = (
+            db.query(ReviewImage).filter(ReviewImage.fk_review_id == request.id).all()
+        )
+        db.delete(delete_review_images)
+
         image_list = []
         for image in request.images:
             # base64 encoding string을 그대로 저장하는 방식으로 변경
@@ -147,9 +153,7 @@ def post_reviews_modify(request: ReviewManipulation, db: Session):
         # 리뷰내용 변경
         return_review.comment = request.comment
         return_review.modify_date = datetime.datetime.now()
-        return_review.review_images = (
-            image_list if len(image_list) != 0 else return_review.review_images
-        )
+        return_review.review_images = image_list
 
         db.commit()
     except Exception as ex:

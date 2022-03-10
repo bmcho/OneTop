@@ -1,6 +1,7 @@
 import datetime
 from typing import Counter
 
+import sqlalchemy
 from sqlalchemy import (
     DATETIME,
     TEXT,
@@ -133,4 +134,4 @@ class ReviewImage(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     fk_review_id = Column(Integer, ForeignKey("review.id"), index=True)
-    img_path = Column(TEXT)
+    img_path = Column(TEXT().with_variant(sqlalchemy.dialects.mysql.LONGTEXT, "mysql"))

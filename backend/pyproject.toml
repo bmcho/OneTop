@@ -16,6 +16,7 @@ passlib = "^1.7.4"
 scikit-learn = "^1.0.2"
 numpy = "^1.22.3"
 SQLAlchemy = "1.4.31"
+bcrypt = "^3.2.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"

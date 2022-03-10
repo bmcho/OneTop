@@ -32,6 +32,8 @@ services:
     restart: always
     expose:
       - "3000"
+    environment:
+      - DEV=0
     networks:
       - nginx_bridge
     depends_on:
