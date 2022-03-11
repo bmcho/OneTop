@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import Pagenation from './Pagenation';
 import { useSelector } from 'react-redux';
 import { MdChevronLeft } from 'react-icons/md';
+import Loading from '../../commons/loading/loading';
 
 const CategoriesAndResult = () => {
   const router = useRouter();
@@ -54,7 +55,7 @@ const CategoriesAndResult = () => {
     setLoading(false);
   }, [largeCategory, smallCategory]);
 
-  if (loading) return null;
+  if (loading) return <Loading />;
 
   return (
     <>

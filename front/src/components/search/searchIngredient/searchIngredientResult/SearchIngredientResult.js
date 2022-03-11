@@ -6,6 +6,7 @@ import {
   setPageInRequestParamsAction,
   setSortInRequestParamsAction,
 } from '../../../../stores/modules/searchIngredient';
+import Loading from '../../../commons/loading/loading';
 import NoResult from '../../../commons/noResult/NoResult';
 import Pagination from '../../../commons/pagination/Pagination';
 import ResultSort from '../../../commons/resultSort/ResultSort';
@@ -28,7 +29,6 @@ const SearchIngredientResult = (props) => {
   }, [loadingStatus]);
 
   const setCurrentPage = (page) => {
-    console.log(page);
     const curPage = {
       requestPage: page,
     };
@@ -46,7 +46,7 @@ const SearchIngredientResult = (props) => {
     });
   };
 
-  if (loadingStatus) return <div>loading</div>;
+  if (loadingStatus) return <Loading />;
 
   return (
     <div>

@@ -9,6 +9,7 @@ import {
   setResultTypeAction,
   setSortAction,
 } from '../../../../stores/modules/searchKeyword';
+import Loading from '../../../commons/loading/loading';
 import NoResult from '../../../commons/noResult/NoResult';
 import Pagination from '../../../commons/pagination/Pagination';
 import ResultSort from '../../../commons/resultSort/ResultSort';
@@ -66,7 +67,7 @@ const SearchResult = (props) => {
     );
   };
 
-  if (loadingStatus) return <div>loading</div>;
+  if (loadingStatus) return <Loading />;
   return (
     <div>
       <TabSection>

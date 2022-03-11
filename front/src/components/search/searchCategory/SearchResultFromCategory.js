@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { MdChevronLeft } from 'react-icons/md';
 import { hashtagSplit } from '../../../utils/util';
+import Loading from '../../commons/loading/loading';
 
 const SearchResultFromCategory = ({
   largeCategory,
@@ -40,7 +41,7 @@ const SearchResultFromCategory = ({
     });
   };
 
-  if (loading) return null;
+  if (loading) return <Loading />;
   if (error) return <div>error...</div>;
   if (!data) return <div>error...</div>;
 

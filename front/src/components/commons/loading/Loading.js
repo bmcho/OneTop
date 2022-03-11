@@ -16,6 +16,7 @@ const LoadingBlock = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 200px;
 `;
 
 export default Loading;

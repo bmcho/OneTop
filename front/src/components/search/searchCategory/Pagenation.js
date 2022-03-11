@@ -109,10 +109,10 @@ const PageButton = styled.button`
     align-items: center;
     justify-content: center;
   }
-  &:focus {
+  /* &:focus {
     border-color: ${({ theme }) => theme.color.gray1};
     color: ${({ theme }) => theme.color.gray1};
-  }
+  } */
 
   & + & {
     margin-left: 2px;

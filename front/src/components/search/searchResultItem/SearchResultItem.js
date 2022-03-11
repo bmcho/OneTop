@@ -18,7 +18,7 @@ import StarRating from '../../commons/starRating/StarRating';
 const SearchResultItem = ({ cosmetic }) => (
   <SearchResultItemBlock>
     <ImageWrap>
-      <img src="/images/product.jpeg" width={60} height={60} />
+      <img src={cosmetic.img_url} width={60} height={60} />
     </ImageWrap>
     <div>
       {cosmetic.hashtag && (

@@ -48,18 +48,13 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
                 const item = data[index];
                 return item ? (
                   <td key={index}>
-                    <RemoveButton
-                      onClick={() => productRemoveHandle(item.product_num)}
-                    >
-                      삭제
-                    </RemoveButton>
                     <ImageWrapper>
-                      <Image
-                        src={item.img_url}
-                        width={123}
-                        height={123}
-                        layout="responsive"
-                      />
+                      <RemoveButton
+                        onClick={() => productRemoveHandle(item.product_num)}
+                      >
+                        삭제
+                      </RemoveButton>
+                      <img src={item.img_url} alt={'상품이미지'} />
                     </ImageWrapper>
                   </td>
                 ) : (
@@ -239,17 +234,17 @@ const TextBlock = styled.div`
 `;
 
 const ItemTable = styled.table`
+  box-sizing: border-box;
   width: 100%;
   font-size: 12px;
   font-weight: 600;
-  border-spacing: 1px;
   background-color: white;
   padding-top: 10px;
   td,
   th {
     position: relative;
-    width: 22%;
     text-align: center;
+    word-break: break-all;
     vertical-align: middle;
     white-space: pre-wrap;
     border-bottom: 2px solid #dee2e6;
@@ -257,30 +252,29 @@ const ItemTable = styled.table`
     color: ${({ theme }) => theme.color.gray1};
   }
   th {
+    width: 70px;
     background-color: #e9ecef;
+  }
+  td {
+    width: 90px;
   }
   thead td,
   thead th {
     border-top: none;
     background-color: ${({ theme }) => theme.color.yellow2};
   }
-  thead td {
-    padding: 0 1px 2px 0;
-  }
   tbody td {
     padding: 20px 2px;
   }
-  tbody tr:first-child th,
-  tbody tr:first-child td {
-    margin: 40px 0 20px;
+  @media screen and (max-width: 500px) {
   }
 `;
 
 const RemoveButton = styled.button`
   position: absolute;
-  right: 1px;
-  bottom: 2px;
-  width: calc(100% - 2px);
+  right: 0;
+  bottom: 0;
+  width: 100%;
   height: 15px;
   font-size: 12px;
   z-index: 99;
@@ -298,5 +292,14 @@ const ImageWrapper = styled.div`
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 10px;
   overflow: hidden;
+  width: 90px;
+  position: relative;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+  @media screen and (max-width: 500px) {
+    width: 120px;
+  }
 `;
 export default CompareBox;
