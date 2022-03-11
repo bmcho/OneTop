@@ -33,7 +33,7 @@ services:
     container_name: client
     build:
       context: ./front
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     volumes:
       - ./front:/srv/client
     restart: always

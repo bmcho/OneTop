@@ -17,12 +17,6 @@ COPY . /srv/client
 
 RUN apk update && apk add bash
 
-RUN npm install \
-    npm update acorn --depth 20 \
-    npm dedupe \ 
-    npm install webpack@4.28.4 \
-    npm run build
-
 ENTRYPOINT ["sh", "entrypoint.sh"]
 
 #만약 필요한 ENV(환경변수)가 있다면
