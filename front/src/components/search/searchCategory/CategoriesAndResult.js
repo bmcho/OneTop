@@ -108,11 +108,6 @@ const CategoriesAndResult = () => {
 };
 
 const Wrapper = styled.div`
-  ${(props) =>
-    props.size &&
-    css`
-      height: calc(165px * ${parseInt(props.size) + 0.5});
-    `};
   display: flex;
   flex-direction: column;
   align-items: center;
