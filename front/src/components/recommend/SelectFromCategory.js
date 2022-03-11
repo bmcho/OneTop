@@ -12,9 +12,7 @@ const SelectFromCategory = (props) => {
   const setCategoryHandle = (category) => {
     dispatch(setCategoryAction(category));
   };
-  useEffect(() => {
-    console.log(category);
-  }, [category]);
+
   return (
     <CategoriesWrapper>
       {recommendCategory.map((categoryItem, index) => (

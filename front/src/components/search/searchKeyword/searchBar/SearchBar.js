@@ -6,68 +6,15 @@ import {
   setSearchKeywordAction,
   setAutoCompleteKeywordAction,
   clearAutoCompleteDataAction,
-  setRequestPageAction,
   setRequestDataAction,
-  setResultTypeAction,
-  setSortAction,
 } from '../../../../stores/modules/searchKeyword';
-const useAutoCompleteSelector = (inputRef, resultsRef, autoCompleteData) => {
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
-
-  useEffect(() => {
-    if (autoCompleteData.length > 0) {
-      document.body.addEventListener('keydown', onKeyDown);
-    } else {
-      document.body.removeEventListener('keydown', onKeyDown);
-    }
-    return () => {
-      document.body.removeEventListener('keydown', onKeyDown);
-    };
-  }, [autoCompleteData]);
-
-  const onKeyDown = (event) => {
-    if (event.isComposing) return;
-    if (resultsRef.current) {
-      const resultsItems = Array.from(resultsRef.current.children);
-      const activeResultIndex = resultsItems.findIndex((child) => {
-        return child.querySelector('button') === document.activeElement;
-      });
-
-      if (event.key === 'ArrowUp') {
-        if (document.activeElement === inputRef.current) {
-          resultsItems[resultsItems.length - 1].querySelector('button').focus();
-        } else if (resultsItems[activeResultIndex - 1]) {
-          resultsItems[activeResultIndex - 1].querySelector('button').focus();
-        } else {
-          inputRef.current.focus();
-        }
-      }
-
-      if (event.key === 'ArrowDown') {
-        if (document.activeElement === inputRef.current) {
-          resultsItems[0].querySelector('button').focus();
-        } else if (resultsItems[activeResultIndex + 1]) {
-          resultsItems[activeResultIndex + 1].querySelector('button').focus();
-        } else {
-          inputRef.current.focus();
-        }
-      }
-    }
-  };
-};
 const SearchBar = (props) => {
   const inputRef = useRef();
   const resultsRef = useRef();
 
   const dispatch = useDispatch();
-  const {
-    autoCompleteData,
-    autoCompleteKeyword,
-    searchKeyword,
-    keywordResultRequestData,
-  } = useSelector((state) => state.searchKeyword);
+  const { autoCompleteData, autoCompleteKeyword, keywordResultRequestData } =
+    useSelector((state) => state.searchKeyword);
 
   useEffect(() => {
     inputRef.current.focus();
