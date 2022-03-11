@@ -61,7 +61,7 @@ services:
   # certbot:
   #   container_name: certbot
   #   image: certbot/certbot:latest
-  #   command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email credit812@gmail.com --agree-tos --no-eff-email -d www.onetop.n-e.kr
+  #   command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email credit812@gmail.com --agree-tos --no-eff-email -d www.recco.n-e.kr
   #   volumes:
   #     - ./nginx/certbot/conf/:/etc/letsencrypt
   #     - ./nginx/certbot/logs/:/var/log/letsencrypt
