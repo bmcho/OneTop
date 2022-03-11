@@ -15,7 +15,7 @@ const getKeywordsApi = async (category) => {
 };
 
 const getRecomendedApi = async (category, keywords) => {
-  const res = await axios.post(`${process.env.BASE_URL}/main/recommandList`, {
+  const res = await axios.post(`${process.env.BASE_URL}/main/recommendList`, {
     category,
     keywords,
   });

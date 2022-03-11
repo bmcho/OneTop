@@ -3,6 +3,7 @@ import { useSelector, dispatch, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getProductReviewAction } from '../../stores/modules/productReview';
 import { useRouter } from 'next/router';
+import Pagenation from '../search/searchCategory/Pagenation';
 import ReviewItem from './ReviewItem';
 
 const ReviewMain = () => {
@@ -21,10 +22,18 @@ const ReviewMain = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
+  const { page } = router.query;
 
   useEffect(() => {
     dispatch(getProductReviewAction(id, 1));
   }, [newReview, modifyUpdate, deleteUpdate]);
+
+  useEffect(() => {
+    if (page) {
+      console.log(page);
+      dispatch(getProductReviewAction(id, page));
+    }
+  }, [page]);
 
   if (loading) return <LoadingBlock>loading...</LoadingBlock>;
 
@@ -37,9 +46,16 @@ const ReviewMain = () => {
               <ReviewItem key={review.id} {...review} />
             ))}
           </ReviewUl>
+          <Pagenation
+            pathname={`/detail/${id}`}
+            itemPerPage={20}
+            totalPage={reviews.total_page - 1}
+          />
         </>
       ) : (
-        <div>리뷰가 없습니다.</div>
+        <div style={{ height: '300px', display: 'flex', alignItems: 'center' }}>
+          리뷰가 없습니다.
+        </div>
       )}
     </ReviewMainBlock>
   );

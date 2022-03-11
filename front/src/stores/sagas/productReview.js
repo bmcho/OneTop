@@ -19,7 +19,9 @@ import {
 } from '../modules/productReview';
 
 const getProductReviewApi = async (productNum, page) => {
-  const res = await axios.get(`${process.env.BASE_URL}/reviews/${productNum}`);
+  const res = await axios.get(
+    `${process.env.BASE_URL}/reviews/${productNum}?page=${page}`
+  );
   return res.data;
 };
 const postProductReviewApi = async (body) => {

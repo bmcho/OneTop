@@ -52,7 +52,6 @@ const SearchResultFromCategory = ({
         <>
           <div size={itemPerPage}>
             {data.result.map((cosmetic, idx) => {
-              console.log(hashtagSplit(cosmetic.hashtag));
               return (
                 <a
                   key={idx}

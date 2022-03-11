@@ -233,7 +233,10 @@ const ReviewItem = ({
       )}
       <div className="review_info">
         <span className="writer_name">익명</span>
-        <span className="write_date">{modify_data || create_date}</span>
+        <span className="write_date">
+          {modify_data?.split('T').join(' ') ||
+            create_date?.split('T').join(' ')}
+        </span>
       </div>
 
       <StyledMdOutlineMoreVert size={20} onClick={openEtcHandle} />
