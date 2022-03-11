@@ -3,13 +3,13 @@ import { getProductInfoAction } from '../../src/stores/modules/productInfo';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
-import ProductInfo from '../../src/components/detail/productInfo';
+import ProductInfo from '../../src/components/detail/ProductInfo';
 import Review from '../../src/components/detail/Review';
 import IngredientInfo from '../../src/components/detail/IngredientInfo';
 import DescriptionInfo from '../../src/components/detail/DescriptionInfo';
 import { useCallback, useEffect, useState } from 'react';
 import { addProductCompareInfoAction } from '../../src/stores/modules/productCompareInfo';
-import Loading from '../../src/components/commons/loading/loading';
+import Loading from '../../src/components/commons/loading/Loading';
 import Error from 'next/error';
 
 const Detail = () => {
