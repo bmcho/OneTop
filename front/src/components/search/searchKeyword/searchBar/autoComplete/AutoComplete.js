@@ -6,10 +6,6 @@ const AutoComplete = ({ resultsRef, requestSearchResult }) => {
   const { autoCompleteData, keywordResultRequestData } = useSelector(
     (state) => state.searchKeyword
   );
-  useEffect(() => {
-    console.log('autocomplete mounted');
-    return () => console.log('autocomplete unmounted');
-  }, []);
 
   return (
     <div>

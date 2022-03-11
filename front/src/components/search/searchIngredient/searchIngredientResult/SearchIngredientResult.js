@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
@@ -10,7 +10,6 @@ import Loading from '../../../commons/loading/Loading';
 import NoResult from '../../../commons/noResult/NoResult';
 import Pagination from '../../../commons/pagination/Pagination';
 import ResultSort from '../../../commons/resultSort/ResultSort';
-// import ResultSort from '../../../commons/resultSort/ResultSort';
 import SearchResultItem from '../../searchResultItem/SearchResultItem';
 
 const SearchIngredientResult = (props) => {
@@ -24,12 +23,8 @@ const SearchIngredientResult = (props) => {
     searchIngredientResultTotalPage,
     searchIngredientResultCurrentPage,
   } = useSelector((state) => state.searchIngredient);
-  useEffect(() => {
-    console.log('loadingStatus', loadingStatus);
-  }, [loadingStatus]);
 
   const setCurrentPage = (page) => {
-    console.log(page);
     const curPage = {
       requestPage: page,
     };

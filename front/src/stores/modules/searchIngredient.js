@@ -118,7 +118,6 @@ const searchIngredient = (state = initialState, action) => {
     case SET_RESULT_REQUEST_PARAMS_SEARCH:
       return { ...state, resultRequestParams: action.data };
     case SET_INGREDIENT_IN_REQUEST_PARAMS:
-      console.log(action.data, 'action data');
       return {
         ...state,
         resultRequestParams: { ...state.resultRequestParams, ...action.data },
@@ -145,7 +144,6 @@ const searchIngredient = (state = initialState, action) => {
     case LOAD_INGREDIENT_DATA_FAILURE:
       return { ...state, searchIngredientError: action.error };
     case SET_INGREDIENT_AUTO_COMPLETE_KEYWORD:
-      console.log(action.data, 'action ');
       return { ...state, ingredientAutoCompleteKeyword: action.data };
 
     case SET_INCLUDE_AUTO_COMPLETE_KEYWORD:
@@ -154,13 +152,11 @@ const searchIngredient = (state = initialState, action) => {
       return { ...state, excludeAutoCompleteKeyword: action.data };
 
     case LOAD_INCLUDE_AUTO_COMPLETE_DATA_SUCCESS:
-      console.log(action.data, 'action list');
       return {
         ...state,
         includeAutoCompleteData: action.data,
       };
     case LOAD_EXCLUDE_AUTO_COMPLETE_DATA_SUCCESS:
-      console.log(action.data, 'action list');
       return {
         ...state,
         excludeAutoCompleteData: action.data,

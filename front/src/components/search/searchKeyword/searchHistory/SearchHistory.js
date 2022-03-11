@@ -16,11 +16,6 @@ const SearchHistory = (props) => {
   const [searchHistory, setSearchHistory] = useState([]);
 
   useEffect(() => {
-    console.log('search history mounted');
-    return () => console.log('search history unmounted');
-  }, []);
-
-  useEffect(() => {
     const keywords = JSON.parse(localStorage.getItem('keywords') || '[]');
     setSearchHistory(keywords);
   }, []);
@@ -56,7 +51,6 @@ const SearchHistory = (props) => {
     });
   };
   const setSearchHistoryInLocal = (newKeyword) => {
-    console.log('set', newKeyword);
     const keywords = JSON.parse(localStorage.getItem('keywords')) || [];
 
     const idx = keywords.findIndex((keyword) => keyword === newKeyword);

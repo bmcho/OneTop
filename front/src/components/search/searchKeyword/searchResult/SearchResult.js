@@ -25,11 +25,6 @@ const SearchResult = (props) => {
   } = useSelector((state) => state.searchKeyword);
   const { loadingStatus } = useSelector((state) => state.loading);
 
-  useEffect(() => {
-    console.log('search result mounted');
-    return () => console.log('search result unmounted');
-  }, []);
-
   const LinkDetailPageHandle = (product_num) => {
     router.push({
       pathname: `/detail/${product_num}`,

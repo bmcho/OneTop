@@ -10,13 +10,9 @@ import {
 import axios from 'axios';
 import { finishLoading, startLoading } from '../modules/loading';
 import {
-  SET_RESULT_REQUEST_PARAMS_SEARCH,
-  SET_INGREDIENT_AUTO_COMPLETE_KEYWORD,
   loadIngredientDataSuccessAction,
   loadIngredientDataFailureAction,
-  loadIngredientAutoCompleteDataSuccessAction,
   SET_INCLUDE_AUTO_COMPLETE_KEYWORD,
-  LOAD_INCLUDE_AUTO_COMPLETE_DATA_SUCCESS,
   loadIncludeAutoCompleteDataSuccessAction,
   SET_EXCLUDE_AUTO_COMPLETE_KEYWORD,
   loadExcludeAutoCompleteDataSuccessAction,
@@ -47,21 +43,18 @@ function searchIngredientAutoCompleteAPI(data) {
 
 //load data
 function* loadSearchIngredientResult(action) {
-  console.log('saga', action);
-
   yield put(startLoading());
   try {
     const resultRequestParams = yield select(
       (state) => state.searchIngredient.resultRequestParams
     );
-    console.log('resultRequestParams', resultRequestParams);
+
     const result = yield call(
       searchIngredientResultAPI,
       resultRequestParams,
       action.change
     );
     yield put(loadIngredientDataSuccessAction(result.data));
-    // yield put(loadIngredientDataSuccessAction(result.data.result));
   } catch (e) {
     console.error(e);
     yield put(loadIngredientDataFailureAction(e));
@@ -71,11 +64,10 @@ function* loadSearchIngredientResult(action) {
 
 //load auto
 function* loadIncludeAutoCompleteData(action) {
-  console.log('auto saga', action);
   try {
     if (action.data.length !== 0) {
       const result = yield call(searchIngredientAutoCompleteAPI, action.data);
-      console.log(result, 'include auto result');
+
       yield put(
         loadIncludeAutoCompleteDataSuccessAction(result.data.ingredientList)
       );
@@ -87,11 +79,10 @@ function* loadIncludeAutoCompleteData(action) {
 }
 
 function* loadExcludeAutoCompleteData(action) {
-  console.log('auto saga', action);
   try {
     if (action.data.length !== 0) {
       const result = yield call(searchIngredientAutoCompleteAPI, action.data);
-      console.log(result, 'exclude auto result');
+
       yield put(
         loadExcludeAutoCompleteDataSuccessAction(result.data.ingredientList)
       );
@@ -101,14 +92,6 @@ function* loadExcludeAutoCompleteData(action) {
     yield put(loadIngredientDataFailureAction(e));
   }
 }
-
-// watch data
-// function* watchIngredientForResultData() {
-//   yield takeLatest(
-//     SET_RESULT_REQUEST_PARAMS_SEARCH,
-//     loadSearchIngredientResult
-//   );
-// }
 
 function* watchIngredientFortSearchResultData() {
   yield takeLatest(
@@ -141,7 +124,6 @@ function* watchExcludeAutoCompleteData() {
 
 export default function* searchIngredient() {
   yield all([
-    // fork(watchIngredientForResultData),
     fork(watchIngredientFortSearchResultData),
     fork(watchPageFortSearchResultData),
     fork(watchSortForSearchResultData),
