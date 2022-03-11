@@ -15,6 +15,7 @@ import {
   normalScoreCount,
   dangerScoreCount,
 } from '../../utils/colorByLevel';
+import Link from 'next/link';
 
 const CompareBox = ({ comparBoxOpenHandle }) => {
   const { data, error } = useSelector((state) => state.productCompareInfo);
@@ -68,6 +69,21 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <th>상품링크</th>
+              {new Array(3).fill(0).map((_, index) => {
+                const item = data[index];
+                return item ? (
+                  <td key={index}>
+                    <Link href={`/detail/${item.product_num}`}>
+                      <a>바로가기</a>
+                    </Link>
+                  </td>
+                ) : (
+                  <td></td>
+                );
+              })}
+            </tr>
             <tr>
               <th>브랜드</th>
               {new Array(3).fill(0).map((_, index) => {
