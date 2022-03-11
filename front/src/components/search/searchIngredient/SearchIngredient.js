@@ -78,6 +78,9 @@ const SearchButton = styled.button`
   padding: 10px 20px;
   border-radius: 2px;
   border: 2px solid ${(props) => props.theme.color.black};
+  &:focus {
+    border: 2px solid ${(props) => props.theme.color.black};
+  }
   &:hover {
     border: 2px solid ${(props) => props.theme.color.purple};
     background-color: ${(props) => props.theme.color.purple};
