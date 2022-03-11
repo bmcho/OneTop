@@ -152,6 +152,7 @@ def post_reviews_modify(request: ReviewManipulation, db: Session):
 
         # 리뷰내용 변경
         return_review.comment = request.comment
+        return_review.hashtag = request.hashtag
         return_review.modify_date = datetime.datetime.now()
         return_review.review_images = image_list
 

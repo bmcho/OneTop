@@ -1,0 +1,2 @@
+//암호키 생성
+openssl dhparam -out dhparam/dhparam-2048.pem 2048
