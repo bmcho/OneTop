@@ -15,13 +15,13 @@ const Compare = (props) => {
         <Window>
           <ImageWrap>
             <ImageBlock>
-              <Image></Image>
+              <Image imgPath={'/images/service1.png'} />
             </ImageBlock>
             <ImageBlock>
-              <Image></Image>
+              <Image imgPath={'/images/service2.png'} />
             </ImageBlock>
             <ImageBlock>
-              <Image></Image>
+              <Image imgPath={'/images/service3.png'} />
             </ImageBlock>
           </ImageWrap>
         </Window>
@@ -93,7 +93,7 @@ const ImageBlock = styled.span`
   display: inline-flex;
 `;
 const Image = styled.div`
-  background-image: url(/images/compare.jpeg);
+  background-image: url(${(props) => props.imgPath});
   width: 100%;
   background-repeat: no-repeat;
   background-position: top;
