@@ -1,5 +1,3 @@
-import { HYDRATE } from 'next-redux-wrapper';
-
 const initialState = {
   loading: false,
   data: null,
@@ -27,9 +25,6 @@ export const getProductInfoFailureAction = (error) => ({
 
 const productInfo = (state = initialState, action) => {
   switch (action.type) {
-    case HYDRATE:
-      const { productInfo } = action.payload;
-      return { ...productInfo };
     case GET_PRODUCT_INFO:
       return {
         loading: true,

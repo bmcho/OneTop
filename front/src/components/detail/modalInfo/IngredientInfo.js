@@ -1,8 +1,8 @@
 import styled, { keyframes } from 'styled-components';
-import { colorByLevel } from '../../utils/colorByLevel';
-import { theme } from '../../../styles/theme';
+import { colorByLevel } from '../../../utils/colorByLevel';
+import { theme } from '../../../../styles/theme';
 import { MdOutlineClose } from 'react-icons/md';
-import Modal from './Modal';
+import Modal from '../../commons/modal/Modal';
 
 const IngredientInfo = ({ ingredients, open, modalOpenHandle }) => {
   return (
@@ -16,10 +16,10 @@ const IngredientInfo = ({ ingredients, open, modalOpenHandle }) => {
         <StyledMdOutlineClose size="24" />
         <div className="skindeep-header">skindeep 데이터</div>
         <IngredientGradeDescription>
-          <GradeInfo background={'#4d4d4d'}>미정</GradeInfo>
-          <GradeInfo background={'#009d4e'}>안전</GradeInfo>
-          <GradeInfo background={'#ff9e16'}>중간</GradeInfo>
-          <GradeInfo background={'#e63c2f'}>위험</GradeInfo>
+          <GradeInfo background={theme.color.gray1}>미정</GradeInfo>
+          <GradeInfo background={theme.color.green1}>안전</GradeInfo>
+          <GradeInfo background={theme.color.orange2}>중간</GradeInfo>
+          <GradeInfo background={theme.color.red1}>위험</GradeInfo>
         </IngredientGradeDescription>
         {ingredients.length ? (
           ingredients.map((ingredient) => {

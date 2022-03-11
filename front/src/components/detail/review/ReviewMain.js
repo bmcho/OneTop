@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { useSelector, dispatch, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { getProductReviewAction } from '../../stores/modules/productReview';
+import { getProductReviewAction } from '../../../stores/modules/productReview';
 import { useRouter } from 'next/router';
-import Pagenation from '../search/searchCategory/Pagenation';
+import Pagenation from '../../search/searchCategory/Pagenation';
 import ReviewItem from './ReviewItem';
-import Loading from '../commons/loading/loading';
+import LoadingComponent from '../../commons/loading/LoadingComponent';
 
 const ReviewMain = () => {
   const { loading, reviews, error } = useSelector(
@@ -31,12 +31,11 @@ const ReviewMain = () => {
 
   useEffect(() => {
     if (page) {
-      console.log(page);
       dispatch(getProductReviewAction(id, page));
     }
   }, [page]);
 
-  if (loading) return <Loading>loading...</Loading>;
+  if (loading) return <LoadingComponent />;
 
   return (
     <ReviewMainBlock>
@@ -54,9 +53,7 @@ const ReviewMain = () => {
           />
         </>
       ) : (
-        <div style={{ height: '300px', display: 'flex', alignItems: 'center' }}>
-          리뷰가 없습니다.
-        </div>
+        <NonReviewBlock>리뷰가 없습니다.</NonReviewBlock>
       )}
     </ReviewMainBlock>
   );
@@ -77,9 +74,10 @@ const ReviewUl = styled.ul`
   align-items: center;
 `;
 
-const LoadingBlock = styled.div`
-  width: 100vw;
-  height: 100vh;
+const NonReviewBlock = styled.div`
+  height: 300px;
+  display: flex;
+  align-items: center;
 `;
 
 export default ReviewMain;

@@ -1,16 +1,16 @@
 import { useRouter } from 'next/router';
-import { getProductInfoAction } from '../../src/stores/modules/productInfo';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-
-import ProductInfo from '../../src/components/detail/productInfo';
+import ProductInfo from '../../src/components/detail/ProductInfo';
 import Review from '../../src/components/detail/Review';
-import IngredientInfo from '../../src/components/detail/IngredientInfo';
-import DescriptionInfo from '../../src/components/detail/DescriptionInfo';
+import IngredientInfo from '../../src/components/detail/modalInfo/IngredientInfo';
+import DescriptionInfo from '../../src/components/detail/modalInfo/DescriptionInfo';
+import LoadingComponent from '../../src/components/commons/loading/LoadingComponent';
 import { useCallback, useEffect, useState } from 'react';
 import { addProductCompareInfoAction } from '../../src/stores/modules/productCompareInfo';
-import Loading from '../../src/components/commons/loading/loading';
+import { getProductInfoAction } from '../../src/stores/modules/productInfo';
 import Error from 'next/error';
+import { NextSeo } from 'next-seo';
 
 const Detail = () => {
   const router = useRouter();
@@ -37,7 +37,6 @@ const Detail = () => {
 
   const modalOpenHandle = useCallback(
     (kind) => {
-      console.log('kind', kind);
       setIsModalOpen({
         ...isModalOpen,
         [kind]: !isModalOpen[kind],
@@ -58,7 +57,7 @@ const Detail = () => {
     dispatch(addProductCompareInfoAction(id));
   }, [productCompareInfo, id]);
 
-  if (loading) return <Loading />;
+  if (loading) return <LoadingComponent />;
   if (error)
     return <Error statusCode={500} title={'상품이 존재하지 않습니다.'} />;
   if (!productInfo) return null;
@@ -66,6 +65,7 @@ const Detail = () => {
   const { name, description, ingredientList, ...rest } = productInfo;
   return (
     <DetailBlock>
+      <NextSeo title="상품 | reCco" />
       <ProductInfo
         {...rest}
         name={name}

@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import RecommendResult from '../src/components/recommend/RecommendResult';
 import Hashtag from '../src/components/commons/hashtag/Hashtag';
 import { recommendedResetAction } from '../src/stores/modules/productRecommend';
+import { NextSeo } from 'next-seo';
 
 const recommend = (props) => {
   const router = useRouter();
@@ -15,13 +16,16 @@ const recommend = (props) => {
   const { category, selectKeywords, keywords, recommended } = useSelector(
     (state) => state.productRecommend
   );
-  // const [category, setCategory] = useState('');
   const [isResult, setIsResult] = useState(false);
   const reSelect = () => {
     dispatch(recommendedResetAction());
   };
   return (
     <RecommendBlock>
+      <NextSeo
+        title="추천 | reCco"
+        description="본인에게 맞는 화장품을 추천 받아보세요."
+      />
       <RecommendTitle />
       {recommended.data && <Button onClick={reSelect}>다시 추천받기</Button>}
       <SurveyBlock>

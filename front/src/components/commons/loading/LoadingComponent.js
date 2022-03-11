@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import ReactLoading from 'react-loading';
 import { theme } from '../../../../styles/theme';
 
-const Loading = () => {
+const LoadingComponent = () => {
   return (
     <LoadingBlock>
       <ReactLoading type={'spin'} color={theme.color.yellow1} />
@@ -16,7 +16,7 @@ const LoadingBlock = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 200px;
+  margin: 200px 0;
 `;
 
-export default Loading;
+export default LoadingComponent;

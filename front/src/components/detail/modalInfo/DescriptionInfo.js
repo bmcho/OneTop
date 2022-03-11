@@ -1,4 +1,4 @@
-import Modal from './Modal';
+import Modal from '../../commons/modal/Modal';
 import styled from 'styled-components';
 import { MdOutlineClose } from 'react-icons/md';
 

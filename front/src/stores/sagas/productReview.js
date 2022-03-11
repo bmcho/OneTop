@@ -13,9 +13,6 @@ import {
   DELETE_PRODUCT_REVIEW,
   deleteProductReviewSuccessAction,
   deleteProductReviewFailureAction,
-  POST_PRODUCT_REVIEW_IMAGE,
-  postProductReviewImageSuccessAction,
-  postProductReviewImageFailureAction,
 } from '../modules/productReview';
 
 const getProductReviewApi = async (productNum, page) => {
@@ -26,10 +23,6 @@ const getProductReviewApi = async (productNum, page) => {
 };
 const postProductReviewApi = async (body) => {
   const res = await axios.post(`${process.env.BASE_URL}/reviews`, body);
-  return res.data;
-};
-const postProductReviewImageApi = async (files) => {
-  const res = await axios.post(`${process.env.BASE_URL}/reviews/images`, files);
   return res.data;
 };
 
@@ -57,17 +50,6 @@ function* createProductReview(action) {
     yield put(postProductReviewSuccessAction(reviews));
   } catch (e) {
     yield put(postProductReviewFailureAction(e));
-  }
-}
-
-function* createProductReviewImage(action) {
-  const { files } = action;
-
-  try {
-    const result = yield call(postProductReviewImageApi, files);
-    yield put(postProductReviewImageSuccessAction(result));
-  } catch (e) {
-    yield put(postProductReviewImageFailureAction(e));
   }
 }
 
@@ -106,14 +88,10 @@ function* watchModifyProductReview() {
 function* watchDeleteProductReview() {
   yield takeLatest(DELETE_PRODUCT_REVIEW, deleteProductReview);
 }
-function* watchCreateProductReviewImage() {
-  yield takeLatest(POST_PRODUCT_REVIEW_IMAGE, createProductReviewImage);
-}
 
 export default function* productReviewSaga() {
   yield all([fork(watchLoadProductReview)]);
   yield all([fork(watchCreateProductReview)]);
   yield all([fork(watchModifyProductReview)]);
   yield all([fork(watchDeleteProductReview)]);
-  yield all([fork(watchCreateProductReviewImage)]);
 }

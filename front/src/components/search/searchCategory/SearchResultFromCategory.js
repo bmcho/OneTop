@@ -8,7 +8,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { MdChevronLeft } from 'react-icons/md';
 import { hashtagSplit } from '../../../utils/util';
-import Loading from '../../commons/loading/loading';
+import LoadingComponent from '../../commons/loading/LoadingComponent';
+import Error from 'next/error';
+import NoResult from '../../commons/noResult/NoResult';
 
 const SearchResultFromCategory = ({
   largeCategory,
@@ -16,7 +18,11 @@ const SearchResultFromCategory = ({
   itemPerPage,
   sortingStandard,
 }) => {
-  const { loading, data, error } = useSelector((state) => state.searchCategory);
+  const {
+    loading,
+    data: productInfos,
+    error,
+  } = useSelector((state) => state.searchCategory);
   const dispatch = useDispatch();
   const router = useRouter();
   const { page } = router.query;
@@ -41,18 +47,19 @@ const SearchResultFromCategory = ({
     });
   };
 
-  if (loading) return <Loading />;
-  if (error) return <div>error...</div>;
-  if (!data) return <div>error...</div>;
+  if (loading) return <LoadingComponent />;
+  if (error) return <Error statusCode={500} title={'네트워크 에러'} />;
+  if (!productInfos)
+    return <Error statusCode={500} title={'상품이 존재하지 않습니다.'} />;
 
   return (
     <ResultBlock>
-      {data.length === 0 ? (
-        <div>검색 결과가 없습니다</div>
+      {productInfos.length === 0 ? (
+        <NoResult />
       ) : (
         <>
           <div size={itemPerPage}>
-            {data.result.map((cosmetic, idx) => {
+            {productInfos.result.map((cosmetic, idx) => {
               return (
                 <a
                   key={idx}

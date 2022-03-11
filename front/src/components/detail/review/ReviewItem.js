@@ -10,8 +10,10 @@ import {
 import {
   deleteProductReviewAction,
   modifyProductReviewAction,
-} from '../../stores/modules/productReview';
-import Hashtag from '../commons/hashtag/Hashtag';
+} from '../../../stores/modules/productReview';
+import Hashtag from '../../commons/hashtag/Hashtag';
+import ReviewInput from './ReviewInput';
+import ReviewDelete from './reviewDelete/ReviewDelete';
 
 const ReviewItem = ({
   id,
@@ -24,21 +26,26 @@ const ReviewItem = ({
 }) => {
   const ref = useRef();
   const errorRef = useRef();
-  const [isOverText, setIsOverText] = useState(false);
   const [moreText, setMoreText] = useState(false);
+  const [isOverText, setIsOverText] = useState(false);
   const [isEtcOpen, setIsEtcOpen] = useState(false);
   const [isModifyOpen, setIsModifyOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [password, setPassword] = useState({
-    modify: '',
-    delete: '',
+  const [loading, setLoading] = useState(false);
+  const [inputValues, setInputValues] = useState({
+    delete: {
+      password: '',
+    },
+    modify: {
+      password: '',
+      comment: comment || '',
+      hashTag: '',
+    },
   });
-  const [modifyValue, setModifyValue] = useState(comment || '');
   const [modifyImages, setModifyImages] = useState(review_images || []);
-  const [modifyHashTag, setModifyHashTag] = useState(
+  const [modifyHashTags, setModifyHashTags] = useState(
     hashtag ? hashtag.split(',') : []
   );
-  const [hashTagValue, setHashTagValue] = useState('');
 
   const { error: modifyError } = useSelector(
     (state) => state.productReview.modify
@@ -46,34 +53,26 @@ const ReviewItem = ({
   const { error: deleteError } = useSelector(
     (state) => state.productReview.delete
   );
-  const [loading, setLoading] = useState(false);
 
   const lineLimit = 5;
   const lineheight = 18;
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!modifyError && !deleteError) return;
-    if (!loading) return;
-    errorRef.current.style.display = 'flex';
-    setTimeout(() => {
-      errorRef.current.style.display = 'none';
-      setLoading(false);
-    }, 2000);
-  }, [modifyError, deleteError]);
-
-  const passwordChangeHandle = (e) => {
+  const inputChangeHandle = (e) => {
     const { name } = e.target;
-    setPassword((state) => {
-      return {
-        ...state,
-        [name]: e.target.value,
-      };
-    });
-  };
+    if (name === 'comment' && e.target.value.length > 2000) {
+      alert('리뷰는 2000자 까지 입력이 가능합니다.');
+      return;
+    }
+    const actionType = isModifyOpen ? 'modify' : 'delete';
 
-  const moreTextHandle = () => {
-    setMoreText((prev) => !prev);
+    setInputValues((inputValue) => ({
+      ...inputValue,
+      [actionType]: {
+        ...inputValues[actionType],
+        [name]: e.target.value,
+      },
+    }));
   };
 
   const openEtcHandle = () => {
@@ -94,17 +93,15 @@ const ReviewItem = ({
 
   const modifyCancelHandle = () => {
     setIsModifyOpen(false);
-    setModifyValue(comment);
+    setInputValues((prev) => ({
+      ...prev,
+      modify: { ...prev.modify, comment: comment },
+    }));
+    setModifyHashTags(hashtag ? hashtag.split(',') : []);
   };
 
   const modifyImageRemoveHandle = (index) => {
     setModifyImages(modifyImages.filter((img, idx) => idx !== index));
-  };
-
-  const modifyReviewCommentHandle = (e) => {
-    if (e.target.value.length > 2000)
-      return alert('리뷰는 2000자 까지 입력이 가능합니다.');
-    setModifyValue(e.target.value);
   };
 
   const addFileHandle = (e) => {
@@ -131,21 +128,26 @@ const ReviewItem = ({
         review_data: {
           id,
           fk_product_num,
-          password: password.modify,
-          comment: modifyValue,
+          password: inputValues.modify.password,
+          comment: inputValues.modify.comment,
           images: modifyImages.map((img) => img.img_path),
-          hashtag: modifyHashTag.join(','),
+          hashtag: modifyHashTags.join(','),
         },
         action: 'modify',
       })
     );
-    setPassword({
-      modify: '',
-      delete: '',
+    setInputValues({
+      delete: {
+        password: '',
+      },
+      modify: {
+        password: '',
+        comment: comment || '',
+        hashTag: '',
+      },
     });
-    setModifyHashTag(hashtag ? hashtag.split(',') : []);
+    setModifyHashTags(hashtag ? hashtag.split(',') : []);
     setModifyImages(review_images || []);
-    setModifyValue(comment || '');
     setIsModifyOpen(false);
     setLoading(true);
   };
@@ -156,14 +158,20 @@ const ReviewItem = ({
       deleteProductReviewAction({
         id,
         fk_product_num,
-        password: `${password.delete}`,
+        password: inputValues.delete.password,
       })
     );
-    setPassword({
-      modify: '',
-      delete: '',
+    setInputValues({
+      delete: {
+        password: '',
+      },
+      modify: {
+        password: '',
+        comment: comment || '',
+        hashTag: '',
+      },
     });
-    setIsModifyOpen(false);
+    setIsDeleteOpen(false);
     setLoading(true);
   };
 
@@ -171,15 +179,21 @@ const ReviewItem = ({
     if (e.charCode === 32) {
       e.preventDefault();
       let newHashTag = e.target.value.replace(/[ #]/gi, '');
-      if (!newHashTag) return setHashTagValue('');
-      newHashTag = '#' + newHashTag;
-      setModifyHashTag((prev) => {
-        return [...prev, newHashTag];
+      if (!newHashTag)
+        return setInputValues((prev) => ({
+          ...prev,
+          modify: { ...prev.modify, hashTag: '' },
+        }));
+      setModifyHashTags((prev) => {
+        return [...prev, '#' + newHashTag];
       });
-      setHashTagValue('');
+      setInputValues((prev) => ({
+        ...prev,
+        modify: { ...prev.modify, hashTag: '' },
+      }));
     } else if (e.keyCode === 8) {
       if (e.target.value) return;
-      setModifyHashTag((prev) => {
+      setModifyHashTags((prev) => {
         return prev.slice(0, -1);
       });
     }
@@ -203,6 +217,16 @@ const ReviewItem = ({
     }
   }, [moreText]);
 
+  useEffect(() => {
+    if (!modifyError && !deleteError) return;
+    if (!loading) return;
+    errorRef.current.style.display = 'flex';
+    setTimeout(() => {
+      errorRef.current.style.display = 'none';
+      setLoading(false);
+    }, 3000);
+  }, [modifyError, deleteError]);
+
   return (
     <ReviewItemLi lineheight={lineheight}>
       <ErrorBlock ref={errorRef}>
@@ -215,22 +239,12 @@ const ReviewItem = ({
         </EtcBlock>
       )}
       {isDeleteOpen && (
-        <DeleteBlock>
-          <DeleteInput onSubmit={reviewDeleteSubmitHandle}>
-            <StyledMdOutlineClose onClick={reviewDeleteHandle} />
-            <div>비밀번호를 입력해주세요.</div>
-            <div>
-              <input
-                type="password"
-                name="delete"
-                autoComplete="off"
-                value={password.delete}
-                onChange={passwordChangeHandle}
-              />
-              <button type="submit">확인</button>
-            </div>
-          </DeleteInput>
-        </DeleteBlock>
+        <ReviewDelete
+          password={inputValues.delete.password}
+          inputChangeHandle={inputChangeHandle}
+          reviewDeleteSubmitHandle={reviewDeleteSubmitHandle}
+          reviewDeleteHandle={reviewDeleteHandle}
+        />
       )}
       <div className="review_info">
         <span className="writer_name">익명</span>
@@ -239,11 +253,12 @@ const ReviewItem = ({
             create_date?.split('T').join(' ')}
         </span>
       </div>
-
       <StyledMdOutlineMoreVert size={20} onClick={openEtcHandle} />
       <DefaltComment active={!isModifyOpen}>
         <p ref={ref}>{comment}</p>
-        {isOverText && <button onClick={moreTextHandle}>더보기</button>}
+        {isOverText && (
+          <button onClick={() => setMoreText((prev) => !prev)}>더보기</button>
+        )}
         {hashtag && (
           <HashTagsBlock>
             {hashtag.split(',').map((tag, index) => {
@@ -251,7 +266,6 @@ const ReviewItem = ({
             })}
           </HashTagsBlock>
         )}
-
         {review_images.length !== 0 && (
           <ImageWrapper>
             {review_images.map(({ img_path }, index) => {
@@ -262,54 +276,14 @@ const ReviewItem = ({
       </DefaltComment>
       <ModifyForm onSubmit={reviewModifySubmitHandle} active={isModifyOpen}>
         <InputWrapper>
-          <ReviewWriterInfo>
-            <input
-              type="password"
-              name="modify"
-              value={password.modify}
-              autoComplete="off"
-              placeholder="비밀번호"
-              onChange={passwordChangeHandle}
-              disabled={!isModifyOpen}
-            />
-            <div className="text-limit">{`${modifyValue.length} / 2000`}</div>
-            <AddImageWrapper>
-              <label className="label" htmlFor={`review-${id}-image-input`}>
-                <StyledMdCameraAlt size={25} />
-              </label>
-              <input
-                id={`review-${id}-image-input`}
-                className="input"
-                accept="image/*"
-                type="file"
-                multiple={true}
-                hidden={true}
-                onChange={addFileHandle}
-              />
-            </AddImageWrapper>
-          </ReviewWriterInfo>
-        </InputWrapper>
-        <ReviewTextArea
-          placeholder="리뷰를 입력해주세요"
-          value={modifyValue}
-          onChange={modifyReviewCommentHandle}
-          disabled={!isModifyOpen}
-        />
-        <HashTagsBlock>
-          {modifyHashTag !== 0 &&
-            modifyHashTag.map((tag, index) => {
-              return <Hashtag key={`${tag.slice(1)}-${index}`}>{tag}</Hashtag>;
-            })}
-          <input
-            type="text"
-            placeholder="해시태그"
-            name="hashTag"
-            value={hashTagValue}
-            onChange={(e) => setHashTagValue(e.target.value)}
-            onKeyPress={hashTagEventHandle}
-            onKeyDown={hashTagEventHandle}
+          <ReviewInput
+            {...inputValues.modify}
+            hashTags={modifyHashTags}
+            addFileHandle={addFileHandle}
+            inputChangeHandle={inputChangeHandle}
+            hashTagEventHandle={hashTagEventHandle}
           />
-        </HashTagsBlock>
+        </InputWrapper>
         <div className="modify-btn-wrapper">
           <button type="submit" disabled={!isModifyOpen}>
             수정 완료
@@ -390,42 +364,6 @@ const EtcBlock = styled.div`
   }
 `;
 
-const DeleteBlock = styled.div`
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const StyledMdOutlineClose = styled(MdOutlineClose)`
-  position: absolute;
-  top: 10%;
-  right: 5%;
-  cursor: pointer;
-  &:hover {
-    color: ${({ theme }) => theme.color.orange1};
-  }
-`;
-
-const DeleteInput = styled.form`
-  position: relative;
-  width: 80%;
-  padding: 20px;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  div {
-    display: flex;
-  }
-`;
-
 const ImageWrapper = styled.div`
   display: flex;
   width: 100%;
@@ -436,6 +374,46 @@ const ImageWrapper = styled.div`
     width: 100px;
     height: 100px;
     object-fit: contain;
+  }
+`;
+
+const DefaltComment = styled.div`
+  display: none;
+  ${(props) =>
+    props.active &&
+    css`
+      display: block;
+    `}
+`;
+
+const ErrorBlock = styled.div`
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  justify-content: center;
+  align-items: center;
+  transition: all 1s ease-in-out;
+  z-index: 2;
+  div {
+    background-color: white;
+    padding: 20px;
+  }
+`;
+
+const HashTagsBlock = styled.div`
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  align-items: center;
+  border: 1px solid ${({ theme }) => theme.color.lightGray1};
+  padding: 20px;
+  margin-top: 5px;
+  input[type='text'] {
+    border: none;
   }
 `;
 
@@ -461,64 +439,12 @@ const ModifyForm = styled.form`
     }
   }
 `;
-const ReviewWriterInfo = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 5px;
-  .text-limit {
-    position: absolute;
-    top: 5px;
-    right: 40px;
-  }
-`;
 
 const InputWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
-`;
-
-const ReviewTextArea = styled.textarea`
-  width: 100%;
-  height: 100px;
-`;
-
-const AddImageWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-`;
-const StyledMdCameraAlt = styled(MdCameraAlt)`
-  cursor: pointer;
-`;
-
-const DefaltComment = styled.div`
-  display: none;
-  ${(props) =>
-    props.active &&
-    css`
-      display: block;
-    `}
-`;
-
-const ErrorBlock = styled.div`
-  display: none;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.2);
-  justify-content: center;
-  align-items: center;
-  transition: all 1s ease-in-out;
-  div {
-    background-color: white;
-    padding: 20px;
-  }
 `;
 
 const AddImageInfo = styled.div`
@@ -547,22 +473,4 @@ const StyledMdOutlineCancel = styled(MdOutlineCancel)`
   cursor: pointer;
 `;
 
-const HashTagsBlock = styled.div`
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-  align-items: center;
-  border: 1px solid ${({ theme }) => theme.color.lightGray1};
-  padding: 20px;
-  margin-top: 5px;
-  input[type='text'] {
-    border: none;
-  }
-`;
-
-const HashTagWrapper = styled.div`
-  padding: 5px 10px;
-  border: 1px solid ${({ theme }) => theme.color.orange1};
-  color: ${({ theme }) => theme.color.orange1};
-`;
 export default ReviewItem;

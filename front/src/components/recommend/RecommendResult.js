@@ -5,6 +5,7 @@ import SearchResultItem from '../search/searchResultItem/SearchResultItem';
 import { getRecommendedAction } from '../../stores/modules/productRecommend';
 import Link from 'next/link';
 import { media } from '../../../styles/theme';
+import LoadingComponent from '../commons/loading/LoadingComponent';
 
 const RecommendResult = (props) => {
   const { selectKeywords, recommended, category } = useSelector(
@@ -18,7 +19,7 @@ const RecommendResult = (props) => {
   useEffect(() => {
     console.log(recommended.data);
   }, [recommended.data]);
-  if (recommended.loading) return <div>loading</div>;
+  if (recommended.loading) return <LoadingComponent />;
   if (!recommended?.data) return null;
 
   return (

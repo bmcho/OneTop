@@ -6,7 +6,7 @@ import {
   setPageInRequestParamsAction,
   setSortInRequestParamsAction,
 } from '../../../../stores/modules/searchIngredient';
-import Loading from '../../../commons/loading/loading';
+import LoadingComponent from '../../../commons/loading/LoadingComponent';
 import NoResult from '../../../commons/noResult/NoResult';
 import Pagination from '../../../commons/pagination/Pagination';
 import ResultSort from '../../../commons/resultSort/ResultSort';
@@ -46,7 +46,7 @@ const SearchIngredientResult = (props) => {
     });
   };
 
-  if (loadingStatus) return <Loading />;
+  if (loadingStatus) return <LoadingComponent />;
 
   return (
     <div>

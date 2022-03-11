@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const CompareBoxButton = ({ comparBoxOpenHandle }) => {
-  const { data } = useSelector((state) => state.productCompareInfo);
+  const { data: productCompareInfos } = useSelector(
+    (state) => state.productCompareInfo
+  );
   const [nonCheckNum, setNonCheckNum] = useState(0);
 
   useEffect(() => {
-    setNonCheckNum(data.filter((info) => !info.checked).length);
-  }, [data]);
+    setNonCheckNum(productCompareInfos.filter((info) => !info.checked).length);
+  }, [productCompareInfos]);
 
   return (
     <CompareBoxButtonBlock onClick={comparBoxOpenHandle}>
@@ -43,7 +45,7 @@ const CompareBoxButtonBlock = styled.div`
     rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
   cursor: pointer;
   animation: ${ButtonAnimation} 0.5s ease;
-  z-index: 3;
+  z-index: 5;
 `;
 
 const NonCheckAlerm = styled.div`

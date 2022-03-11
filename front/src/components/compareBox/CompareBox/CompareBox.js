@@ -1,24 +1,23 @@
-import styled, { keyframes } from 'styled-components';
-import { MdOutlineClose } from 'react-icons/md';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { MdOutlineShoppingBasket } from 'react-icons/md';
-import Image from 'next/image';
-import { theme } from '../../../styles/theme';
+import Link from 'next/link';
+import styled, { keyframes } from 'styled-components';
+import { MdOutlineClose, MdOutlineShoppingBasket } from 'react-icons/md';
 import {
   removeProductCompareInfoAction,
   checkProductCompareInfoAction,
-} from '../../stores/modules/productCompareInfo';
-import { useEffect } from 'react';
-import { hashtagSplit } from '../../utils/util';
+} from '../../../stores/modules/productCompareInfo';
+import { hashtagSplit } from '../../../utils/util';
 import {
   safeScoreCount,
   normalScoreCount,
   dangerScoreCount,
-} from '../../utils/colorByLevel';
-import Link from 'next/link';
+} from '../../../utils/colorByLevel';
 
 const CompareBox = ({ comparBoxOpenHandle }) => {
-  const { data, error } = useSelector((state) => state.productCompareInfo);
+  const { data: productCompareInfos } = useSelector(
+    (state) => state.productCompareInfo
+  );
   const dispatch = useDispatch();
 
   const productRemoveHandle = (id) => {
@@ -37,7 +36,7 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
         <MdOutlineShoppingBasket size={30} />
         <span>보관함</span>
       </Header>
-      {!data.length ? (
+      {!productCompareInfos.length ? (
         <TextBlock>보관함에 넣기를 통해 상품을 넣어주세요</TextBlock>
       ) : (
         <ItemTable>
@@ -45,7 +44,7 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
             <tr>
               <th></th>
               {new Array(3).fill(0).map((_, index) => {
-                const item = data[index];
+                const item = productCompareInfos[index];
                 return item ? (
                   <td key={index}>
                     <ImageWrapper>
@@ -65,9 +64,9 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
           </thead>
           <tbody>
             <tr>
-              <th>상품링크</th>
+              <th>링크</th>
               {new Array(3).fill(0).map((_, index) => {
-                const item = data[index];
+                const item = productCompareInfos[index];
                 return item ? (
                   <td key={index}>
                     <Link href={`/detail/${item.product_num}`}>
@@ -82,37 +81,39 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
             <tr>
               <th>브랜드</th>
               {new Array(3).fill(0).map((_, index) => {
-                const item = data[index];
+                const item = productCompareInfos[index];
                 return item ? <td key={index}>{item.brand}</td> : <td></td>;
               })}
             </tr>
             <tr>
               <th>제품명</th>
               {new Array(3).fill(0).map((_, index) => {
-                const item = data[index];
+                const item = productCompareInfos[index];
                 return item ? <td key={index}>{item.name}</td> : <td></td>;
               })}
             </tr>
             <tr>
               <th>가격</th>
               {new Array(3).fill(0).map((_, index) => {
-                const item = data[index];
+                const item = productCompareInfos[index];
                 return item ? <td key={index}>{item.price}</td> : <td></td>;
               })}
             </tr>
             <tr>
               <th>용량</th>
               {new Array(3).fill(0).map((_, index) => {
-                const item = data[index];
+                const item = productCompareInfos[index];
                 return item ? <td key={index}>{item.capacity}</td> : <td></td>;
               })}
             </tr>
             <tr>
-              <th>#</th>
+              <th>#태그</th>
               {new Array(3).fill(0).map((_, index) => {
-                const item = data[index];
+                const item = productCompareInfos[index];
                 return item ? (
-                  <td key={index}>{hashtagSplit(item.hashtag).join('\n')}</td>
+                  <td key={index}>
+                    {hashtagSplit(item.hashtag).slice(0, 5).join('\n')}
+                  </td>
                 ) : (
                   <td></td>
                 );
@@ -121,7 +122,7 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
             <tr>
               <th>안전성분</th>
               {new Array(3).fill(0).map((_, index) => {
-                const item = data[index];
+                const item = productCompareInfos[index];
                 return item ? (
                   <td key={index}>
                     {safeScoreCount(item.ingredientList)} 가지
@@ -134,7 +135,7 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
             <tr>
               <th>안전성분</th>
               {new Array(3).fill(0).map((_, index) => {
-                const item = data[index];
+                const item = productCompareInfos[index];
                 return item ? (
                   <td key={index}>
                     {normalScoreCount(item.ingredientList)} 가지
@@ -147,7 +148,7 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
             <tr>
               <th>위험성분</th>
               {new Array(3).fill(0).map((_, index) => {
-                const item = data[index];
+                const item = productCompareInfos[index];
                 return item ? (
                   <td key={index}>
                     {dangerScoreCount(item.ingredientList)} 가지
