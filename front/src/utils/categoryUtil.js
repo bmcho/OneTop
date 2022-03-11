@@ -110,6 +110,73 @@ export const recommendCategory = [
   '프래그런스',
   '남성화장품',
 ];
+export const hashTagKeywords = [
+  '가능',
+  '저렴',
+  '깔끔',
+  '은은',
+  '유명',
+  '다양',
+  '적당',
+  '비슷',
+  '풍성',
+  '또렷',
+  '영롱',
+  '유용',
+  '간편',
+  '촉촉',
+  '확실',
+  '은근',
+];
+export const mainData = [
+  [
+    { name: '피토 탄력 크림', brand: '휴캄', img: '/images/cream1.jpeg' },
+    {
+      name: '엑스퍼트 퍼밍 아이앤넥 크림',
+      brand: '아이뽀',
+      img: '/images/cream2.jpeg',
+    },
+    {
+      name: '아줄렌 시카밍 수분 크림',
+      brand: '포잇',
+      img: '/images/cream3.jpeg',
+    },
+  ],
+  [
+    {
+      name: '포도씨 오일 바디 코팅 오일',
+      brand: '스킨푸드',
+      img: '/images/brand1.jpeg',
+    },
+    {
+      name: '블랙슈가 퍼펙트 에센셜 스크럽 2X',
+      brand: '스킨푸드',
+      img: '/images/brand2.jpeg',
+    },
+    {
+      name: '캐롯 카로틴 모이스트 이펙터',
+      brand: '스킨푸드',
+      img: '/images/brand3.jpeg',
+    },
+  ],
+  [
+    {
+      name: '갈락 화이트닝 비타 세럼',
+      brand: '마녀공장',
+      img: '/images/ingredient1.jpeg',
+    },
+    {
+      name: '에이시카365 흔적 진정 세럼',
+      brand: '에스트라',
+      img: '/images/ingredient2.jpeg',
+    },
+    {
+      name: '똘레랑스 컨트롤 크림',
+      brand: '아벤느',
+      img: '/images/ingredient3.jpeg',
+    },
+  ],
+];
 export const categories2 = [
   {
     large: '스킨케어',
