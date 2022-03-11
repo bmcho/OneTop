@@ -96,8 +96,8 @@ const ReviewItem = ({
     setModifyValue(comment);
   };
 
-  const modifyImageRemoveHandle = (imgPath) => {
-    setModifyImages(modifyImages.filter((img) => img.img_path !== imgPath));
+  const modifyImageRemoveHandle = (index) => {
+    setModifyImages(modifyImages.filter((img, idx) => idx !== index));
   };
 
   const modifyReviewCommentHandle = (e) => {
@@ -329,7 +329,7 @@ const ReviewItem = ({
               <AddImageItem key={index}>
                 <img src={img_path} />
                 <StyledMdOutlineCancel
-                  onClick={() => modifyImageRemoveHandle(img_path)}
+                  onClick={() => modifyImageRemoveHandle(index)}
                 />
               </AddImageItem>
             );
