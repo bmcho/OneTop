@@ -5,6 +5,7 @@ import {
   getKeywordsAction,
   setSelectedKeywordsAction,
 } from '../../stores/modules/productRecommend';
+import Loading from '../commons/loading/Loading';
 
 const SelectFromKeyword = (props) => {
   const { category, keywords } = useSelector((state) => state.productRecommend);
@@ -36,7 +37,7 @@ const SelectFromKeyword = (props) => {
     );
   };
 
-  if (keywords?.loading) return <div>loading...</div>;
+  if (keywords?.loading) return <Loading />;
   if (!keywords?.data) return null;
 
   return (

@@ -6,6 +6,7 @@ import {
   setPageInRequestParamsAction,
   setSortInRequestParamsAction,
 } from '../../../../stores/modules/searchIngredient';
+import Loading from '../../../commons/loading/Loading';
 import NoResult from '../../../commons/noResult/NoResult';
 import Pagination from '../../../commons/pagination/Pagination';
 import ResultSort from '../../../commons/resultSort/ResultSort';
@@ -46,10 +47,10 @@ const SearchIngredientResult = (props) => {
     });
   };
 
-  if (loadingStatus) return <div>loading</div>;
+  if (loadingStatus) return <Loading />;
 
   return (
-    <div>
+    <ResultBlock>
       <SelectBlock>
         <ResultSort onChange={changeSort} value={resultRequestParams.sort} />
       </SelectBlock>
@@ -75,9 +76,14 @@ const SearchIngredientResult = (props) => {
           />
         </div>
       )}
-    </div>
+    </ResultBlock>
   );
 };
+
+const ResultBlock = styled.div`
+    padding-top: 20px;
+}`;
+
 const SelectBlock = styled.div`
   display: flex;
   justify-content: end;
