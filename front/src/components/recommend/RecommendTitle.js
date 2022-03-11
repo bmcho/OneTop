@@ -4,13 +4,13 @@ import Image from 'next/image';
 const RecommendTitle = () => {
   return (
     <TitleBlock>
-      <TitleText>
+      {/* <TitleText>
         <h2>나에게 맞는 화장품은?</h2>
         <p>본인에게 맞는 화장품을 추천 받아보세요.</p>
       </TitleText>
       <TitleImage>
         <Image src={'/images/recommend.jpg'} layout="fill" />
-      </TitleImage>
+      </TitleImage> */}
     </TitleBlock>
   );
 };
@@ -18,12 +18,13 @@ const RecommendTitle = () => {
 const TitleBlock = styled.div`
   position: relative;
   width: 1024px;
-  height: 265px;
+  height: 30vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffe7c8;
-  border-radius: 20px;
+  letter-spacing: -1.5px;
+  // background-color: ${(props) => props.theme.color.yellow2};
+  background: url(/images/banner.png) center center / cover no-repeat;
   overflow: hidden;
   margin-bottom: 30px;
   @media screen and (max-width: 1080px) {
@@ -33,9 +34,9 @@ const TitleBlock = styled.div`
 
 const TitleText = styled.div`
   h2 {
-    color: #fb6d3a;
+    // color: #fb6d3a;
     font-size: 30px;
-    font-weight: 900;
+    font-weight: 500;
     padding: 20px 0;
   }
   p {

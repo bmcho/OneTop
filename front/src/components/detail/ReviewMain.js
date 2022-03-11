@@ -12,13 +12,14 @@ const ReviewMain = () => {
   const { reviews: newReview } = useSelector(
     (state) => state.productReview.post
   );
+  const { result } = useSelector((state) => state.productReview.modify);
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
 
   useEffect(() => {
     dispatch(getProductReviewAction(id, 1));
-  }, [newReview]);
+  }, [newReview, result]);
 
   if (loading) return <div>loading...</div>;
 
@@ -26,36 +27,14 @@ const ReviewMain = () => {
     <ReviewMainBlock>
       {reviews ? (
         <>
-          <Line>
-            <ReviewUl>
-              {reviews?.data
-                .filter((_, idx) => idx % 3 === 0)
-                .map((review) => (
-                  <ReviewItem key={review.id} {...review} />
-                ))}
-            </ReviewUl>
-          </Line>
-          <Line>
-            <ReviewUl>
-              {reviews?.data
-                .filter((_, idx) => idx % 3 === 1)
-                .map((review) => (
-                  <ReviewItem key={review.id} {...review} />
-                ))}
-            </ReviewUl>
-          </Line>
-          <Line>
-            <ReviewUl>
-              {reviews?.data
-                .filter((_, idx) => idx % 3 === 2)
-                .map((review) => (
-                  <ReviewItem key={review.id} {...review} />
-                ))}
-            </ReviewUl>
-          </Line>
+          <ReviewUl>
+            {reviews.data.map((review) => (
+              <ReviewItem key={review.id} {...review} />
+            ))}
+          </ReviewUl>
         </>
       ) : (
-        <div>0</div>
+        <div>리뷰가 없습니다.</div>
       )}
     </ReviewMainBlock>
   );
@@ -64,11 +43,9 @@ const ReviewMain = () => {
 const ReviewMainBlock = styled.div`
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-  }
+  align-items: center;
 `;
 
 const Line = styled.div`
@@ -81,6 +58,7 @@ const Line = styled.div`
 `;
 
 const ReviewUl = styled.ul`
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;

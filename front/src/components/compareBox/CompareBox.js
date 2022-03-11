@@ -45,7 +45,12 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
                       삭제
                     </RemoveButton>
                     <ImageWrapper>
-                      <Image src={d.img_url} width={123} height={123} />
+                      <Image
+                        src={d.img_url}
+                        width={123}
+                        height={123}
+                        layout="responsive"
+                      />
                     </ImageWrapper>
                   </th>
                 );
@@ -110,6 +115,7 @@ const CompareBoxBlock = styled.div`
   padding: 17px 22px 0;
   transform-origin: 100% 100%;
   animation: ${CompareBoxAnimation} 0.5s ease;
+  z-index: 3;
   @media screen and (max-width: 500px) {
     width: 100%;
     height: 100%;

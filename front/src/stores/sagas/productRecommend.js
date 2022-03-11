@@ -3,7 +3,7 @@ import {
   GET_KEYWORDS,
   getKeywordsFailureAction,
   getKeywordsSuccessAction,
-  GET_ROCOMMENDED,
+  GET_RECOMMENDED,
   getRecommendedFailureAction,
   getRecommendedSuccessAction,
 } from '../modules/productRecommend';
@@ -14,8 +14,8 @@ const getKeywordsApi = async (category) => {
   return res.data;
 };
 
-const getRecomendedApi = async (category, keywords) => {
-  const res = await axios.post(`${process.env.BASE_URL}/main/recommandList`, {
+const getRecommendedApi = async (category, keywords) => {
+  const res = await axios.post(`${process.env.BASE_URL}/main/recommendList`, {
     category,
     keywords,
   });
@@ -35,7 +35,7 @@ function* loadKeywords(action) {
 function* loadRecommended(action) {
   const { category, keywords } = action;
   try {
-    const recommended = yield call(getRecomendedApi, category, keywords);
+    const recommended = yield call(getRecommendedApi, category, keywords);
     yield put(getRecommendedSuccessAction(recommended));
   } catch (e) {
     yield put(getRecommendedFailureAction(e));
@@ -47,10 +47,9 @@ function* watchLoadKeywords() {
 }
 
 function* watchLoadRecommended() {
-  yield takeLatest(GET_ROCOMMENDED, loadRecommended);
+  yield takeLatest(GET_RECOMMENDED, loadRecommended);
 }
 
 export default function* productRecommendSaga() {
-  yield all([fork(watchLoadKeywords)]);
-  yield all([fork(watchLoadRecommended)]);
+  yield all([fork(watchLoadKeywords), fork(watchLoadRecommended)]);
 }

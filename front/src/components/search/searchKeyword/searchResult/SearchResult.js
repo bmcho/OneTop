@@ -2,13 +2,16 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { media } from '../../../../../styles/theme';
 import {
   setRequestDataAction,
   setRequestPageAction,
   setResultTypeAction,
   setSortAction,
 } from '../../../../stores/modules/searchKeyword';
+import NoResult from '../../../commons/noResult/NoResult';
 import Pagination from '../../../commons/pagination/Pagination';
+import ResultSort from '../../../commons/resultSort/ResultSort';
 import SearchResultItem from '../../searchResultItem/SearchResultItem';
 import Tab from './tab/Tab';
 
@@ -68,16 +71,11 @@ const SearchResult = (props) => {
     <div>
       <TabSection>
         <Tab resultType={resultType} />
-        <Select onChange={changeSort} value={sort}>
-          <option value="name asc">가나다 오름차순</option>
-          <option value="name desc">가나다 내림차순</option>
-          <option value="price asc">가격 낮은순</option>
-          <option value="price desc">가격 높은순</option>
-        </Select>
+        <ResultSort onChange={changeSort} value={sort} />
       </TabSection>
       {searchKeyword.length !== 0 &&
         (searchResultData.length === 0 ? (
-          <div>검색 결과가 없습니다</div>
+          <NoResult />
         ) : (
           <div>
             <div>
@@ -111,6 +109,12 @@ const TabSection = styled.div`
   font-size: 14px;
   border: none;
   margin-left: 10px;
+  ${media.mobile} {
+    flex-direction: column;
+    margin-left: 0;
+    padding-left: 0;
+    height: auto;
+  }
 `;
 const Select = styled.select`
   height: 35px;
@@ -120,6 +124,12 @@ const Select = styled.select`
   font-size: 14px;
   border: none;
   margin-left: 10px;
+  ${media.mobile} {
+    width: 50%;
+    padding: 10px 0;
+    margin-top: 10px;
+    align-self: flex-end;
+  }
 `;
 const TabItem = styled.div`
   background-color: ${(props) => props.active && 'red'};

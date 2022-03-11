@@ -32,11 +32,12 @@ const SearchHistory = (props) => {
     const keywords = JSON.parse(localStorage.getItem('keywords'));
     keywords.splice(idx, 1);
     localStorage.setItem('keywords', JSON.stringify(keywords));
+    setSearchHistory(keywords);
   };
 
   const clickHistoryItem = (e) => {
     const requestPage = 0;
-    const sort = 'name asc';
+    const sort = 'id desc';
     const resultType = 'product';
     const keyword = searchHistory[e.currentTarget.dataset.index];
     dispatch(setSearchKeywordAction(keyword));
@@ -123,6 +124,7 @@ const SearchKeywordHistoryItemTitle = styled.button`
   width: 100%;
   display: flex;
   align-items: center;
+  text-align: left;
   &:hover {
     cursor: pointer;
   }
