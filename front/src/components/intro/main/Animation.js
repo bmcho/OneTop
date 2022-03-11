@@ -65,14 +65,24 @@ const Animation = () => {
         <ImageWrap>{/* <img src="/images/main.jpeg" /> */}</ImageWrap>
         <Main>
           <div ref={text1}>
-            <MainText>화장품</MainText>
-            <MainText>추천해줄께</MainText>
+            <MainText>reCco</MainText>
+            {/* <MainText>추천해줄께</MainText> */}
+            <MainSubText>대한민국 유일 화장품 추천 웹</MainSubText>
           </div>
         </Main>
         <Sub>
-          <SubItem ref={text2}>커몬1</SubItem>
-          <SubItem ref={text3}>커몬2</SubItem>
-          <SubItem ref={text4}>커몬3</SubItem>
+          <SubItem ref={text2}>
+            나에게 맞는지 제품인지 구매전 리꼬의 비교 추천 서비스 통해
+            알아보세요
+          </SubItem>
+          <SubItem ref={text3}>
+            리꼬의 다양한 검색 유형을 통해 구매전 미리 제품이 내가 찾는 제품이
+            맞는지 확인해보세요
+          </SubItem>
+          <SubItem ref={text4}>
+            reCco는 누구보다 당신을 위해 고민하며 화장품을 찾다 지친 당신을 위해
+            도와줄꺼에요
+          </SubItem>
         </Sub>
       </Container>
     </Content>
@@ -150,6 +160,11 @@ const MainText = styled.div`
   ${media.mobile} {
     font-size: 54px;
   }
+`;
+const MainSubText = styled.div`
+  font-size: 24px;
+  color: ${({ theme }) => theme.color.white};
+  white-space: nowrap;
 `;
 const Sub = styled.div`
   position: absolute;
