@@ -5,7 +5,7 @@ import { getProductReviewAction } from '../../stores/modules/productReview';
 import { useRouter } from 'next/router';
 import Pagenation from '../search/searchCategory/Pagenation';
 import ReviewItem from './ReviewItem';
-import Loading from '../commons/loading/loading';
+import Loading from '../commons/loading/Loading';
 
 const ReviewMain = () => {
   const { loading, reviews, error } = useSelector(
