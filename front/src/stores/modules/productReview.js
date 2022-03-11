@@ -48,9 +48,10 @@ export const DELETE_PRODUCT_REVIEW = 'DELETE_PRODUCT_REVIEW';
 export const DELETE_PRODUCT_REVIEW_SUCCESS = 'DELETE_PRODUCT_REVIEW_SUCCESS';
 export const DELETE_PRODUCT_REVIEW_FAILURE = 'DELETE_PRODUCT_REVIEW_FAILURE';
 
-export const getProductReviewAction = (id) => ({
+export const getProductReviewAction = (id, page) => ({
   type: GET_PRODUCT_REVIEW,
   id,
+  page,
 });
 export const getProductReviewSuccessAction = (data) => ({
   type: GET_PRODUCT_REVIEW_SUCCESS,

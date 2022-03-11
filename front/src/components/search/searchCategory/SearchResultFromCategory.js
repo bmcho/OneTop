@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { MdChevronLeft } from 'react-icons/md';
+import { hashtagSplit } from '../../../utils/util';
 
 const SearchResultFromCategory = ({
   largeCategory,
@@ -50,14 +51,16 @@ const SearchResultFromCategory = ({
       ) : (
         <>
           <div size={itemPerPage}>
-            {data.result.map((cosmetic, idx) => (
-              <a
-                key={idx}
-                onClick={() => LinkDetailPageHandle(cosmetic.product_num)}
-              >
-                <SearchResultItem key={idx} cosmetic={cosmetic} />
-              </a>
-            ))}
+            {data.result.map((cosmetic, idx) => {
+              return (
+                <a
+                  key={idx}
+                  onClick={() => LinkDetailPageHandle(cosmetic.product_num)}
+                >
+                  <SearchResultItem key={idx} cosmetic={cosmetic} />
+                </a>
+              );
+            })}
           </div>
         </>
       )}
@@ -66,7 +69,6 @@ const SearchResultFromCategory = ({
 };
 
 const ResultBlock = styled.div`
-  padding: 30px 0;
   width: 80%;
   margin: 0 auto;
 `;

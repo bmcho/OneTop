@@ -67,7 +67,6 @@ const CategoriesAndResult = () => {
                 뒤로
               </button>
               <div>
-                <span className="largeCategory">{largeCategory}</span>·
                 <span>{smallCategory}</span>
               </div>
             </ResultHeader>
@@ -108,11 +107,6 @@ const CategoriesAndResult = () => {
 };
 
 const Wrapper = styled.div`
-  ${(props) =>
-    props.size &&
-    css`
-      height: calc(120px * ${parseInt(props.size) + 0.5});
-    `};
   display: flex;
   flex-direction: column;
   align-items: center;

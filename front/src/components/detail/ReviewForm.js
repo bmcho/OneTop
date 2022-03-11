@@ -6,17 +6,16 @@ import {
   postProductReviewImageAction,
 } from '../../stores/modules/productReview';
 import { useRouter } from 'next/router';
-import { BsPlusLg } from 'react-icons/bs';
 import { MdOutlineCancel, MdCameraAlt } from 'react-icons/md';
-import Image from 'next/image';
-import ReviewImageInputer from './ReviewImageInputer';
 
 const ReviewForm = () => {
   const [inputValues, setInputValues] = useState({
     password: '',
     comment: '',
+    hashTag: '',
   });
   const [imgFiles, setImgFiles] = useState([]);
+  const [hashTags, setHashTags] = useState([]);
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
@@ -35,6 +34,28 @@ const ReviewForm = () => {
 
   const removeFileHandle = (fileInfo) => {
     setImgFiles((prev) => prev.filter((file) => file.fileInfo !== fileInfo));
+  };
+
+  const hashTagReset = () => {
+    setInputValues((prev) => ({ ...prev, hashTag: '' }));
+  };
+
+  const hashTagEventHandle = (e) => {
+    if (e.charCode === 32) {
+      e.preventDefault();
+      let newHashTag = e.target.value.replace(/[ #]/gi, '');
+      if (!newHashTag) return hashTagReset();
+      newHashTag = '#' + newHashTag;
+      setHashTags((prev) => {
+        return [...prev, newHashTag];
+      });
+      hashTagReset();
+    } else if (e.keyCode === 8) {
+      if (e.target.value) return;
+      setHashTags((prev) => {
+        return prev.slice(0, -1);
+      });
+    }
   };
 
   const addFileHandle = (e) => {
@@ -64,7 +85,6 @@ const ReviewForm = () => {
 
   const postReview = (e) => {
     e.preventDefault();
-    // if (!inputValues.nickName) return alert('닉네임을 입력해주세요.');
     if (!inputValues.password) return alert('비밀번호을 입력해주세요.');
     if (!inputValues.comment) return alert('리뷰을 입력해주세요.');
     dispatch(
@@ -73,24 +93,18 @@ const ReviewForm = () => {
           fk_product_num: parseInt(id),
           password: inputValues.password,
           comment: inputValues.comment,
-          images: imgFiles.map((imgFile) => {
-            const { name } = imgFile;
-            return name;
-          }),
+          hashtag: hashTags.join(','),
+          images: imgFiles.map(({ encoingFile }) => encoingFile),
         },
         action: 'create',
       })
     );
-    if (imgFiles.length) {
-      dispatch(
-        postProductReviewImageAction(imgFiles.map(({ fileInfo }) => fileInfo))
-      );
-    }
     setInputValues({
       password: '',
       comment: '',
     });
     setImgFiles([]);
+    setHashTags([]);
   };
   return (
     <ReviewFormBlock>
@@ -102,16 +116,16 @@ const ReviewForm = () => {
               name="password"
               placeholder="비밀번호"
               autoComplete="off"
-              value={inputValues.password}
+              value={inputValues.password || ''}
               onChange={inputChangeHandle}
             />
             <div className="text-limit">{`${inputValues.comment.length} / 2000`}</div>
             <AddImageWrapper>
-              <label className="label" htmlFor="input">
+              <label className="label" htmlFor="input-image">
                 <StyledMdCameraAlt size={25} />
               </label>
               <input
-                id="input"
+                id="input-image"
                 className="input"
                 accept="image/*"
                 type="file"
@@ -123,11 +137,27 @@ const ReviewForm = () => {
           </ReviewWriterInfo>
           <ReviewTextArea
             placeholder="리뷰를 입력해주세요"
-            value={inputValues.comment}
+            value={inputValues.comment || ''}
             name="comment"
             onChange={inputChangeHandle}
           />
-          {/* <ReviewImageInputer imgFiles={imgFiles} setImgFiles={setImgFiles} /> */}
+          <HashTagsBlock>
+            {hashTags.length !== 0 &&
+              hashTags.map((tag, index) => {
+                return (
+                  <HashTagWrapper key={`${tag}-${index}`}>{tag}</HashTagWrapper>
+                );
+              })}
+            <input
+              type="text"
+              placeholder="해시태그"
+              name="hashTag"
+              value={inputValues.hashTag || []}
+              onChange={inputChangeHandle}
+              onKeyPress={hashTagEventHandle}
+              onKeyDown={hashTagEventHandle}
+            />
+          </HashTagsBlock>
           <SubmitWrapper>
             <button type="submit">등록</button>
           </SubmitWrapper>
@@ -179,9 +209,6 @@ const ReviewWriterInfo = styled.div`
   align-items: center;
   width: 100%;
   margin-bottom: 5px;
-  input + input {
-    margin-left: 5px;
-  }
   .text-limit {
     position: absolute;
     top: 5px;
@@ -237,6 +264,24 @@ const StyledMdOutlineCancel = styled(MdOutlineCancel)`
   top: 0;
   right: 0;
   cursor: pointer;
+`;
+
+const HashTagsBlock = styled.div`
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  border: 1px solid ${({ theme }) => theme.color.lightGray1};
+  padding: 20px;
+  margin-top: 5px;
+  input[type='text'] {
+    border: none;
+  }
+`;
+
+const HashTagWrapper = styled.div`
+  padding: 5px 10px;
+  border: 1px solid ${({ theme }) => theme.color.orange1};
+  color: ${({ theme }) => theme.color.orange1};
 `;
 
 export default ReviewForm;

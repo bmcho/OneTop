@@ -14,6 +14,13 @@ const IngredientInfo = ({ ingredients, open, modalOpenHandle }) => {
       <IngredientUl>
         <h5>성분 정보</h5>
         <StyledMdOutlineClose size="24" />
+        <div className="skindeep-header">skindeep 데이터</div>
+        <IngredientGradeDescription>
+          <GradeInfo background={'#4d4d4d'}>미정</GradeInfo>
+          <GradeInfo background={'#009d4e'}>안전</GradeInfo>
+          <GradeInfo background={'#ff9e16'}>중간</GradeInfo>
+          <GradeInfo background={'#e63c2f'}>위험</GradeInfo>
+        </IngredientGradeDescription>
         {ingredients.length ? (
           ingredients.map((ingredient) => {
             const maxLevel = Math.max(...ingredient.score.split('-'));
@@ -52,11 +59,13 @@ const StyledMdOutlineClose = styled(MdOutlineClose)`
 
 const IngredientUl = styled.ul`
   position: relative;
-
   h5 {
     font-size: 24px;
     font-weight: 900;
     padding: 20px 0;
+    text-align: center;
+  }
+  .skindeep-header {
     text-align: center;
   }
   width: 450px;
@@ -79,6 +88,13 @@ const IngredientLi = styled.li`
   & + & {
     border-top: 1.5px solid rgba(0, 0, 0, 0.3);
   }
+`;
+
+const IngredientGradeDescription = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 10px 0;
 `;
 
 const IngredientName = styled.div`

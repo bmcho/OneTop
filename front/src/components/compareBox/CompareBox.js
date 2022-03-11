@@ -9,6 +9,13 @@ import {
   checkProductCompareInfoAction,
 } from '../../stores/modules/productCompareInfo';
 import { useEffect } from 'react';
+import { hashtagSplit } from '../../utils/util';
+import {
+  safeScoreCount,
+  normalScoreCount,
+  dangerScoreCount,
+} from '../../utils/colorByLevel';
+import Link from 'next/link';
 
 const CompareBox = ({ comparBoxOpenHandle }) => {
   const { data, error } = useSelector((state) => state.productCompareInfo);
@@ -36,54 +43,123 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
         <ItemTable>
           <thead>
             <tr>
-              {data.map((d, index) => {
-                return (
-                  <th key={`${d.id}${index}`}>
+              <th></th>
+              {new Array(3).fill(0).map((_, index) => {
+                const item = data[index];
+                return item ? (
+                  <td key={index}>
                     <RemoveButton
-                      onClick={() => productRemoveHandle(d.product_num)}
+                      onClick={() => productRemoveHandle(item.product_num)}
                     >
                       삭제
                     </RemoveButton>
                     <ImageWrapper>
                       <Image
-                        src={d.img_url}
+                        src={item.img_url}
                         width={123}
                         height={123}
                         layout="responsive"
                       />
                     </ImageWrapper>
-                  </th>
+                  </td>
+                ) : (
+                  <td></td>
                 );
               })}
             </tr>
           </thead>
           <tbody>
             <tr>
-              {data.map((d, index) => {
-                return <td key={`${d.id}${index}`}>{d.brand}</td>;
+              <th>상품링크</th>
+              {new Array(3).fill(0).map((_, index) => {
+                const item = data[index];
+                return item ? (
+                  <td key={index}>
+                    <Link href={`/detail/${item.product_num}`}>
+                      <a>바로가기</a>
+                    </Link>
+                  </td>
+                ) : (
+                  <td></td>
+                );
               })}
             </tr>
             <tr>
-              {data.map((d, index) => {
-                return <td key={`${d.id}${index}`}>{d.name}</td>;
+              <th>브랜드</th>
+              {new Array(3).fill(0).map((_, index) => {
+                const item = data[index];
+                return item ? <td key={index}>{item.brand}</td> : <td></td>;
               })}
             </tr>
             <tr>
-              {data.map((d, index) => {
-                return <td key={`${d.id}${index}`}>{d.price}</td>;
+              <th>제품명</th>
+              {new Array(3).fill(0).map((_, index) => {
+                const item = data[index];
+                return item ? <td key={index}>{item.name}</td> : <td></td>;
               })}
             </tr>
             <tr>
-              {data.map((d, index) => {
-                return <td key={`${d.id}${index}`}>{d.capacity}</td>;
+              <th>가격</th>
+              {new Array(3).fill(0).map((_, index) => {
+                const item = data[index];
+                return item ? <td key={index}>{item.price}</td> : <td></td>;
               })}
             </tr>
             <tr>
-              {data.map((d, index) => {
-                const hashTag = d.hashtag
-                  .slice(1, d.hashtag.length - 1)
-                  .split(',');
-                return <td key={`${d.id}${index}`}>{hashTag.join('\n')}</td>;
+              <th>용량</th>
+              {new Array(3).fill(0).map((_, index) => {
+                const item = data[index];
+                return item ? <td key={index}>{item.capacity}</td> : <td></td>;
+              })}
+            </tr>
+            <tr>
+              <th>#</th>
+              {new Array(3).fill(0).map((_, index) => {
+                const item = data[index];
+                return item ? (
+                  <td key={index}>{hashtagSplit(item.hashtag).join('\n')}</td>
+                ) : (
+                  <td></td>
+                );
+              })}
+            </tr>
+            <tr>
+              <th>안전성분</th>
+              {new Array(3).fill(0).map((_, index) => {
+                const item = data[index];
+                return item ? (
+                  <td key={index}>
+                    {safeScoreCount(item.ingredientList)} 가지
+                  </td>
+                ) : (
+                  <td></td>
+                );
+              })}
+            </tr>
+            <tr>
+              <th>안전성분</th>
+              {new Array(3).fill(0).map((_, index) => {
+                const item = data[index];
+                return item ? (
+                  <td key={index}>
+                    {normalScoreCount(item.ingredientList)} 가지
+                  </td>
+                ) : (
+                  <td></td>
+                );
+              })}
+            </tr>
+            <tr>
+              <th>위험성분</th>
+              {new Array(3).fill(0).map((_, index) => {
+                const item = data[index];
+                return item ? (
+                  <td key={index}>
+                    {dangerScoreCount(item.ingredientList)} 가지
+                  </td>
+                ) : (
+                  <td></td>
+                );
               })}
             </tr>
           </tbody>
@@ -141,6 +217,8 @@ const Header = styled.div`
   span {
     margin-left: 8px;
   }
+  top: 0;
+  z-index: 2;
   height: 30px;
   text-align: left;
   line-height: 30px;
@@ -161,46 +239,48 @@ const TextBlock = styled.div`
 `;
 
 const ItemTable = styled.table`
-  font-size: 16px;
+  width: 100%;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 1.2px;
-  border-collapse: separate;
-  border-spacing: 2px;
-
+  border-spacing: 1px;
+  background-color: white;
+  padding-top: 10px;
   td,
   th {
-    width: 120px;
+    position: relative;
+    width: 22%;
     text-align: center;
     vertical-align: middle;
     white-space: pre-wrap;
+    border-bottom: 2px solid #dee2e6;
+    border-top: 2px solid #dee2e6;
+    color: ${({ theme }) => theme.color.gray1};
   }
-
   th {
-    position: relative;
-    background-color: rgba(252, 196, 25, 0.4);
+    background-color: #e9ecef;
   }
-
+  thead td,
+  thead th {
+    border-top: none;
+    background-color: ${({ theme }) => theme.color.yellow2};
+  }
+  thead td {
+    padding: 0 1px 2px 0;
+  }
   tbody td {
-    padding: 20px 0;
+    padding: 20px 2px;
   }
-
+  tbody tr:first-child th,
   tbody tr:first-child td {
-    padding: 40px 0 20px;
-  }
-
-  @media screen and (max-width: 500px) {
-    td,
-    th {
-      width: 110px;
-    }
+    margin: 40px 0 20px;
   }
 `;
 
 const RemoveButton = styled.button`
   position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 120px;
+  right: 1px;
+  bottom: 2px;
+  width: calc(100% - 2px);
   height: 15px;
   font-size: 12px;
   z-index: 99;

@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux';
 import { theme } from '../../../styles/theme';
 import { useRouter } from 'next/router';
+import { hashtagSplit } from '../../utils/util';
+import Hashtag from '../commons/hashtag/Hashtag';
 
 const ProductInfo = ({
   img_url,
@@ -14,7 +16,6 @@ const ProductInfo = ({
   modalOpenHandle,
   addCompareBoxHandle,
 }) => {
-  const hashTag = hashtag.slice(1, hashtag.length - 1).split(',');
   return (
     <Container>
       <ImageWrapper>
@@ -29,10 +30,12 @@ const ProductInfo = ({
 
       <InfoContainer>
         <TagUl>
-          {hashTag &&
-            hashTag.map((tag) => {
-              return <li key={tag}>{tag}</li>;
-            })}
+          {hashtag &&
+            hashtagSplit(hashtag)
+              .slice(0, 3)
+              .map((tag) => {
+                return <Hashtag key={tag}>{tag}</Hashtag>;
+              })}
         </TagUl>
         <h3>{name}</h3>
         <InfoLi>

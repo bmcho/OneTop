@@ -24,7 +24,7 @@ const SearchResultItem = ({ cosmetic }) => (
       {cosmetic.hashtag && (
         <HashtagLIst>
           {hashtagSplit(cosmetic.hashtag).map(
-            (e, i) => i < 3 && <Hashtag>{e}</Hashtag>
+            (e, i) => i < 3 && <Hashtag key={`${e}${i}`}>{e}</Hashtag>
           )}
         </HashtagLIst>
       )}
