@@ -23,7 +23,7 @@ const ReviewItem = ({
 }) => {
   const ref = useRef();
   const errorRef = useRef();
-  const [isOverText, setIsOverText] = useState();
+  const [isOverText, setIsOverText] = useState(false);
   const [moreText, setMoreText] = useState(false);
   const [isEtcOpen, setIsEtcOpen] = useState(false);
   const [isModifyOpen, setIsModifyOpen] = useState(false);
@@ -32,9 +32,11 @@ const ReviewItem = ({
     modify: '',
     delete: '',
   });
-  const [modifyValue, setModifyValue] = useState(comment);
-  const [modifyImages, setModifyImages] = useState(review_images);
-  const [modifyHashTag, setModifyHashTag] = useState(hashtag.split(','));
+  const [modifyValue, setModifyValue] = useState(comment || '');
+  const [modifyImages, setModifyImages] = useState(review_images || []);
+  const [modifyHashTag, setModifyHashTag] = useState(
+    hashtag ? hashtag.split(',') : []
+  );
   const [hashTagValue, setHashTagValue] = useState('');
 
   const { error: modifyError } = useSelector(
@@ -89,7 +91,7 @@ const ReviewItem = ({
     setIsDeleteOpen((prev) => !prev);
   };
 
-  const modifyCancelHadle = () => {
+  const modifyCancelHandle = () => {
     setIsModifyOpen(false);
     setModifyValue(comment);
   };
@@ -140,9 +142,9 @@ const ReviewItem = ({
       modify: '',
       delete: '',
     });
-    setModifyHashTag(hashtag.split(','));
-    setModifyImages(review_images);
-    setModifyValue(comment);
+    setModifyHashTag(hashtag ? hashtag.split(',') : []);
+    setModifyImages(review_images || []);
+    setModifyValue(comment || '');
     setIsModifyOpen(false);
     setLoading(true);
   };
@@ -220,6 +222,7 @@ const ReviewItem = ({
               <input
                 type="password"
                 name="delete"
+                autoComplete="off"
                 value={password.delete}
                 onChange={passwordChangeHandle}
               />
@@ -239,16 +242,20 @@ const ReviewItem = ({
         {isOverText && <button onClick={moreTextHandle}>더보기</button>}
         {hashtag && (
           <HashTagsBlock>
-            {hashtag.split(',').map((tag) => {
-              return <HashTagWrapper>{tag}</HashTagWrapper>;
+            {hashtag.split(',').map((tag, index) => {
+              return (
+                <HashTagWrapper key={`${tag.slice(1)}-${index}`}>
+                  {tag}
+                </HashTagWrapper>
+              );
             })}
           </HashTagsBlock>
         )}
 
         {review_images.length !== 0 && (
           <ImageWrapper>
-            {review_images.map(({ img_path }) => {
-              return <img src={img_path} />;
+            {review_images.map(({ img_path }, index) => {
+              return <img key={index} src={img_path} alt={'리뷰이미지'} />;
             })}
           </ImageWrapper>
         )}
@@ -260,17 +267,18 @@ const ReviewItem = ({
               type="password"
               name="modify"
               value={password.modify}
+              autoComplete="off"
               placeholder="비밀번호"
               onChange={passwordChangeHandle}
               disabled={!isModifyOpen}
             />
             <div className="text-limit">{`${modifyValue.length} / 2000`}</div>
             <AddImageWrapper>
-              <label className="label" htmlFor="input">
+              <label className="label" htmlFor={`review-${id}-image-input`}>
                 <StyledMdCameraAlt size={25} />
               </label>
               <input
-                id="input"
+                id={`review-${id}-image-input`}
                 className="input"
                 accept="image/*"
                 type="file"
@@ -289,8 +297,12 @@ const ReviewItem = ({
         />
         <HashTagsBlock>
           {modifyHashTag !== 0 &&
-            modifyHashTag.map((tag) => {
-              return <HashTagWrapper>{tag}</HashTagWrapper>;
+            modifyHashTag.map((tag, index) => {
+              return (
+                <HashTagWrapper key={`${tag.slice(1)}-${index}`}>
+                  {tag}
+                </HashTagWrapper>
+              );
             })}
           <input
             type="text"
@@ -306,7 +318,7 @@ const ReviewItem = ({
           <button type="submit" disabled={!isModifyOpen}>
             수정 완료
           </button>
-          <button disabled={!isModifyOpen} onClick={modifyCancelHadle}>
+          <button disabled={!isModifyOpen} onClick={modifyCancelHandle}>
             수정 취소
           </button>
         </div>
@@ -346,6 +358,7 @@ const ReviewItemLi = styled.li`
     }
   `}
   position: relative;
+  width: 100%;
   border: 1px solid ${({ theme }) => theme.color.lightGray1};
   padding: 30px;
   margin: 10px 0;

@@ -128,7 +128,9 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
               {new Array(3).fill(0).map((_, index) => {
                 const item = data[index];
                 return item ? (
-                  <td key={index}>{safeScoreCount(item.ingredientList)}</td>
+                  <td key={index}>
+                    {safeScoreCount(item.ingredientList)} 가지
+                  </td>
                 ) : (
                   <td></td>
                 );
@@ -139,7 +141,9 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
               {new Array(3).fill(0).map((_, index) => {
                 const item = data[index];
                 return item ? (
-                  <td key={index}>{normalScoreCount(item.ingredientList)}</td>
+                  <td key={index}>
+                    {normalScoreCount(item.ingredientList)} 가지
+                  </td>
                 ) : (
                   <td></td>
                 );
@@ -150,7 +154,9 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
               {new Array(3).fill(0).map((_, index) => {
                 const item = data[index];
                 return item ? (
-                  <td key={index}>{dangerScoreCount(item.ingredientList)}</td>
+                  <td key={index}>
+                    {dangerScoreCount(item.ingredientList)} 가지
+                  </td>
                 ) : (
                   <td></td>
                 );
@@ -211,6 +217,8 @@ const Header = styled.div`
   span {
     margin-left: 8px;
   }
+  top: 0;
+  z-index: 2;
   height: 30px;
   text-align: left;
   line-height: 30px;
@@ -237,15 +245,6 @@ const ItemTable = styled.table`
   border-spacing: 1px;
   background-color: white;
   padding-top: 10px;
-  thead td,
-  thead th {
-    border-top: none;
-    background-color: ${({ theme }) => theme.color.yellow2};
-  }
-  thead td {
-    padding: 0 1px;
-  }
-
   td,
   th {
     position: relative;
@@ -257,15 +256,20 @@ const ItemTable = styled.table`
     border-top: 2px solid #dee2e6;
     color: ${({ theme }) => theme.color.gray1};
   }
-
   th {
     background-color: #e9ecef;
   }
-
+  thead td,
+  thead th {
+    border-top: none;
+    background-color: ${({ theme }) => theme.color.yellow2};
+  }
+  thead td {
+    padding: 0 1px 2px 0;
+  }
   tbody td {
     padding: 20px 2px;
   }
-
   tbody tr:first-child th,
   tbody tr:first-child td {
     margin: 40px 0 20px;
@@ -275,7 +279,7 @@ const ItemTable = styled.table`
 const RemoveButton = styled.button`
   position: absolute;
   right: 1px;
-  bottom: 0;
+  bottom: 2px;
   width: calc(100% - 2px);
   height: 15px;
   font-size: 12px;

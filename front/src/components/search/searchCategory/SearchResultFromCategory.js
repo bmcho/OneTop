@@ -70,7 +70,6 @@ const SearchResultFromCategory = ({
 };
 
 const ResultBlock = styled.div`
-  padding: 30px 0;
   width: 80%;
   margin: 0 auto;
 `;

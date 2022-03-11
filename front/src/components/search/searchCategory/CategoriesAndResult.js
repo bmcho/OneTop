@@ -67,7 +67,6 @@ const CategoriesAndResult = () => {
                 뒤로
               </button>
               <div>
-                <span className="largeCategory">{largeCategory}</span>·
                 <span>{smallCategory}</span>
               </div>
             </ResultHeader>

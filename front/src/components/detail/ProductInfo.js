@@ -34,7 +34,7 @@ const ProductInfo = ({
             hashtagSplit(hashtag)
               .slice(0, 3)
               .map((tag) => {
-                return <Hashtag>{tag}</Hashtag>;
+                return <Hashtag key={tag}>{tag}</Hashtag>;
               })}
         </TagUl>
         <h3>{name}</h3>

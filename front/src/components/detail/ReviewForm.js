@@ -116,16 +116,16 @@ const ReviewForm = () => {
               name="password"
               placeholder="비밀번호"
               autoComplete="off"
-              value={inputValues.password}
+              value={inputValues.password || ''}
               onChange={inputChangeHandle}
             />
             <div className="text-limit">{`${inputValues.comment.length} / 2000`}</div>
             <AddImageWrapper>
-              <label className="label" htmlFor="input">
+              <label className="label" htmlFor="input-image">
                 <StyledMdCameraAlt size={25} />
               </label>
               <input
-                id="input"
+                id="input-image"
                 className="input"
                 accept="image/*"
                 type="file"
@@ -137,20 +137,22 @@ const ReviewForm = () => {
           </ReviewWriterInfo>
           <ReviewTextArea
             placeholder="리뷰를 입력해주세요"
-            value={inputValues.comment}
+            value={inputValues.comment || ''}
             name="comment"
             onChange={inputChangeHandle}
           />
           <HashTagsBlock>
             {hashTags.length !== 0 &&
-              hashTags.map((tag) => {
-                return <HashTagWrapper>{tag}</HashTagWrapper>;
+              hashTags.map((tag, index) => {
+                return (
+                  <HashTagWrapper key={`${tag}-${index}`}>{tag}</HashTagWrapper>
+                );
               })}
             <input
               type="text"
               placeholder="해시태그"
               name="hashTag"
-              value={inputValues.hashTag}
+              value={inputValues.hashTag || []}
               onChange={inputChangeHandle}
               onKeyPress={hashTagEventHandle}
               onKeyDown={hashTagEventHandle}
