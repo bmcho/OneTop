@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ProductItem = (props) => (
+const ProductItem = ({ data }) => (
   <SearchResultItemBlock>
     <ImageWrap>
-      <img src="/images/product.jpeg" width={60} height={60} />
+      <img src={data.img} width={60} height={60} />
     </ImageWrap>
     <div>
-      <Description>이니스프리</Description>
-      <Description>크림</Description>
+      <Description>{data.name}</Description>
+      <Description>{data.brand}</Description>
     </div>
   </SearchResultItemBlock>
 );
@@ -30,5 +30,6 @@ const Description = styled.p`
   line-height: 16px;
   color: ${(props) => props.theme.color.gray2};
   margin-bottom: 4px;
+  text-align: left;
 `;
 export default ProductItem;

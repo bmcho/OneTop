@@ -15,28 +15,28 @@ const RecommendResult = (props) => {
   useEffect(() => {
     dispatch(getRecommendedAction(category, selectKeywords));
   }, []);
-
+  useEffect(() => {
+    console.log(recommended.data);
+  }, [recommended.data]);
   if (recommended.loading) return <div>loading</div>;
   if (!recommended?.data) return null;
 
   return (
     <ResultBlock>
-      {recommended?.data.map((cosmetic) => {
-        return (
-          <ResultItems>
-            <Link href={`/detail/${cosmetic.product_num}`}>
-              <ATag>
-                <SearchResultItem cosmetic={cosmetic} />
-              </ATag>
-            </Link>
-          </ResultItems>
-        );
-      })}
+      {recommended?.data.map((cosmetic) => (
+        <ResultItems key={cosmetic.product_num}>
+          <Link href={`/detail/${cosmetic.product_num}`}>
+            <ATag>
+              <SearchResultItem cosmetic={cosmetic} />
+            </ATag>
+          </Link>
+        </ResultItems>
+      ))}
     </ResultBlock>
   );
 };
 
-const ResultBlock = styled.ul`
+const ResultBlock = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
@@ -46,11 +46,12 @@ const ResultBlock = styled.ul`
     flex-direction: column;
   }
 `;
+
+const ResultItems = styled.div`
+  width: 50%;
+`;
 const ATag = styled.a`
   text-decoration: none;
-`;
-const ResultItems = styled.li`
-  width: 50%;
 `;
 
 export default RecommendResult;

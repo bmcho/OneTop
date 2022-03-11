@@ -34,9 +34,9 @@ const recommend = (props) => {
         {selectKeywords.length !== 0 && (
           <SelectedCategory>
             <Hashtag>{category}</Hashtag>
-            {selectKeywords.map((keyword) => {
-              return <Hashtag>#{keyword}</Hashtag>;
-            })}
+            {selectKeywords.map((keyword, index) => (
+              <Hashtag key={index}>#{keyword}</Hashtag>
+            ))}
           </SelectedCategory>
         )}
 

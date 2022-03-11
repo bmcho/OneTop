@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -12,6 +13,8 @@ import ResultSort from '../../../commons/resultSort/ResultSort';
 import SearchResultItem from '../../searchResultItem/SearchResultItem';
 
 const SearchIngredientResult = (props) => {
+  const router = useRouter();
+
   const dispatch = useDispatch();
   const { loadingStatus } = useSelector((state) => state.loading);
   const {
@@ -37,6 +40,12 @@ const SearchIngredientResult = (props) => {
     dispatch(setSortInRequestParamsAction(newSort));
   };
 
+  const LinkDetailPageHandle = (product_num) => {
+    router.push({
+      pathname: `/detail/${product_num}`,
+    });
+  };
+
   if (loadingStatus) return <div>loading</div>;
 
   return (
@@ -50,7 +59,12 @@ const SearchIngredientResult = (props) => {
         <div>
           <div>
             {searchIngredientResultData.map((cosmetic, idx) => (
-              <SearchResultItem key={idx} cosmetic={cosmetic} />
+              <a
+                key={cosmetic.product_num}
+                onClick={() => LinkDetailPageHandle(cosmetic.product_num)}
+              >
+                <SearchResultItem cosmetic={cosmetic} />
+              </a>
             ))}
           </div>
           <Pagination

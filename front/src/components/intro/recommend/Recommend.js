@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { media } from '../../../../styles/theme';
 import useInterval from '../../../hooks/interval/useInterval';
-import { categories } from '../../../utils/categoryUtil';
+import { categories, hashTagKeywords } from '../../../utils/categoryUtil';
 
 const Recommend = (props) => {
   const [count, setCount] = useState(0);
@@ -27,7 +27,7 @@ const Recommend = (props) => {
       </div>
       <div>
         <Category>
-          {Object.keys(categories).map((category, idx) => {
+          {hashTagKeywords.map((category, idx) => {
             if (idx < 16) {
               return (
                 <CategoryItem key={idx} active={count === idx % 3}>
