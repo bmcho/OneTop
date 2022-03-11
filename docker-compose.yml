@@ -50,8 +50,8 @@ services:
       - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
     restart: always
     ports:
-      - "80:80"
-      - "433:433"
+      - 80:80
+      - 443:443
     depends_on:
       - server
       - client
