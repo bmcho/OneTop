@@ -30,9 +30,7 @@ const SearchResultItem = ({ cosmetic }) => (
       )}
       <Description>{cosmetic.brand}</Description>
       <Name>{cosmetic.name}</Name>
-
       <StarRating rating={cosmetic.average_rating} />
-
       <SubSection>
         <Description>{priceToString(cosmetic.price)}</Description>
         <Description>{cosmetic.capacity}</Description>

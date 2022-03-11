@@ -7,6 +7,7 @@ import {
 } from '../../stores/modules/productReview';
 import { useRouter } from 'next/router';
 import { MdOutlineCancel, MdCameraAlt } from 'react-icons/md';
+import Hashtag from '../commons/hashtag/Hashtag';
 
 const ReviewForm = () => {
   const [inputValues, setInputValues] = useState({
@@ -144,9 +145,7 @@ const ReviewForm = () => {
           <HashTagsBlock>
             {hashTags.length !== 0 &&
               hashTags.map((tag, index) => {
-                return (
-                  <HashTagWrapper key={`${tag}-${index}`}>{tag}</HashTagWrapper>
-                );
+                return <Hashtag key={`${tag}-${index}`}>{tag}</Hashtag>;
               })}
             <input
               type="text"

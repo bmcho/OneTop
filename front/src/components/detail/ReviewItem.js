@@ -11,6 +11,7 @@ import {
   deleteProductReviewAction,
   modifyProductReviewAction,
 } from '../../stores/modules/productReview';
+import Hashtag from '../commons/hashtag/Hashtag';
 
 const ReviewItem = ({
   id,
@@ -246,11 +247,7 @@ const ReviewItem = ({
         {hashtag && (
           <HashTagsBlock>
             {hashtag.split(',').map((tag, index) => {
-              return (
-                <HashTagWrapper key={`${tag.slice(1)}-${index}`}>
-                  {tag}
-                </HashTagWrapper>
-              );
+              return <Hashtag key={`${tag.slice(1)}-${index}`}>{tag}</Hashtag>;
             })}
           </HashTagsBlock>
         )}
@@ -301,11 +298,7 @@ const ReviewItem = ({
         <HashTagsBlock>
           {modifyHashTag !== 0 &&
             modifyHashTag.map((tag, index) => {
-              return (
-                <HashTagWrapper key={`${tag.slice(1)}-${index}`}>
-                  {tag}
-                </HashTagWrapper>
-              );
+              return <Hashtag key={`${tag.slice(1)}-${index}`}>{tag}</Hashtag>;
             })}
           <input
             type="text"
@@ -558,6 +551,7 @@ const HashTagsBlock = styled.div`
   display: flex;
   gap: 5px;
   flex-wrap: wrap;
+  align-items: center;
   border: 1px solid ${({ theme }) => theme.color.lightGray1};
   padding: 20px;
   margin-top: 5px;
