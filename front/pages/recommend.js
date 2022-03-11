@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 import SelectFromCategory from '../src/components/recommend/SelectFromCategory';
 import RecommendTitle from '../src/components/recommend/RecommendTitle';
-import { useState } from 'react';
 import SelectFromKeyword from '../src/components/recommend/SelectFromKeyword';
-import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import RecommendResult from '../src/components/recommend/RecommendResult';
 import Hashtag from '../src/components/commons/hashtag/Hashtag';
@@ -11,12 +9,10 @@ import { recommendedResetAction } from '../src/stores/modules/productRecommend';
 import { NextSeo } from 'next-seo';
 
 const recommend = (props) => {
-  const router = useRouter();
   const dispatch = useDispatch();
   const { category, selectKeywords, keywords, recommended } = useSelector(
     (state) => state.productRecommend
   );
-  const [isResult, setIsResult] = useState(false);
   const reSelect = () => {
     dispatch(recommendedResetAction());
   };
@@ -51,7 +47,7 @@ const recommend = (props) => {
           </div>
         )}
         {category.length !== 0 && selectKeywords.length === 0 && (
-          <SelectFromKeyword category={category} setIsResult={setIsResult} />
+          <SelectFromKeyword />
         )}
         {selectKeywords.length !== 0 && <RecommendResult />}
       </SurveyBlock>

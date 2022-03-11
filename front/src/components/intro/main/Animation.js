@@ -65,7 +65,7 @@ const Animation = () => {
         <ImageWrap></ImageWrap>
         <Main>
           <div ref={text1}>
-            <MainText>reCco</MainText>
+            <Image src="/images/logo.png" alt={'로고'} />
             <MainSubText>
               대한민국 유일
               <br /> 화장품 추천 웹
@@ -123,10 +123,13 @@ const MainText = styled.div`
     font-size: 54px;
   }
 `;
+const Image = styled.img`
+  width: 140px;
+  height: 140px;
+`;
 const MainSubText = styled.div`
   font-size: 24px;
   line-light: 30px;
-  color: ${({ theme }) => theme.color.white};
   letter-spacing: -1.5px;
 `;
 const Sub = styled.div`

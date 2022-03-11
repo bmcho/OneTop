@@ -14,7 +14,6 @@ const SelectFromKeyword = (props) => {
     new Array(keywords?.data?.keyword?.length).fill(false)
   );
   useEffect(() => {
-    console.log(category);
     dispatch(getKeywordsAction(category));
   }, [category]);
 

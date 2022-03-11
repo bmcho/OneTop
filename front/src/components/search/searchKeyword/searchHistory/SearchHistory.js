@@ -8,19 +8,12 @@ import {
   setAutoCompleteKeywordAction,
   setSearchKeywordAction,
   setRequestDataAction,
-  setResultTypeAction,
-  setSortAction,
-  setRequestPageAction,
 } from '../../../../stores/modules/searchKeyword';
 import { theme } from '../../../../../styles/theme';
 
 const SearchHistory = (props) => {
   const dispatch = useDispatch();
   const [searchHistory, setSearchHistory] = useState([]);
-  useEffect(() => {
-    console.log('search history mounted');
-    return () => console.log('search history unmounted');
-  }, []);
 
   useEffect(() => {
     const keywords = JSON.parse(localStorage.getItem('keywords') || '[]');
@@ -36,23 +29,19 @@ const SearchHistory = (props) => {
   };
 
   const clickHistoryItem = (e) => {
-    const requestPage = 0;
-    const sort = 'id desc';
-    const resultType = 'product';
     const keyword = searchHistory[e.currentTarget.dataset.index];
-    dispatch(setSearchKeywordAction(keyword));
-    dispatch(setResultTypeAction(resultType));
-    dispatch(setSortAction(sort));
-    dispatch(setRequestPageAction(requestPage));
     dispatch(
-      setRequestDataAction({
-        requestPage: requestPage,
-        sort: sort,
-        searchResultType: resultType,
+      setSearchKeywordAction({
         keyword: keyword,
+        searchResultType: 'product',
+        requestPage: 0,
+        sort: 'id desc',
       })
     );
+    dispatch(setRequestDataAction());
+
     dispatch(setAutoCompleteKeywordAction(keyword));
+
     setSearchHistoryInLocal(keyword);
     setSearchHistory((cur) => {
       const newArr = [...cur];
@@ -62,7 +51,6 @@ const SearchHistory = (props) => {
     });
   };
   const setSearchHistoryInLocal = (newKeyword) => {
-    console.log('set', newKeyword);
     const keywords = JSON.parse(localStorage.getItem('keywords')) || [];
 
     const idx = keywords.findIndex((keyword) => keyword === newKeyword);

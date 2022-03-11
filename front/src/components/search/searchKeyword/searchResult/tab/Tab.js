@@ -4,46 +4,41 @@ import styled, { css } from 'styled-components';
 import { media } from '../../../../../../styles/theme';
 import {
   setRequestDataAction,
-  setRequestPageAction,
-  setResultTypeAction,
+  setSearchKeywordAction,
 } from '../../../../../stores/modules/searchKeyword';
 
 const Tab = (props) => {
   const dispatch = useDispatch();
-  const { searchKeyword, sort, resultType } = useSelector(
+  const { keywordResultRequestData } = useSelector(
     (state) => state.searchKeyword
   );
 
   const clickResultTypeTab = (type) => {
-    const newRequestPage = 0;
-    dispatch(setResultTypeAction(type));
-    dispatch(setRequestPageAction(newRequestPage));
     dispatch(
-      setRequestDataAction({
-        requestPage: newRequestPage,
-        sort: sort,
+      setSearchKeywordAction({
         searchResultType: type,
-        keyword: searchKeyword,
+        requestPage: 0,
       })
     );
+    dispatch(setRequestDataAction());
   };
 
   return (
     <TabBlock>
       <TabItem
-        active={resultType === 'product'}
+        active={keywordResultRequestData.searchResultType === 'product'}
         onClick={() => clickResultTypeTab('product')}
       >
         상품
       </TabItem>
       <TabItem
-        active={resultType === 'brand'}
+        active={keywordResultRequestData.searchResultType === 'brand'}
         onClick={() => clickResultTypeTab('brand')}
       >
         브랜드
       </TabItem>
       <TabItem
-        active={resultType === 'ingredient'}
+        active={keywordResultRequestData.searchResultType === 'ingredient'}
         onClick={() => clickResultTypeTab('ingredient')}
       >
         성분

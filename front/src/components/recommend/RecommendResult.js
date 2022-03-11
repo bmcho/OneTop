@@ -16,9 +16,7 @@ const RecommendResult = (props) => {
   useEffect(() => {
     dispatch(getRecommendedAction(category, selectKeywords));
   }, []);
-  useEffect(() => {
-    console.log(recommended.data);
-  }, [recommended.data]);
+
   if (recommended.loading) return <LoadingComponent />;
   if (!recommended?.data) return null;
 

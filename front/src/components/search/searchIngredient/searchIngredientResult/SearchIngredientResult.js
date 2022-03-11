@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
@@ -10,7 +10,6 @@ import LoadingComponent from '../../../commons/loading/LoadingComponent';
 import NoResult from '../../../commons/noResult/NoResult';
 import Pagination from '../../../commons/pagination/Pagination';
 import ResultSort from '../../../commons/resultSort/ResultSort';
-// import ResultSort from '../../../commons/resultSort/ResultSort';
 import SearchResultItem from '../../searchResultItem/SearchResultItem';
 
 const SearchIngredientResult = (props) => {
@@ -24,9 +23,6 @@ const SearchIngredientResult = (props) => {
     searchIngredientResultTotalPage,
     searchIngredientResultCurrentPage,
   } = useSelector((state) => state.searchIngredient);
-  useEffect(() => {
-    console.log('loadingStatus', loadingStatus);
-  }, [loadingStatus]);
 
   const setCurrentPage = (page) => {
     const curPage = {
@@ -49,7 +45,7 @@ const SearchIngredientResult = (props) => {
   if (loadingStatus) return <LoadingComponent />;
 
   return (
-    <div>
+    <ResultBlock>
       <SelectBlock>
         <ResultSort onChange={changeSort} value={resultRequestParams.sort} />
       </SelectBlock>
@@ -75,9 +71,14 @@ const SearchIngredientResult = (props) => {
           />
         </div>
       )}
-    </div>
+    </ResultBlock>
   );
 };
+
+const ResultBlock = styled.div`
+    padding-top: 20px;
+}`;
+
 const SelectBlock = styled.div`
   display: flex;
   justify-content: end;

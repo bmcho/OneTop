@@ -2,7 +2,7 @@ import random
 from typing import List
 
 from fastapi import HTTPException, Request, Response, status
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, or_, func
 from sqlalchemy.orm import Session
 
 import models as models
@@ -157,8 +157,9 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
                 models.Product.capacity,
                 models.Product.price,
                 models.Product.extinction,
-                models.Product.keywords,
-                models.Descrip.hashtag,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
             .join(models.Descrip, models.Product._descriptions)
             .filter(
@@ -170,7 +171,7 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
             .order_by(models.Product.product_num.desc())
             .all()
         )
-    if sort == "id asc":
+    elif sort == "id asc":
         productList = (
             db.query(
                 models.Product.product_num,
@@ -181,8 +182,9 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
                 models.Product.capacity,
                 models.Product.price,
                 models.Product.extinction,
-                models.Product.keywords,
-                models.Descrip.hashtag,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
             .join(models.Descrip, models.Product._descriptions)
             .filter(
@@ -195,7 +197,7 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
             .all()
         )
 
-    if sort == "name desc":
+    elif sort == "name desc":
         productList = (
             db.query(
                 models.Product.product_num,
@@ -206,8 +208,9 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
                 models.Product.capacity,
                 models.Product.price,
                 models.Product.extinction,
-                models.Product.keywords,
-                models.Descrip.hashtag,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
             .join(models.Descrip, models.Product._descriptions)
             .filter(
@@ -219,7 +222,7 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
             .order_by(models.Product.name.desc())
             .all()
         )
-    if sort == "name asc":
+    elif sort == "name asc":
         productList = (
             db.query(
                 models.Product.product_num,
@@ -230,8 +233,9 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
                 models.Product.capacity,
                 models.Product.price,
                 models.Product.extinction,
-                models.Product.keywords,
-                models.Descrip.hashtag,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
             .join(models.Descrip, models.Product._descriptions)
             .filter(
@@ -244,7 +248,7 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
             .all()
         )
 
-    if sort == "price desc":
+    elif sort == "price desc":
         productList = (
             db.query(
                 models.Product.product_num,
@@ -255,8 +259,9 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
                 models.Product.capacity,
                 models.Product.price,
                 models.Product.extinction,
-                models.Product.keywords,
-                models.Descrip.hashtag,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
             .join(models.Descrip, models.Product._descriptions)
             .filter(
@@ -268,7 +273,7 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
             .order_by(models.Product.price.desc())
             .all()
         )
-    if sort == "price asc":
+    elif sort == "price asc":
         productList = (
             db.query(
                 models.Product.product_num,
@@ -279,8 +284,9 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
                 models.Product.capacity,
                 models.Product.price,
                 models.Product.extinction,
-                models.Product.keywords,
-                models.Descrip.hashtag,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
             .join(models.Descrip, models.Product._descriptions)
             .filter(
@@ -313,8 +319,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .filter((models.Product.name.like(search)) & (models.Product.price > 0))
@@ -322,7 +329,7 @@ def get_productList_keyword(
                 .order_by(models.Product.product_num.desc())
                 .all()
             )
-        if sort == "id asc":
+        elif sort == "id asc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -333,8 +340,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .filter((models.Product.name.like(search)) & (models.Product.price > 0))
@@ -342,7 +350,7 @@ def get_productList_keyword(
                 .order_by(models.Product.product_num)
                 .all()
             )
-        if sort == "name desc":
+        elif sort == "name desc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -353,8 +361,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .filter((models.Product.name.like(search)) & (models.Product.price > 0))
@@ -362,7 +371,7 @@ def get_productList_keyword(
                 .order_by(models.Product.name.desc())
                 .all()
             )
-        if sort == "name asc":
+        elif sort == "name asc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -373,8 +382,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .filter((models.Product.name.like(search)) & (models.Product.price > 0))
@@ -382,7 +392,7 @@ def get_productList_keyword(
                 .order_by(models.Product.name)
                 .all()
             )
-        if sort == "price desc":
+        elif sort == "price desc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -393,8 +403,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .filter((models.Product.name.like(search)) & (models.Product.price > 0))
@@ -402,7 +413,7 @@ def get_productList_keyword(
                 .order_by(models.Product.price.desc())
                 .all()
             )
-        if sort == "price asc":
+        elif sort == "price asc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -413,8 +424,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .filter((models.Product.name.like(search)) & (models.Product.price > 0))
@@ -435,8 +447,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .filter(
@@ -446,7 +459,7 @@ def get_productList_keyword(
                 .order_by(models.Product.product_num.desc())
                 .all()
             )
-        if sort == "id asc":
+        elif sort == "id asc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -457,8 +470,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .filter(
@@ -469,7 +483,7 @@ def get_productList_keyword(
                 .all()
             )
 
-        if sort == "name desc":
+        elif sort == "name desc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -480,8 +494,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .filter(
@@ -491,7 +506,7 @@ def get_productList_keyword(
                 .order_by(models.Product.name.desc())
                 .all()
             )
-        if sort == "name asc":
+        elif sort == "name asc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -502,8 +517,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .filter(
@@ -513,7 +529,7 @@ def get_productList_keyword(
                 .order_by(models.Product.name)
                 .all()
             )
-        if sort == "price desc":
+        elif sort == "price desc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -524,8 +540,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .filter(
@@ -535,7 +552,7 @@ def get_productList_keyword(
                 .order_by(models.Product.price.desc())
                 .all()
             )
-        if sort == "price asc":
+        elif sort == "price asc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -546,8 +563,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .filter(
@@ -571,8 +589,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .join(models.Ingredient, models.Product._ingredients)
@@ -584,7 +603,7 @@ def get_productList_keyword(
                 .order_by(models.Product.product_num.desc())
                 .all()
             )
-        if sort == "id asc":
+        elif sort == "id asc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -595,8 +614,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .join(models.Ingredient, models.Product._ingredients)
@@ -608,7 +628,7 @@ def get_productList_keyword(
                 .order_by(models.Product.product_num)
                 .all()
             )
-        if sort == "name desc":
+        elif sort == "name desc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -619,8 +639,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .join(models.Ingredient, models.Product._ingredients)
@@ -632,7 +653,7 @@ def get_productList_keyword(
                 .order_by(models.Product.name.desc())
                 .all()
             )
-        if sort == "name asc":
+        elif sort == "name asc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -643,8 +664,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .join(models.Ingredient, models.Product._ingredients)
@@ -656,7 +678,7 @@ def get_productList_keyword(
                 .order_by(models.Product.name)
                 .all()
             )
-        if sort == "price desc":
+        elif sort == "price desc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -667,8 +689,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .join(models.Ingredient, models.Product._ingredients)
@@ -680,7 +703,7 @@ def get_productList_keyword(
                 .order_by(models.Product.price.desc())
                 .all()
             )
-        if sort == "price asc":
+        elif sort == "price asc":
             productList = (
                 db.query(
                     models.Product.product_num,
@@ -691,8 +714,9 @@ def get_productList_keyword(
                     models.Product.capacity,
                     models.Product.price,
                     models.Product.extinction,
-                    models.Product.keywords,
-                    models.Descrip.hashtag,
+                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                    # models.Product.keywords,
+                    # models.Descrip.hashtag,
                 )
                 .join(models.Descrip, models.Product._descriptions)
                 .join(models.Ingredient, models.Product._ingredients)
@@ -723,8 +747,9 @@ def get_productList_ingredient(
                 models.Product.capacity,
                 models.Product.price,
                 models.Product.extinction,
-                models.Product.keywords,
-                models.Descrip.hashtag,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
             .join(models.Descrip, models.Product._descriptions)
             .join(models.Ingredient, models.Product._ingredients)
@@ -738,7 +763,7 @@ def get_productList_ingredient(
             )
             .all()
         )
-    if sort == "id asc":
+    elif sort == "id asc":
         productList = (
             db.query(
                 models.Product.product_num,
@@ -749,8 +774,9 @@ def get_productList_ingredient(
                 models.Product.capacity,
                 models.Product.price,
                 models.Product.extinction,
-                models.Product.keywords,
-                models.Descrip.hashtag,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
             .join(models.Descrip, models.Product._descriptions)
             .join(models.Ingredient, models.Product._ingredients)
@@ -762,7 +788,7 @@ def get_productList_ingredient(
             .order_by(models.Product.extinction.desc(), models.Product.product_num)
             .all()
         )
-    if sort == "name desc":
+    elif sort == "name desc":
         productList = (
             db.query(
                 models.Product.product_num,
@@ -773,8 +799,9 @@ def get_productList_ingredient(
                 models.Product.capacity,
                 models.Product.price,
                 models.Product.extinction,
-                models.Product.keywords,
-                models.Descrip.hashtag,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
             .join(models.Descrip, models.Product._descriptions)
             .join(models.Ingredient, models.Product._ingredients)
@@ -786,7 +813,7 @@ def get_productList_ingredient(
             .order_by(models.Product.extinction.desc(), models.Product.name.desc())
             .all()
         )
-    if sort == "name asc":
+    elif sort == "name asc":
         productList = (
             db.query(
                 models.Product.product_num,
@@ -797,8 +824,9 @@ def get_productList_ingredient(
                 models.Product.capacity,
                 models.Product.price,
                 models.Product.extinction,
-                models.Product.keywords,
-                models.Descrip.hashtag,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
             .join(models.Descrip, models.Product._descriptions)
             .join(models.Ingredient, models.Product._ingredients)
@@ -811,7 +839,7 @@ def get_productList_ingredient(
             .order_by(models.Product.name)
             .all()
         )
-    if sort == "price desc":
+    elif sort == "price desc":
         productList = (
             db.query(
                 models.Product.product_num,
@@ -822,8 +850,9 @@ def get_productList_ingredient(
                 models.Product.capacity,
                 models.Product.price,
                 models.Product.extinction,
-                models.Product.keywords,
-                models.Descrip.hashtag,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
             .join(models.Descrip, models.Product._descriptions)
             .join(models.Ingredient, models.Product._ingredients)
@@ -836,7 +865,7 @@ def get_productList_ingredient(
             .order_by(models.Product.price.desc())
             .all()
         )
-    if sort == "price asc":
+    elif sort == "price asc":
         productList = (
             db.query(
                 models.Product.product_num,
@@ -847,8 +876,9 @@ def get_productList_ingredient(
                 models.Product.capacity,
                 models.Product.price,
                 models.Product.extinction,
-                models.Product.keywords,
-                models.Descrip.hashtag,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
             .join(models.Descrip, models.Product._descriptions)
             .join(models.Ingredient, models.Product._ingredients)
