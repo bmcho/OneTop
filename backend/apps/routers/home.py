@@ -19,7 +19,7 @@ def call_keywords(category: str):
     return home.call_keywords(category)
 
 
-@router.post("/recommandList", response_model=List[schemas.ProductList])
+@router.post("/recommendList", response_model=List[schemas.ProductList])
 def keywords_similarity(
     request: schemas.KeywordCategoryList, db: Session = Depends(get_db)
 ):

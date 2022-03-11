@@ -22,7 +22,7 @@ def call_keywords(category: str):
         )  # 선택 시 다른 문구출력(예, 상품이 부족하여 추천할 수 없습니다.)
 
     # db 에서 category_keywords읽기
-    category_keywords = pd.read_csv(f"{util.BASE_DIR}/recommand/category_keywords.csv")
+    category_keywords = pd.read_csv(f"{util.BASE_DIR}/recommend/category_keywords.csv")
 
     # category가 같은 값
     category_keywords = category_keywords[category_keywords.category == category]
@@ -39,7 +39,7 @@ def call_keywords(category: str):
 
 def keywords_similarity(request: schemas.KeywordCategoryList, db: Session):
     # master_embedding 을 db에서 읽어 데이터 프레임으로 만들기
-    master_embedding = pd.read_csv(f"{util.BASE_DIR}/recommand/master_embedding.csv")
+    master_embedding = pd.read_csv(f"{util.BASE_DIR}/recommend/master_embedding.csv")
 
     master_embedding.embedding = master_embedding.embedding.apply(
         lambda x: ast.literal_eval(x)
@@ -53,7 +53,7 @@ def keywords_similarity(request: schemas.KeywordCategoryList, db: Session):
 
     # product_embedding 을 db에서 읽어 데이터 프레임으로 만들기
     product_embedding = pd.read_csv(
-        f"{util.BASE_DIR}/recommand/temp_product_embedding2.csv"
+        f"{util.BASE_DIR}/recommend/temp_product_embedding2.csv"
     )
     product_embedding = product_embedding[
         product_embedding.category == request.category
@@ -96,7 +96,6 @@ def keywords_similarity(request: schemas.KeywordCategoryList, db: Session):
     product_num_list = list(
         cos_df.sort_values("similarity", ascending=False)[0:11].product_num
     )
-    print(product_num_list)
     product = (
         db.query(models.Product)
         .filter(models.Product.product_num.in_(product_num_list))
