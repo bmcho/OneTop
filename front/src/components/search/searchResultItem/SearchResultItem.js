@@ -40,10 +40,11 @@ const SearchResultItem = ({ cosmetic }) => (
     </div>
   </SearchResultItemBlock>
 );
-const SearchResultItemBlock = styled.li`
+const SearchResultItemBlock = styled.div`
   display: flex;
   padding: 16px 0;
   border-bottom: 1px solid ${(props) => props.theme.color.lightGray3};
+  cursor: pointer;
 `;
 const ImageWrap = styled.div`
   display: flex;
