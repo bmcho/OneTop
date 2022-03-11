@@ -1,5 +1,4 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
@@ -17,7 +16,6 @@ import SearchIngredientResult from './searchIngredientResult/SearchIngredientRes
 const SearchIngredient = (props) => {
   const dispatch = useDispatch();
   const {
-    resultRequestParams,
     includeAutoCompleteKeyword,
     excludeAutoCompleteKeyword,
     includeAutoCompleteData,
@@ -25,7 +23,6 @@ const SearchIngredient = (props) => {
   } = useSelector((state) => state.searchIngredient);
   const [includeKeywords, setIncludeKeywords] = useState([]);
   const [excludeKeywords, setExcludeKeywords] = useState([]);
-  useEffect(() => console.log(resultRequestParams, 'component param'), []);
 
   const getResult = () => {
     const ingredient = {
@@ -39,6 +36,9 @@ const SearchIngredient = (props) => {
 
   return (
     <SearchIngredientBlock>
+      <Description>
+        키워드 자동완성을 이용해 성분을 검색해 보세요 (스쿠알란, 녹차, 적색...)
+      </Description>
       <SearchBlock
         inputTitle={'포함할 성분'}
         keywords={includeKeywords}
@@ -68,6 +68,11 @@ const SearchIngredient = (props) => {
 const SearchIngredientBlock = styled.div`
   width: 80%;
   margin: 0 auto;
+`;
+const Description = styled.p`
+  padding-top: 30px;
+  text-align: center;
+  color: ${(props) => props.theme.color.gray5};
 `;
 const SearchButtonWrap = styled.div`
   text-align: center;
