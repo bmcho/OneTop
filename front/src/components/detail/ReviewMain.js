@@ -5,6 +5,7 @@ import { getProductReviewAction } from '../../stores/modules/productReview';
 import { useRouter } from 'next/router';
 import Pagenation from '../search/searchCategory/Pagenation';
 import ReviewItem from './ReviewItem';
+import Loading from '../commons/loading/loading';
 
 const ReviewMain = () => {
   const { loading, reviews, error } = useSelector(
@@ -35,7 +36,7 @@ const ReviewMain = () => {
     }
   }, [page]);
 
-  if (loading) return <LoadingBlock>loading...</LoadingBlock>;
+  if (loading) return <Loading>loading...</Loading>;
 
   return (
     <ReviewMainBlock>

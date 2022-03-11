@@ -7,4 +7,13 @@ module.exports = {
     domains: ['dn5hzapyfrpio.cloudfront.net'],
   },
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: '/_error',
+        destination: '/',
+        permanent: false,
+      },
+    ];
+  },
 };
