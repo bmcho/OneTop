@@ -136,12 +136,7 @@ def post_reviews_modify(request: ReviewManipulation, db: Session):
 
     try:
         # 기존 review_image 삭제
-
-        delete_review_images = (
-            db.query(ReviewImage).filter(ReviewImage.fk_review_id == request.id).all()
-        )
-        db.delete(delete_review_images)
-
+        db.query(ReviewImage).filter(ReviewImage.fk_review_id == request.id).delete()
         image_list = []
         for image in request.images:
             # base64 encoding string을 그대로 저장하는 방식으로 변경
