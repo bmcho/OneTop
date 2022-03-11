@@ -1,13 +1,11 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { media } from '../../../../../styles/theme';
 import {
   setRequestDataAction,
-  setRequestPageAction,
-  setResultTypeAction,
-  setSortAction,
+  setSearchKeywordAction,
 } from '../../../../stores/modules/searchKeyword';
 import Loading from '../../../commons/loading/Loading';
 import NoResult from '../../../commons/noResult/NoResult';
@@ -21,17 +19,15 @@ const SearchResult = (props) => {
   const dispatch = useDispatch();
   const {
     searchResultData,
-    searchKeyword,
-    autoCompleteKeyword,
-    requestPage,
+    keywordResultRequestData,
     resultTotalPage,
     resultType,
-    sort,
   } = useSelector((state) => state.searchKeyword);
   const { loadingStatus } = useSelector((state) => state.loading);
+
   useEffect(() => {
-    console.log('searchresult mounted');
-    return () => console.log('searchresult unmounted');
+    console.log('search result mounted');
+    return () => console.log('search result unmounted');
   }, []);
 
   const LinkDetailPageHandle = (product_num) => {
@@ -41,30 +37,23 @@ const SearchResult = (props) => {
   };
 
   const setCurrentPage = (page) => {
-    dispatch(setRequestPageAction(page));
-
     dispatch(
-      setRequestDataAction({
+      setSearchKeywordAction({
         requestPage: page,
-        sort: sort,
-        searchResultType: resultType,
-        keyword: searchKeyword,
       })
     );
+    dispatch(setRequestDataAction());
   };
 
   const changeSort = (e) => {
     const newSort = e.target.value;
-    dispatch(setSortAction(newSort));
-    dispatch(setRequestPageAction(0));
     dispatch(
-      setRequestDataAction({
+      setSearchKeywordAction({
         requestPage: 0,
         sort: newSort,
-        searchResultType: resultType,
-        keyword: searchKeyword,
       })
     );
+    dispatch(setRequestDataAction());
   };
 
   if (loadingStatus) return <Loading />;
@@ -72,15 +61,18 @@ const SearchResult = (props) => {
     <div>
       <TabSection>
         <Tab resultType={resultType} />
-        <ResultSort onChange={changeSort} value={sort} />
+        <ResultSort
+          onChange={changeSort}
+          value={keywordResultRequestData.sort}
+        />
       </TabSection>
-      {searchKeyword.length !== 0 &&
+      {keywordResultRequestData.keyword.length !== 0 &&
         (searchResultData.length === 0 ? (
           <NoResult />
         ) : (
           <div>
-            <div>
-              {searchResultData.map((cosmetic, idx) => (
+            <ul>
+              {searchResultData.map((cosmetic) => (
                 <a
                   key={cosmetic.product_num}
                   onClick={() => LinkDetailPageHandle(cosmetic.product_num)}
@@ -88,10 +80,10 @@ const SearchResult = (props) => {
                   <SearchResultItem cosmetic={cosmetic} />
                 </a>
               ))}
-            </div>
+            </ul>
             <Pagination
               totalPage={resultTotalPage}
-              currentPage={requestPage}
+              currentPage={keywordResultRequestData.requestPage}
               setCurrentPage={setCurrentPage}
               countByStep={5}
             />
