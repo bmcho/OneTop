@@ -21,18 +21,23 @@ const SearchResultItem = ({ cosmetic }) => (
       <img src="/images/product.jpeg" width={60} height={60} />
     </ImageWrap>
     <div>
-      {cosmetic.hashtag && (
+      {cosmetic.hashtag.length !== 0 && (
         <HashtagLIst>
           {hashtagSplit(cosmetic.hashtag).map(
             (e, i) => i < 3 && <Hashtag key={`${e}${i}`}>{e}</Hashtag>
           )}
         </HashtagLIst>
       )}
+      {cosmetic.keywords.length !== 0 && (
+        <HashtagLIst>
+          {hashtagSplit(cosmetic.keywords).map(
+            (e, i) => i < 3 && <Hashtag key={`${e}${i}`}>{e}</Hashtag>
+          )}
+        </HashtagLIst>
+      )}
       <Description>{cosmetic.brand}</Description>
       <Name>{cosmetic.name}</Name>
-
       <StarRating rating={cosmetic.average_rating} />
-
       <SubSection>
         <Description>{priceToString(cosmetic.price)}</Description>
         <Description>{cosmetic.capacity}</Description>
@@ -44,7 +49,7 @@ const SearchResultItemBlock = styled.div`
   display: flex;
   padding: 16px 0;
   border-bottom: 1px solid ${(props) => props.theme.color.lightGray3};
-  cursor: pointer;
+  pointer: cursor;
 `;
 const ImageWrap = styled.div`
   display: flex;
