@@ -3,7 +3,7 @@ export const initialState = {
     includeIngredient: [],
     excludeIngredient: [],
     requestPage: 0,
-    maxItemCountByPage: 10,
+    maxItemCountByPage: 5,
     sort: 'id desc',
   },
   searchIngredientResultData: [],

@@ -21,7 +21,7 @@ function searchKeywordResultAPI(data) {
     keyword: data.keyword,
     searchResultType: data.searchResultType,
     requestPage: data.requestPage,
-    maxItemCountByPage: 10,
+    maxItemCountByPage: 5,
     sort: data.sort,
   };
   return axios.post(`${process.env.BASE_URL}/search/keyword`, reqParam);
