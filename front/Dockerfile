@@ -18,6 +18,7 @@ COPY . /srv/client
 RUN apk update && apk add bash
 
 RUN npm install
+RUN npm run build
 
 ENTRYPOINT ["sh", "entrypoint.sh"]
 
