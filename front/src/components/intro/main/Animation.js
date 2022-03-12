@@ -17,7 +17,7 @@ const Animation = () => {
       scrollTrigger: {
         trigger: startTrigger.current,
         start: 'top top',
-        toggleActions: 'play play play play',
+        toggleActions: 'play none reverse none',
         scrub: 1,
       },
       opacity: 0,
@@ -27,7 +27,7 @@ const Animation = () => {
       scrollTrigger: {
         trigger: startTrigger.current,
         start: 'bottom -100%',
-        toggleActions: 'play play play play',
+        toggleActions: 'play none reverse none',
         scrub: 1,
       },
       opacity: 1,
@@ -37,8 +37,8 @@ const Animation = () => {
     const config3 = {
       scrollTrigger: {
         trigger: startTrigger.current,
-        start: 'bottom -400%',
-        toggleActions: 'play play play play',
+        start: 'bottom -360%',
+        toggleActions: 'play none reverse none',
         scrub: 1,
       },
       opacity: 0,

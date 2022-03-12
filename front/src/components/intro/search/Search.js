@@ -4,12 +4,8 @@ import { VscSymbolKeyword } from 'react-icons/vsc';
 import { FaCarrot } from 'react-icons/fa';
 import styled, { css } from 'styled-components';
 import { mainData } from '../../../utils/categoryUtil';
-import { gsap } from 'gsap/dist/gsap';
-import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import FadeIn from './fadeIn/FadeIn';
 import ProductItem from './productItem/ProductItem';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Search = (props) => {
   const [tapState, setTapState] = useState(0);
@@ -89,9 +85,6 @@ const Search = (props) => {
 
 const SearchBlock = styled.div`
   width: 100%;
-  // height: 100vh;
-  // margin-top: 100vh;
-  background
 `;
 const Title = styled.h2`
   font-size: 27px;
@@ -110,6 +103,10 @@ const Text = styled.p`
 `;
 const ListSection = styled.div`
   padding-bottom: 100px;
+  // height: 300px;
+  // max-width: 350px;
+
+  // margin: 0 auto;
 `;
 const List = styled.ul`
   display: flex;
