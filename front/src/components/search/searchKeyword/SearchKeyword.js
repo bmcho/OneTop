@@ -1,12 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-// import AutoComplete from './autoComplete/AutoComplete';
-// import SearchBar from './searchBar/SearchBar';
 import SearchHistory from './searchHistory/SearchHistory';
 import SearchResult from './searchResult/SearchResult';
 import styled from 'styled-components';
 import SearchBar from '../searchKeyword/searchBar/SearchBar';
-import { useRouter } from 'next/router';
 
 const SearchKeyword = (props) => {
   const { keywordResultRequestData, autoCompleteKeyword } = useSelector(
