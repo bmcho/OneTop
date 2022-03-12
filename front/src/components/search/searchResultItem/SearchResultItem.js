@@ -1,24 +1,14 @@
+import Image from 'next/image';
 import React from 'react';
 import styled from 'styled-components';
 import { hashtagSplit, priceToString } from '../../../utils/util';
 import Hashtag from '../../commons/hashtag/Hashtag';
 import StarRating from '../../commons/starRating/StarRating';
-//  {
-//   product_num: 154564,
-//   name: '(2022 시어 포 굿 에디션) 시어 버터 드라이 스킨 핸드 크림',
-//   img_url:
-//     'https://dn5hzapyfrpio.cloudfront.net/product/982/9822fd80-88b9-11ec-997a-63a0b2ea7234.jpeg?w=456',
-//   brand: '록시땅',
-//   average_rating: 0,
-//   capacity: '30ml',
-//   price: 14000,
-//   keywords: null,
-//   hashtag: "['#보습', '#저자극', '#피부탄력']",
-// }
+
 const SearchResultItem = ({ cosmetic }) => (
   <SearchResultItemBlock>
     <ImageWrap>
-      <img src={cosmetic.img_url} width={60} height={60} />
+      <Image src={cosmetic.img_url} width={60} height={60} />
     </ImageWrap>
     <div>
       {cosmetic.keywords ? (
