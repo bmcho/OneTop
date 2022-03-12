@@ -40,7 +40,7 @@ const SearchFromCategory = ({
           >
             <div className="img-wrapper">
               <img
-                src={`/images/category${category.id}.jpg`}
+                src={`/images/category${category.id}.png`}
                 width={76}
                 height={76}
                 alt={'카테고리 이미지'}
