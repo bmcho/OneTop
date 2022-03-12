@@ -2,8 +2,9 @@ import random
 from typing import List
 
 from fastapi import HTTPException, Request, Response, status
-from sqlalchemy import and_, or_, func
+from sqlalchemy import and_, distinct, func, or_
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import text
 
 import models as models
 
@@ -138,6 +139,20 @@ def get_ingredient_autocomplete(db: Session, request: schemas.Keyword):
 
     return ingredientList
 
+def get_sort_string(sort:str):
+    if sort=="id desc":
+        sortSentence=f"product_product_num desc"
+    elif sort=="id asc":
+        sortSentence=f"product_product_num asc"
+    elif sort=="price desc":
+        sortSentence=f"product_price desc"
+    elif sort=="price asc":
+        sortSentence=f"product_price asc"
+    elif sort=="name desc":
+        sortSentence=f"product_name desc"
+    elif sort=="name asc":
+        sortSentence=f"product_name asc"
+    return sortSentence
 
 def get_productList_category(db: Session, sort: str, request: schemas.SearchCategory):
     largeCategory = request.largeCategory
@@ -146,159 +161,34 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
     searchLarge = "%{}%".format(largeCategory)
     searchSmall = "%{}%".format(smallCategory)
 
-    if sort == "id desc":
-        productList = (
-            db.query(
-                models.Product.product_num,
-                models.Product.name,
-                models.Product.img_url,
-                models.Product.brand,
-                models.Product.average_rating,
-                models.Product.capacity,
-                models.Product.price,
-                models.Product.extinction,
-                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                # models.Product.keywords,
-                # models.Descrip.hashtag,
-            )
-            .join(models.Descrip, models.Product._descriptions)
-            .filter(
-                (models.Descrip.major_classification.like(searchLarge))
-                & (models.Descrip.medium_classification.like(searchSmall))
-                & (models.Product.price > 0)
-            )
-            .order_by(models.Product.extinction.desc())
-            .order_by(models.Product.product_num.desc())
-            .all()
-        )
-    elif sort == "id asc":
-        productList = (
-            db.query(
-                models.Product.product_num,
-                models.Product.name,
-                models.Product.img_url,
-                models.Product.brand,
-                models.Product.average_rating,
-                models.Product.capacity,
-                models.Product.price,
-                models.Product.extinction,
-                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                # models.Product.keywords,
-                # models.Descrip.hashtag,
-            )
-            .join(models.Descrip, models.Product._descriptions)
-            .filter(
-                (models.Descrip.major_classification.like(searchLarge))
-                & (models.Descrip.medium_classification.like(searchSmall))
-                & (models.Product.price > 0)
-            )
-            .order_by(models.Product.extinction.desc())
-            .order_by(models.Product.product_num)
-            .all()
-        )
+    sortSentence=get_sort_string(sort)
 
-    elif sort == "name desc":
-        productList = (
-            db.query(
-                models.Product.product_num,
-                models.Product.name,
-                models.Product.img_url,
-                models.Product.brand,
-                models.Product.average_rating,
-                models.Product.capacity,
-                models.Product.price,
-                models.Product.extinction,
-                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                # models.Product.keywords,
-                # models.Descrip.hashtag,
+    productList = (
+        db.query(
+            models.Product.product_num,
+            models.Product.name,
+            models.Product.img_url,
+            models.Product.brand,
+            models.Product.average_rating,
+            models.Product.capacity,
+            models.Product.price,
+            models.Product.extinction,
+            func.ifnull(models.Product.keywords, models.Descrip.hashtag).label(
+                "hashtag"
             )
-            .join(models.Descrip, models.Product._descriptions)
-            .filter(
-                (models.Descrip.major_classification.like(searchLarge))
-                & (models.Descrip.medium_classification.like(searchSmall))
-                & (models.Product.price > 0)
-            )
-            .order_by(models.Product.extinction.desc())
-            .order_by(models.Product.name.desc())
-            .all()
+            # models.Product.keywords,
+            # models.Descrip.hashtag,
         )
-    elif sort == "name asc":
-        productList = (
-            db.query(
-                models.Product.product_num,
-                models.Product.name,
-                models.Product.img_url,
-                models.Product.brand,
-                models.Product.average_rating,
-                models.Product.capacity,
-                models.Product.price,
-                models.Product.extinction,
-                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                # models.Product.keywords,
-                # models.Descrip.hashtag,
-            )
-            .join(models.Descrip, models.Product._descriptions)
-            .filter(
-                (models.Descrip.major_classification.like(searchLarge))
-                & (models.Descrip.medium_classification.like(searchSmall))
-                & (models.Product.price > 0)
-            )
-            .order_by(models.Product.extinction.desc())
-            .order_by(models.Product.name)
-            .all()
+        .join(models.Descrip, models.Product._descriptions)
+        .filter(
+            (models.Descrip.major_classification.like(searchLarge))
+            & (models.Descrip.medium_classification.like(searchSmall))
+            & (models.Product.price > 0)
         )
-
-    elif sort == "price desc":
-        productList = (
-            db.query(
-                models.Product.product_num,
-                models.Product.name,
-                models.Product.img_url,
-                models.Product.brand,
-                models.Product.average_rating,
-                models.Product.capacity,
-                models.Product.price,
-                models.Product.extinction,
-                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                # models.Product.keywords,
-                # models.Descrip.hashtag,
-            )
-            .join(models.Descrip, models.Product._descriptions)
-            .filter(
-                (models.Descrip.major_classification.like(searchLarge))
-                & (models.Descrip.medium_classification.like(searchSmall))
-                & (models.Product.price > 0)
-            )
-            .order_by(models.Product.extinction.desc())
-            .order_by(models.Product.price.desc())
-            .all()
-        )
-    elif sort == "price asc":
-        productList = (
-            db.query(
-                models.Product.product_num,
-                models.Product.name,
-                models.Product.img_url,
-                models.Product.brand,
-                models.Product.average_rating,
-                models.Product.capacity,
-                models.Product.price,
-                models.Product.extinction,
-                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                # models.Product.keywords,
-                # models.Descrip.hashtag,
-            )
-            .join(models.Descrip, models.Product._descriptions)
-            .filter(
-                (models.Descrip.major_classification.like(searchLarge))
-                & (models.Descrip.medium_classification.like(searchSmall))
-                & (models.Product.price > 0)
-            )
-            .order_by(models.Product.extinction.desc())
-            .order_by(models.Product.price)
-            .all()
-        )
-
+        .order_by(models.Product.extinction.desc())
+        .order_by(text(sortSentence))
+        .all()
+    )
     return productList
 
 
@@ -307,427 +197,87 @@ def get_productList_keyword(
 ):
     search_keyword = request.keyword
     search = "%{}%".format(search_keyword)
-    if searchType == "product":
-        if sort == "id desc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
+
+    if searchType=="product":
+        sortSentence=get_sort_string(sort)
+        productList = (
+            db.query(
+                models.Product.product_num,
+                models.Product.name,
+                models.Product.img_url,
+                models.Product.brand,
+                models.Product.average_rating,
+                models.Product.capacity,
+                models.Product.price,
+                models.Product.extinction,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label(
+                    "hashtag"
                 )
-                .join(models.Descrip, models.Product._descriptions)
-                .filter((models.Product.name.like(search)) & (models.Product.price > 0))
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.product_num.desc())
-                .all()
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
-        elif sort == "id asc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .filter((models.Product.name.like(search)) & (models.Product.price > 0))
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.product_num)
-                .all()
-            )
-        elif sort == "name desc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .filter((models.Product.name.like(search)) & (models.Product.price > 0))
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.name.desc())
-                .all()
-            )
-        elif sort == "name asc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .filter((models.Product.name.like(search)) & (models.Product.price > 0))
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.name)
-                .all()
-            )
-        elif sort == "price desc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .filter((models.Product.name.like(search)) & (models.Product.price > 0))
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.price.desc())
-                .all()
-            )
-        elif sort == "price asc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .filter((models.Product.name.like(search)) & (models.Product.price > 0))
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.price)
-                .all()
-            )
-    elif searchType == "brand":
+            .join(models.Descrip, models.Product._descriptions)
+            .filter((models.Product.name.like(search)) & (models.Product.price > 0))
+            .order_by(models.Product.extinction.desc())
+            .order_by(text(sortSentence))
+            .all()
+        )
+    elif searchType=="brand":
+        sortSentence=get_sort_string(sort)
         search = search.upper()
-        if sort == "id desc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
+        productList = (
+            db.query(
+                models.Product.product_num,
+                models.Product.name,
+                models.Product.img_url,
+                models.Product.brand,
+                models.Product.average_rating,
+                models.Product.capacity,
+                models.Product.price,
+                models.Product.extinction,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label(
+                    "hashtag"
                 )
-                .join(models.Descrip, models.Product._descriptions)
-                .filter(
-                    (models.Product.brand.like(search)) & (models.Product.price > 0)
-                )
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.product_num.desc())
-                .all()
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
-        elif sort == "id asc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .filter(
-                    (models.Product.brand.like(search)) & (models.Product.price > 0)
-                )
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.product_num)
-                .all()
+            .join(models.Descrip, models.Product._descriptions)
+            .filter(
+                (models.Product.brand.like(search)) & (models.Product.price > 0)
             )
+            .order_by(models.Product.extinction.desc())
+            .order_by(text(sortSentence))
+            .all()
+        )
 
-        elif sort == "name desc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
+    elif searchType=="ingredient":
+        sortSentence=get_sort_string(sort)
+        productList = (
+            db.query(
+                models.Product.product_num,
+                models.Product.name,
+                models.Product.img_url,
+                models.Product.brand,
+                models.Product.average_rating,
+                models.Product.capacity,
+                models.Product.price,
+                models.Product.extinction,
+                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label(
+                    "hashtag"
                 )
-                .join(models.Descrip, models.Product._descriptions)
-                .filter(
-                    (models.Product.brand.like(search)) & (models.Product.price > 0)
-                )
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.name.desc())
-                .all()
+                # models.Product.keywords,
+                # models.Descrip.hashtag,
             )
-        elif sort == "name asc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .filter(
-                    (models.Product.brand.like(search)) & (models.Product.price > 0)
-                )
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.name)
-                .all()
+            .join(models.Descrip, models.Product._descriptions)
+            .join(models.Ingredient, models.Product._ingredients)
+            .filter(
+                models.Ingredient.ko_ingredient.like(search)
+                & (models.Product.price > 0)
             )
-        elif sort == "price desc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .filter(
-                    (models.Product.brand.like(search)) & (models.Product.price > 0)
-                )
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.price.desc())
-                .all()
-            )
-        elif sort == "price asc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .filter(
-                    (models.Product.brand.like(search)) & (models.Product.price > 0)
-                )
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.price)
-                .all()
-            )
-
-    # keyword를 ko_ingredient로 가지는 Product테이블의 row들을 다 가져옴.
-    elif searchType == "ingredient":
-        if sort == "id desc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .join(models.Ingredient, models.Product._ingredients)
-                .filter(
-                    models.Ingredient.ko_ingredient.like(search)
-                    & (models.Product.price > 0)
-                )
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.product_num.desc())
-                .all()
-            )
-        elif sort == "id asc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .join(models.Ingredient, models.Product._ingredients)
-                .filter(
-                    models.Ingredient.ko_ingredient.like(search)
-                    & (models.Product.price > 0)
-                )
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.product_num)
-                .all()
-            )
-        elif sort == "name desc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .join(models.Ingredient, models.Product._ingredients)
-                .filter(
-                    models.Ingredient.ko_ingredient.like(search)
-                    & (models.Product.price > 0)
-                )
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.name.desc())
-                .all()
-            )
-        elif sort == "name asc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .join(models.Ingredient, models.Product._ingredients)
-                .filter(
-                    models.Ingredient.ko_ingredient.like(search)
-                    & (models.Product.price > 0)
-                )
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.name)
-                .all()
-            )
-        elif sort == "price desc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .join(models.Ingredient, models.Product._ingredients)
-                .filter(
-                    models.Ingredient.ko_ingredient.like(search)
-                    & (models.Product.price > 0)
-                )
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.price.desc())
-                .all()
-            )
-        elif sort == "price asc":
-            productList = (
-                db.query(
-                    models.Product.product_num,
-                    models.Product.name,
-                    models.Product.img_url,
-                    models.Product.brand,
-                    models.Product.average_rating,
-                    models.Product.capacity,
-                    models.Product.price,
-                    models.Product.extinction,
-                    func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                    # models.Product.keywords,
-                    # models.Descrip.hashtag,
-                )
-                .join(models.Descrip, models.Product._descriptions)
-                .join(models.Ingredient, models.Product._ingredients)
-                .filter(
-                    models.Ingredient.ko_ingredient.like(search)
-                    & (models.Product.price > 0)
-                )
-                .order_by(models.Product.extinction.desc())
-                .order_by(models.Product.price)
-                .all()
-            )
+            .order_by(models.Product.extinction.desc())
+            .order_by(text(sortSentence))
+            .all()
+        )
     return productList
 
 
@@ -736,159 +286,34 @@ def get_productList_ingredient(
 ):
     includeIngredient = request.includeIngredient
     excludeIngredient = request.excludeIngredient
-    if sort == "id desc":
-        productList = (
-            db.query(
-                models.Product.product_num,
-                models.Product.name,
-                models.Product.img_url,
-                models.Product.brand,
-                models.Product.average_rating,
-                models.Product.capacity,
-                models.Product.price,
-                models.Product.extinction,
-                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                # models.Product.keywords,
-                # models.Descrip.hashtag,
+
+    sortSentence=get_sort_string(sort)
+    productList = (
+        db.query(
+            models.Product.product_num,
+            models.Product.name,
+            models.Product.img_url,
+            models.Product.brand,
+            models.Product.average_rating,
+            models.Product.capacity,
+            models.Product.price,
+            models.Product.extinction,
+            func.ifnull(models.Product.keywords, models.Descrip.hashtag).label(
+                "hashtag"
             )
-            .join(models.Descrip, models.Product._descriptions)
-            .join(models.Ingredient, models.Product._ingredients)
-            .filter(
-                (models.Ingredient.ko_ingredient.in_(includeIngredient))
-                & (models.Ingredient.ko_ingredient.not_in(excludeIngredient))
-                & (models.Product.price > 0)
-            )
-            .order_by(
-                models.Product.extinction.desc(), models.Product.product_num.desc()
-            )
-            .all()
+            # models.Product.keywords,
+            # models.Descrip.hashtag,
         )
-    elif sort == "id asc":
-        productList = (
-            db.query(
-                models.Product.product_num,
-                models.Product.name,
-                models.Product.img_url,
-                models.Product.brand,
-                models.Product.average_rating,
-                models.Product.capacity,
-                models.Product.price,
-                models.Product.extinction,
-                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                # models.Product.keywords,
-                # models.Descrip.hashtag,
-            )
-            .join(models.Descrip, models.Product._descriptions)
-            .join(models.Ingredient, models.Product._ingredients)
-            .filter(
-                (models.Ingredient.ko_ingredient.in_(includeIngredient))
-                & (models.Ingredient.ko_ingredient.not_in(excludeIngredient))
-                & (models.Product.price > 0)
-            )
-            .order_by(models.Product.extinction.desc(), models.Product.product_num)
-            .all()
+        .distinct()
+        .join(models.Descrip, models.Product._descriptions)
+        .join(models.Ingredient, models.Product._ingredients)
+        .filter(
+            and_((models.Ingredient.ko_ingredient.in_(includeIngredient)),
+            (models.Ingredient.ko_ingredient.not_in(excludeIngredient)),
+            (models.Product.price > 0))
         )
-    elif sort == "name desc":
-        productList = (
-            db.query(
-                models.Product.product_num,
-                models.Product.name,
-                models.Product.img_url,
-                models.Product.brand,
-                models.Product.average_rating,
-                models.Product.capacity,
-                models.Product.price,
-                models.Product.extinction,
-                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                # models.Product.keywords,
-                # models.Descrip.hashtag,
-            )
-            .join(models.Descrip, models.Product._descriptions)
-            .join(models.Ingredient, models.Product._ingredients)
-            .filter(
-                (models.Ingredient.ko_ingredient.in_(includeIngredient))
-                & (models.Ingredient.ko_ingredient.not_in(excludeIngredient))
-                & (models.Product.price > 0)
-            )
-            .order_by(models.Product.extinction.desc(), models.Product.name.desc())
-            .all()
-        )
-    elif sort == "name asc":
-        productList = (
-            db.query(
-                models.Product.product_num,
-                models.Product.name,
-                models.Product.img_url,
-                models.Product.brand,
-                models.Product.average_rating,
-                models.Product.capacity,
-                models.Product.price,
-                models.Product.extinction,
-                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                # models.Product.keywords,
-                # models.Descrip.hashtag,
-            )
-            .join(models.Descrip, models.Product._descriptions)
-            .join(models.Ingredient, models.Product._ingredients)
-            .filter(
-                models.Ingredient.ko_ingredient.in_(includeIngredient)
-                & models.Ingredient.ko_ingredient.not_in(excludeIngredient)
-                & (models.Product.price > 0)
-            )
-            .order_by(models.Product.extinction.desc())
-            .order_by(models.Product.name)
-            .all()
-        )
-    elif sort == "price desc":
-        productList = (
-            db.query(
-                models.Product.product_num,
-                models.Product.name,
-                models.Product.img_url,
-                models.Product.brand,
-                models.Product.average_rating,
-                models.Product.capacity,
-                models.Product.price,
-                models.Product.extinction,
-                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                # models.Product.keywords,
-                # models.Descrip.hashtag,
-            )
-            .join(models.Descrip, models.Product._descriptions)
-            .join(models.Ingredient, models.Product._ingredients)
-            .filter(
-                models.Ingredient.ko_ingredient.in_(includeIngredient)
-                & models.Ingredient.ko_ingredient.not_in(excludeIngredient)
-                & (models.Product.price > 0)
-            )
-            .order_by(models.Product.extinction.desc())
-            .order_by(models.Product.price.desc())
-            .all()
-        )
-    elif sort == "price asc":
-        productList = (
-            db.query(
-                models.Product.product_num,
-                models.Product.name,
-                models.Product.img_url,
-                models.Product.brand,
-                models.Product.average_rating,
-                models.Product.capacity,
-                models.Product.price,
-                models.Product.extinction,
-                func.ifnull(models.Product.keywords, models.Descrip.hashtag).label("hashtag")
-                # models.Product.keywords,
-                # models.Descrip.hashtag,
-            )
-            .join(models.Descrip, models.Product._descriptions)
-            .join(models.Ingredient, models.Product._ingredients)
-            .filter(
-                models.Ingredient.ko_ingredient.in_(includeIngredient)
-                & models.Ingredient.ko_ingredient.not_in(excludeIngredient)
-                & (models.Product.price > 0)
-            )
-            .order_by(models.Product.extinction.desc())
-            .order_by(models.Product.price)
-            .all()
-        )
+        .order_by(models.Product.extinction.desc())
+        .order_by(text(sortSentence))
+        .all()
+    )
     return productList
