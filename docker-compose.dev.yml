@@ -1,0 +1,122 @@
+version: "3.2"
+
+# docker-compose.dev.yml build 방법
+# docker-compose -f docker-compose.dev.yml build --no-cache
+# docker-compose -f docker-compose.dev.yml up
+
+# 원활한 개발을 위해 nginx를 사용하지 않으셔도됩니다. Docker Service의 외부로부터의 Port는 모두 열어 놓았습니다.
+# 불필요한 service는 주석 처리해주시면됩니다.
+# migration의 경우 최초 1회만 실행 시켜주세요
+
+services:
+  server:
+    container_name: server
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file: .env
+    volumes:
+      - ./backend:/srv/server
+    restart: always
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    networks:
+      - nginx_bridge
+      - server_database_bridge
+    depends_on:
+      - database
+
+  client:
+    container_name: client
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    volumes:
+      - ./front:/srv/client
+    restart: always
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    environment:
+      - DEV=1
+    networks:
+      - nginx_bridge
+    depends_on:
+      - server
+
+  database:
+    image: mysql:5.7
+    #platform: linux/x86_64
+    container_name: database
+    env_file: .env
+    volumes:
+      - ./db_data:/var/lib/mysql-files
+    restart: unless-stopped
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - server_database_bridge
+      - migraion_database_bridge
+
+  nginx:
+    container_name: nginx
+    #platform: linux/x86_64
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf
+      - ./nginx/dhparam:/etc/nginx/dhparam
+      - ./nginx/certbot/conf/:/etc/nginx/ssl/
+      - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
+    restart: always
+    ports:
+      - "80:80"
+      - "433:433"
+    depends_on:
+      - server
+      - client
+    networks:
+      - nginx_bridge
+
+  # certbot:
+  #   container_name: certbot
+  #   image: certbot/certbot:latest
+  #   command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email credit812@gmail.com --agree-tos --no-eff-email -d www.onetop.n-e.kr
+  #   volumes:
+  #     - ./nginx/certbot/conf/:/etc/letsencrypt
+  #     - ./nginx/certbot/logs/:/var/log/letsencrypt
+  #     - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
+  #   depends_on:
+  #     - nginx
+
+  migration:
+    container_name: migration
+    # platform: linux/x86_64
+    env_file: .env
+    build:
+      context: ./datamigration
+      dockerfile: Dockerfile
+    volumes:
+      - ./datamigration:/srv/migration
+    networks:
+      - migraion_database_bridge
+    depends_on:
+      - database
+
+networks:
+  nginx_bridge:
+    driver: bridge
+  server_database_bridge:
+    driver: bridge
+  migraion_database_bridge:
+    driver: bridge
