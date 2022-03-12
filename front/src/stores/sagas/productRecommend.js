@@ -10,7 +10,9 @@ import {
 import { call, put, takeLatest, all, fork } from 'redux-saga/effects';
 
 const getKeywordsApi = async (category) => {
-  const res = await axios.get(`${process.env.BASE_URL}/main/${category}`);
+  const res = await axios.get(
+    `${process.env.BASE_URL}/main/category?category=${category}`
+  );
   return res.data;
 };
 
