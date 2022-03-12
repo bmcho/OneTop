@@ -306,6 +306,7 @@ def get_productList_ingredient(
     db: Session, sort: str, request: schemas.SearchIngredients
 ):
     lenInclude = len(request.includeIngredient)
+    lenExClude = len(request.excludeIngredient)
     includeIngredient = get_list_to_string_queryIn(request.includeIngredient)
     excludeIngredient = get_list_to_string_queryIn(request.excludeIngredient)
 
@@ -330,14 +331,13 @@ def get_productList_ingredient(
                 f"a.product_id NOT IN ( " + \
                                 f"SELECT DISTINCT product_id FROM productingredientrelation a " + \
                                 f"JOIN ingredient b ON a.ingredient_id = b.id " + \
-                                f"WHERE b.ko_ingredient IN ({excludeIngredient})) " + \
+                                (f"WHERE b.ko_ingredient IN ({excludeIngredient})) " if lenExClude != 0 else 'WHERE b.ko_ingredient IN (""))' ) + \
             (f"AND b.ko_ingredient IN ({includeIngredient}) " if lenInclude != 0 else "") + \
             f"GROUP BY a.product_id " + \
             (f"HAVING count(*) = {lenInclude}" if lenInclude != 0 else "") + \
         f") sub ON pd.product_num = sub.product_id " + \
         f"WHERE pd.price > 0 " + \
         f"ORDER BY pd.extinction DESC, {sortSentence}"
-    
     productList =[dict(x) for x in db.execute(queryString).fetchall()]
     # productList = (
     #     db.query(
