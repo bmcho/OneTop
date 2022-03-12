@@ -21,16 +21,15 @@ const SearchResultItem = ({ cosmetic }) => (
       <img src={cosmetic.img_url} width={60} height={60} />
     </ImageWrap>
     <div>
-      {cosmetic.hashtag.length !== 0 && (
+      {cosmetic.keywords ? (
         <HashtagLIst>
-          {hashtagSplit(cosmetic.hashtag).map(
+          {hashtagSplit(cosmetic.keywords).map(
             (e, i) => i < 3 && <Hashtag key={`${e}${i}`}>{e}</Hashtag>
           )}
         </HashtagLIst>
-      )}
-      {cosmetic.keywords.length !== 0 && (
+      ) : (
         <HashtagLIst>
-          {hashtagSplit(cosmetic.keywords).map(
+          {hashtagSplit(cosmetic.hashtag).map(
             (e, i) => i < 3 && <Hashtag key={`${e}${i}`}>{e}</Hashtag>
           )}
         </HashtagLIst>
