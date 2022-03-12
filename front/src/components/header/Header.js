@@ -52,6 +52,7 @@ const NavBlock = styled.nav`
     text-decoration: none;
     color: black;
     font-size: 20px;
+    cursor: pointer;
   }
 `;
 export default Header;

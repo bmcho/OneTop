@@ -71,6 +71,7 @@ const Button = styled.button`
   }
 `;
 const Nav = styled.nav`
-    text-align: center;
-}`;
+  text-align: center;
+  padding: 20px 0;
+`;
 export default Pagination;
