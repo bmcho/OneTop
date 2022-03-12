@@ -1,34 +1,46 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Frontend README file
 
-## Getting Started
+## 프론트 포지션 팀원
 
-First, run the development server:
+|  이름  | 이메일 |
+| :----: | :----: |
+| 김현하 |        |
+| 박근백 |        |
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## 프로젝트 소개
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 기술 스택
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+| 파트       | 주요 스택 및 라이브러리                             |
+| ---------- | --------------------------------------------------- |
+| 프론트엔드 | `Next.js`,`React`,`JavaScript`,`Redux`,`Redux Saga` |
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### 서비스 기능
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+#### 메인 페이지
 
-## Learn More
+- [x] 서비스의 기획과 기능에 대한 설명을 보여준다.
 
-To learn more about Next.js, take a look at the following resources:
+#### 검색 페이지
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [x] 카테고리 대분류와 소분류를 선택하여 상품을 보여준다.
+- [x] 키워드 검색을 통해 상품을 보여준다.
+- [x] 검색결과의 상품, 브랜드, 성분 탭별 상품을 보여준다.
+- [x] 검색결과를 최신순, 이름순, 가격순으로 보여준다.
+- [x] 검색결과를 페이지네이션을 통해 보여준다.
+- [x] 키워드 자동완성을 통해 정확한 키워드를 알지 않아도 검색어를 추천해 준다.
+- [x] 키워드 검색시 검색 기록을 남긴다.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+#### 추천 페이지
 
-## Deploy on Vercel
+- [x] 원하는 제품의 카테고리를 선택한다.
+- [x] 카테고리별 AI 추출 키워드를 보여주고 선택을 한다.
+- [x] 추천 결과를 상품별 AI 추출 키워드와 함께 보여준다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### 상품 상세 페이지
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [x] 상품별 상세 정보를 보여준다.
+- [x] 상품별 성분을 보여준다.
+- [x] 비교하기 클릭시 오른쪽 하단의 비교하기 탭에 상품이 추가 된다.
+- [x] 후기 작성 게시판에 게시글 추가 수정 삭제가 가능하다.
+- [x] 후기 작성시 이미지 추가가 가능하다.
