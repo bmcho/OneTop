@@ -49,6 +49,9 @@ const ResultBlock = styled.div`
 
 const ResultItems = styled.div`
   width: 50%;
+  ${media.mobile} {
+    width: 100%;
+  }
 `;
 const ATag = styled.a`
   text-decoration: none;
