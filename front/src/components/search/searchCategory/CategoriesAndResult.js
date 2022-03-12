@@ -55,6 +55,7 @@ const CategoriesAndResult = () => {
       setLargeCategoryIndex(largeIndex + 1);
       setSmallCategoryIndex(smallIndex + 1);
     } else if (largeCategoryIndex || smallCategoryIndex) {
+      setSortingStandard('id desc');
       resetCategory();
     }
     setLoading(false);
