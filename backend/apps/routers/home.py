@@ -14,10 +14,14 @@ router = APIRouter(
 )
 
 
-@router.get("/{category}", response_model=schemas.KeywordList)
+#사용x
+# @router.get("/{category}", response_model=schemas.KeywordList)
+# def call_keywords(category: str):
+#     return home.call_keywords(category)
+
+@router.get("/category",  response_model=schemas.KeywordList)
 def call_keywords(category: str):
     return home.call_keywords(category)
-
 
 @router.post("/recommendList", response_model=List[schemas.ProductList])
 def keywords_similarity(
