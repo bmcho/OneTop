@@ -1,14 +1,12 @@
-import Image from 'next/image';
 import React from 'react';
 import styled from 'styled-components';
 import { hashtagSplit, priceToString } from '../../../utils/util';
 import Hashtag from '../../commons/hashtag/Hashtag';
 import StarRating from '../../commons/starRating/StarRating';
-
 const SearchResultItem = ({ cosmetic }) => (
   <SearchResultItemBlock>
     <ImageWrap>
-      <Image src={cosmetic.img_url} width={60} height={60} />
+      <img src={cosmetic.img_url} width={60} height={60} />
     </ImageWrap>
     <div>
       {cosmetic.keywords ? (
