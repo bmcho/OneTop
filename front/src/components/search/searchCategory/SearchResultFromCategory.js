@@ -39,7 +39,7 @@ const SearchResultFromCategory = ({
         })
       );
     }
-  }, [page]);
+  }, [page, sortingStandard]);
 
   const LinkDetailPageHandle = (product_num) => {
     router.push({

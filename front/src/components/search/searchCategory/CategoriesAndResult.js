@@ -8,6 +8,7 @@ import Pagenation from './Pagenation';
 import { useSelector } from 'react-redux';
 import { MdChevronLeft } from 'react-icons/md';
 import LoadingComponent from '../../commons/loading/LoadingComponent';
+import ResultSort from '../../commons/resultSort/ResultSort';
 
 const CategoriesAndResult = () => {
   const router = useRouter();
@@ -37,6 +38,10 @@ const CategoriesAndResult = () => {
     router.push({
       pathname: router.pathname,
     });
+  };
+
+  const sortingStandardHandle = (e) => {
+    setSortingStandard(e.target.value);
   };
 
   useEffect(() => {
@@ -71,6 +76,12 @@ const CategoriesAndResult = () => {
                 <span>{smallCategory}</span>
               </div>
             </ResultHeader>
+            <SortStandard>
+              <ResultSort
+                onChange={sortingStandardHandle}
+                value={sortingStandard}
+              />
+            </SortStandard>
             <SearchResultFromCategory
               largeCategory={categories3[largeCategoryIndex - 1].large}
               smallCategory={
@@ -134,6 +145,12 @@ const ResultHeader = styled.div`
     flex-direction: column;
     align-items: center;
   }
+`;
+
+const SortStandard = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: row-reverse;
 `;
 
 export default CategoriesAndResult;
