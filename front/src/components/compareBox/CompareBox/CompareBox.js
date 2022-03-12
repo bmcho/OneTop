@@ -133,7 +133,7 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
               })}
             </tr>
             <tr>
-              <th>안전성분</th>
+              <th>보통성분</th>
               {new Array(3).fill(0).map((_, index) => {
                 const item = productCompareInfos[index];
                 return item ? (
