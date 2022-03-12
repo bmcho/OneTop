@@ -19,13 +19,7 @@ const ProductInfo = ({
   return (
     <Container>
       <ImageWrapper>
-        <Image
-          src={img_url}
-          alt={'상품이미지'}
-          width={450}
-          height={450}
-          layout="responsive"
-        />
+        <img src={img_url} alt={'상품이미지'} />
       </ImageWrapper>
 
       <InfoContainer>

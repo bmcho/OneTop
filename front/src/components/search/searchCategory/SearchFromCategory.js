@@ -2,7 +2,6 @@ import { categories, categories3 } from '../../../utils/categoryUtil';
 import styled, { css } from 'styled-components';
 import { useEffect, useState } from 'react';
 import Slider from './Slider';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 const SearchFromCategory = ({
@@ -40,12 +39,9 @@ const SearchFromCategory = ({
             onClick={() => selectLargeCategory(parseInt(category.id))}
           >
             <div className="img-wrapper">
-              <Image
+              <img
                 src={`/images/category${category.id}.jpg`}
                 alt={'카테고리 이미지'}
-                width={76}
-                height={76}
-                layout="fixed"
               />
             </div>
             <h4>{category.large}</h4>
