@@ -99,19 +99,19 @@ services:
   #   depends_on:
   #     - nginx
 
-  migration:
-    container_name: migration
-    # platform: linux/x86_64
-    env_file: .env
-    build:
-      context: ./datamigration
-      dockerfile: Dockerfile
-    volumes:
-      - ./datamigration:/srv/migration
-    networks:
-      - migraion_database_bridge
-    depends_on:
-      - database
+  # migration:
+  #   container_name: migration
+  #   # platform: linux/x86_64
+  #   env_file: .env
+  #   build:
+  #     context: ./datamigration
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./datamigration:/srv/migration
+  #   networks:
+  #     - migraion_database_bridge
+  #   depends_on:
+  #     - database
 
 networks:
   nginx_bridge:
