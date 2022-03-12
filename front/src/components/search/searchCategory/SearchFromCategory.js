@@ -41,6 +41,8 @@ const SearchFromCategory = ({
             <div className="img-wrapper">
               <img
                 src={`/images/category${category.id}.jpg`}
+                width={76}
+                height={76}
                 alt={'카테고리 이미지'}
               />
             </div>
