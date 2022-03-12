@@ -21,7 +21,6 @@ const Pagination = ({
   };
   return (
     <Nav>
-      <div>{currentPage}</div>
       {pageStep !== 0 && (
         <Button onClick={clickPrevButton} disabled={currentPage === 1}>
           이전
@@ -72,6 +71,7 @@ const Button = styled.button`
   }
 `;
 const Nav = styled.nav`
-    text-align: center;
-}`;
+  text-align: center;
+  padding: 20px 0;
+`;
 export default Pagination;

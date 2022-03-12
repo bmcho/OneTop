@@ -40,26 +40,13 @@ services:
       - "3000"
     ports:
       - "3000:3000"
+    environment:
+      - DEV=1
     networks:
       - nginx_bridge
     depends_on:
       - server
 
-  nginx:
-    container_name: nginx
-    #platform: linux/x86_64
-    image: nginx:latest
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    restart: always
-    ports:
-      - "80:80"
-    depends_on:
-      - server
-      - client
-    networks:
-      - nginx_bridge
-      
   database:
     image: mysql:5.7
     #platform: linux/x86_64
@@ -73,14 +60,44 @@ services:
     ports:
       - "3306:3306"
     environment:
-     - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
-     - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
     networks:
       - server_database_bridge
       - migraion_database_bridge
+
+  nginx:
+    container_name: nginx
+    #platform: linux/x86_64
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf
+      - ./nginx/dhparam:/etc/nginx/dhparam
+      - ./nginx/certbot/conf/:/etc/nginx/ssl/
+      - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
+    restart: always
+    ports:
+      - "80:80"
+      - "433:433"
+    depends_on:
+      - server
+      - client
+    networks:
+      - nginx_bridge
+
+  # certbot:
+  #   container_name: certbot
+  #   image: certbot/certbot:latest
+  #   command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email credit812@gmail.com --agree-tos --no-eff-email -d www.onetop.n-e.kr
+  #   volumes:
+  #     - ./nginx/certbot/conf/:/etc/letsencrypt
+  #     - ./nginx/certbot/logs/:/var/log/letsencrypt
+  #     - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
+  #   depends_on:
+  #     - nginx
 
   # migration:
   #   container_name: migration

@@ -7,6 +7,8 @@ import { useRouter } from 'next/router';
 import Pagenation from './Pagenation';
 import { useSelector } from 'react-redux';
 import { MdChevronLeft } from 'react-icons/md';
+import LoadingComponent from '../../commons/loading/LoadingComponent';
+import ResultSort from '../../commons/resultSort/ResultSort';
 
 const CategoriesAndResult = () => {
   const router = useRouter();
@@ -16,7 +18,7 @@ const CategoriesAndResult = () => {
   const [largeCategoryIndex, setLargeCategoryIndex] = useState(1);
   const [smallCategoryIndex, setSmallCategoryIndex] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [sortingStandard, setSortingStandard] = useState('name asc');
+  const [sortingStandard, setSortingStandard] = useState('id desc');
 
   const itemPerPage = 5;
   const totalPageCount = data?.totalPageCount;
@@ -38,6 +40,10 @@ const CategoriesAndResult = () => {
     });
   };
 
+  const sortingStandardHandle = (e) => {
+    setSortingStandard(e.target.value);
+  };
+
   useEffect(() => {
     if (largeCategory && smallCategory) {
       const largeIndex = categories3.findIndex(
@@ -49,12 +55,13 @@ const CategoriesAndResult = () => {
       setLargeCategoryIndex(largeIndex + 1);
       setSmallCategoryIndex(smallIndex + 1);
     } else if (largeCategoryIndex || smallCategoryIndex) {
+      setSortingStandard('id desc');
       resetCategory();
     }
     setLoading(false);
   }, [largeCategory, smallCategory]);
 
-  if (loading) return null;
+  if (loading) return <LoadingComponent />;
 
   return (
     <>
@@ -67,10 +74,15 @@ const CategoriesAndResult = () => {
                 뒤로
               </button>
               <div>
-                <span className="largeCategory">{largeCategory}</span>·
                 <span>{smallCategory}</span>
               </div>
             </ResultHeader>
+            <SortStandard>
+              <ResultSort
+                onChange={sortingStandardHandle}
+                value={sortingStandard}
+              />
+            </SortStandard>
             <SearchResultFromCategory
               largeCategory={categories3[largeCategoryIndex - 1].large}
               smallCategory={
@@ -108,11 +120,6 @@ const CategoriesAndResult = () => {
 };
 
 const Wrapper = styled.div`
-  ${(props) =>
-    props.size &&
-    css`
-      height: calc(120px * ${parseInt(props.size) + 0.5});
-    `};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -139,6 +146,12 @@ const ResultHeader = styled.div`
     flex-direction: column;
     align-items: center;
   }
+`;
+
+const SortStandard = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: row-reverse;
 `;
 
 export default CategoriesAndResult;

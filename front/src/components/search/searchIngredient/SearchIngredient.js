@@ -1,5 +1,4 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
@@ -8,6 +7,8 @@ import {
   setIngredientForSearchAction,
   clearIncludeAutoCompleteDataAction,
   clearExcludeAutoCompleteDataAction,
+  setResultRequestParamsAction,
+  setIngredientInRequestParamsAction,
 } from '../../../stores/modules/searchIngredient';
 import SearchBlock from './searchBlock/SearchBlock';
 import SearchIngredientResult from './searchIngredientResult/SearchIngredientResult';
@@ -22,20 +23,22 @@ const SearchIngredient = (props) => {
   } = useSelector((state) => state.searchIngredient);
   const [includeKeywords, setIncludeKeywords] = useState([]);
   const [excludeKeywords, setExcludeKeywords] = useState([]);
+
   const getResult = () => {
-    const reqParam = {
+    const ingredient = {
       includeIngredient: includeKeywords,
       excludeIngredient: excludeKeywords,
       requestPage: 0,
-      maxItemCountByPage: 10,
-      sort: 'name asc',
+      sort: 'id desc',
     };
-    console.log('request point', reqParam);
-    dispatch(setIngredientForSearchAction(reqParam));
+    dispatch(setIngredientInRequestParamsAction(ingredient));
   };
 
   return (
     <SearchIngredientBlock>
+      <Description>
+        키워드 자동완성을 이용해 성분을 검색해 보세요 (스쿠알란, 녹차, 적색...)
+      </Description>
       <SearchBlock
         inputTitle={'포함할 성분'}
         keywords={includeKeywords}
@@ -66,6 +69,11 @@ const SearchIngredientBlock = styled.div`
   width: 80%;
   margin: 0 auto;
 `;
+const Description = styled.p`
+  padding-top: 30px;
+  text-align: center;
+  color: ${(props) => props.theme.color.gray5};
+`;
 const SearchButtonWrap = styled.div`
   text-align: center;
 `;
@@ -75,8 +83,11 @@ const SearchButton = styled.button`
   padding: 10px 20px;
   border-radius: 2px;
   border: 2px solid ${(props) => props.theme.color.black};
+  &:focus {
+    border: 2px solid ${(props) => props.theme.color.black};
+  }
   &:hover {
-    border: none;
+    border: 2px solid ${(props) => props.theme.color.purple};
     background-color: ${(props) => props.theme.color.purple};
     color: ${(props) => props.theme.color.white};
     // font-weight:bold;

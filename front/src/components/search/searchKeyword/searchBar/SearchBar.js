@@ -6,19 +6,15 @@ import {
   setSearchKeywordAction,
   setAutoCompleteKeywordAction,
   clearAutoCompleteDataAction,
-  setRequestPageAction,
   setRequestDataAction,
-  setResultTypeAction,
-  setSortAction,
 } from '../../../../stores/modules/searchKeyword';
 const SearchBar = (props) => {
   const inputRef = useRef();
   const resultsRef = useRef();
 
   const dispatch = useDispatch();
-  const { autoCompleteData, autoCompleteKeyword, searchKeyword } = useSelector(
-    (state) => state.searchKeyword
-  );
+  const { autoCompleteData, autoCompleteKeyword, keywordResultRequestData } =
+    useSelector((state) => state.searchKeyword);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -64,10 +60,11 @@ const SearchBar = (props) => {
       }
     }
   };
+
   const changeSearchValue = (e) => {
     const keyword = e.currentTarget.value;
-    if (searchKeyword.length > autoCompleteKeyword.length) {
-      dispatch(setSearchKeywordAction(''));
+    if (keywordResultRequestData.keyword.length > autoCompleteKeyword.length) {
+      dispatch(setSearchKeywordAction({ keyword: '' }));
     } else if (keyword.length === 0) {
       dispatch(clearAutoCompleteDataAction());
       dispatch(setAutoCompleteKeywordAction(''));
@@ -78,29 +75,25 @@ const SearchBar = (props) => {
 
   const resetSearchKeyword = () => {
     dispatch(setAutoCompleteKeywordAction(''));
-    dispatch(setSearchKeywordAction(''));
+    dispatch(setSearchKeywordAction({ keyword: '' }));
     dispatch(clearAutoCompleteDataAction());
   };
 
   const requestSearchResult = (keyword, type = 'product') => {
-    //keyword history 저장, 검색결과 요청
-    const requestPage = 0;
-    const sort = 'name asc';
-    dispatch(setRequestPageAction(requestPage));
-    dispatch(setSearchKeywordAction(keyword));
-    dispatch(setResultTypeAction(type));
-    dispatch(setSortAction(sort));
-
     dispatch(
-      setRequestDataAction({
-        requestPage: requestPage,
-        sort: sort,
-        searchResultType: type,
+      setSearchKeywordAction({
         keyword: keyword,
+        searchResultType: type,
+        requestPage: 0,
+        sort: 'id desc',
       })
     );
-    setSearchHistoryInLocal(keyword);
+    dispatch(setRequestDataAction());
+
+    dispatch(clearAutoCompleteDataAction());
     dispatch(setAutoCompleteKeywordAction(keyword));
+
+    setSearchHistoryInLocal(keyword);
   };
 
   const setSearchHistoryInLocal = (newKeyword) => {

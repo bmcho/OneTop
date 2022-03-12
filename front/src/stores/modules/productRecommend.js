@@ -21,9 +21,9 @@ export const GET_KEYWORDS_FAILURE = 'GET_KEYWORDS_FAILURE';
 
 export const SET_SELECTED_KEYWORDS = 'SET_SELECTED_KEYWORDS';
 
-export const GET_ROCOMMENDED = 'GET_ROCOMMENDED';
-export const GET_ROCOMMENDED_SUCCESS = 'GET_ROCOMMENDED_SUCCESS';
-export const GET_ROCOMMENDED_FAILURE = 'GET_ROCOMMENDED_FAILURE';
+export const GET_RECOMMENDED = 'GET_RECOMMENDED';
+export const GET_RECOMMENDED_SUCCESS = 'GET_RECOMMENDED_SUCCESS';
+export const GET_RECOMMENDED_FAILURE = 'GET_RECOMMENDED_FAILURE';
 
 export const RECOMMEND_RESET = 'RECOMMEND_RESET';
 
@@ -51,16 +51,16 @@ export const setSelectedKeywordsAction = (keywords) => ({
 });
 
 export const getRecommendedAction = (category, keywords) => ({
-  type: GET_ROCOMMENDED,
+  type: GET_RECOMMENDED,
   category,
   keywords,
 });
 export const getRecommendedSuccessAction = (data) => ({
-  type: GET_ROCOMMENDED_SUCCESS,
+  type: GET_RECOMMENDED_SUCCESS,
   data,
 });
 export const getRecommendedFailureAction = (error) => ({
-  type: GET_ROCOMMENDED_FAILURE,
+  type: GET_RECOMMENDED_FAILURE,
   error,
 });
 
@@ -107,7 +107,7 @@ const productRecommend = (state = initialState, action) => {
         ...state,
         selectKeywords: action.keywords,
       };
-    case GET_ROCOMMENDED:
+    case GET_RECOMMENDED:
       return {
         ...state,
         recommended: {
@@ -116,7 +116,7 @@ const productRecommend = (state = initialState, action) => {
           error: null,
         },
       };
-    case GET_ROCOMMENDED_SUCCESS:
+    case GET_RECOMMENDED_SUCCESS:
       return {
         ...state,
         recommended: {
@@ -125,7 +125,7 @@ const productRecommend = (state = initialState, action) => {
           error: null,
         },
       };
-    case GET_ROCOMMENDED_FAILURE:
+    case GET_RECOMMENDED_FAILURE:
       return {
         ...state,
         recommended: {

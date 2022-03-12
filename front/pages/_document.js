@@ -35,7 +35,13 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head></Head>
+        <Head>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `history.scrollRestoration = "manual"`,
+            }}
+          />
+        </Head>
         <body>
           <Main />
           <NextScript />

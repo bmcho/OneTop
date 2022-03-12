@@ -1,3 +1,5 @@
+import { actionUtil } from '../../utils/reduxUtil';
+
 const initState = {
   get: {
     loading: false,
@@ -11,7 +13,12 @@ const initState = {
   },
   modify: {
     loading: false,
-    reviews: null,
+    result: null,
+    error: null,
+  },
+  delete: {
+    loading: false,
+    result: null,
     error: null,
   },
 };
@@ -24,13 +31,22 @@ export const POST_PRODUCT_REVIEW = 'POST_PRODUCT_REVIEW';
 export const POST_PRODUCT_REVIEW_SUCCESS = 'POST_PRODUCT_REVIEW_SUCCESS';
 export const POST_PRODUCT_REVIEW_FAILURE = 'POST_PRODUCT_REVIEW_FAILURE';
 
-export const getProductReviewAction = (id) => ({
+export const MODIFY_PRODUCT_REVIEW = 'MODIFY_PRODUCT_REVIEW';
+export const MODIFY_PRODUCT_REVIEW_SUCCESS = 'MODIFY_PRODUCT_REVIEW_SUCCESS';
+export const MODIFY_PRODUCT_REVIEW_FAILURE = 'MODIFY_PRODUCT_REVIEW_FAILURE';
+
+export const DELETE_PRODUCT_REVIEW = 'DELETE_PRODUCT_REVIEW';
+export const DELETE_PRODUCT_REVIEW_SUCCESS = 'DELETE_PRODUCT_REVIEW_SUCCESS';
+export const DELETE_PRODUCT_REVIEW_FAILURE = 'DELETE_PRODUCT_REVIEW_FAILURE';
+
+export const getProductReviewAction = (id, page) => ({
   type: GET_PRODUCT_REVIEW,
   id,
+  page,
 });
-export const getProductReviewSuccessAction = (data) => ({
+export const getProductReviewSuccessAction = (payload) => ({
   type: GET_PRODUCT_REVIEW_SUCCESS,
-  data,
+  payload,
 });
 export const getProductReviewFailureAction = (error) => ({
   type: GET_PRODUCT_REVIEW_FAILURE,
@@ -41,72 +57,67 @@ export const postProductReviewAction = (body) => ({
   type: POST_PRODUCT_REVIEW,
   body,
 });
-export const postProductReviewSuccessAction = (data) => ({
+export const postProductReviewSuccessAction = (payload) => ({
   type: POST_PRODUCT_REVIEW_SUCCESS,
-  data,
+  payload,
 });
 export const postProductReviewFailureAction = (error) => ({
   type: POST_PRODUCT_REVIEW_FAILURE,
   error,
 });
 
+export const modifyProductReviewAction = (body) => ({
+  type: MODIFY_PRODUCT_REVIEW,
+  body,
+});
+export const modifyProductReviewSuccessAction = (payload) => ({
+  type: MODIFY_PRODUCT_REVIEW_SUCCESS,
+  payload,
+});
+export const modifyProductReviewFailureAction = (error) => ({
+  type: MODIFY_PRODUCT_REVIEW_FAILURE,
+  error,
+});
+
+export const deleteProductReviewAction = (body) => ({
+  type: DELETE_PRODUCT_REVIEW,
+  body,
+});
+export const deleteProductReviewSuccessAction = (payload) => ({
+  type: DELETE_PRODUCT_REVIEW_SUCCESS,
+  payload,
+});
+export const deleteProductReviewFailureAction = (error) => ({
+  type: DELETE_PRODUCT_REVIEW_FAILURE,
+  error,
+});
+
 const productReview = (state = initState, action) => {
   switch (action.type) {
     case GET_PRODUCT_REVIEW:
-      return {
-        ...state,
-        get: {
-          loading: true,
-          reviews: null,
-          error: null,
-        },
-      };
     case GET_PRODUCT_REVIEW_SUCCESS:
-      return {
-        ...state,
-        get: {
-          loading: false,
-          reviews: action.data,
-          error: null,
-        },
-      };
     case GET_PRODUCT_REVIEW_FAILURE:
-      return {
-        ...state,
-        get: {
-          loading: false,
-          reviews: null,
-          error: action.error,
-        },
-      };
-
+      return actionUtil(GET_PRODUCT_REVIEW, 'get', 'reviews')(state, action);
     case POST_PRODUCT_REVIEW:
-      return {
-        ...state,
-        post: {
-          loading: true,
-          reviews: null,
-          error: null,
-        },
-      };
     case POST_PRODUCT_REVIEW_SUCCESS:
-      return {
-        ...state,
-        post: {
-          loading: false,
-          reviews: action.data,
-          error: null,
-        },
-      };
     case POST_PRODUCT_REVIEW_FAILURE:
-      return {
-        ...stete,
-        post: {
-          loading: false,
-          reviews: null,
-          error: null,
-        },
-      };
+      return actionUtil(POST_PRODUCT_REVIEW, 'post', 'reviews')(state, action);
+    case MODIFY_PRODUCT_REVIEW:
+    case MODIFY_PRODUCT_REVIEW_SUCCESS:
+    case MODIFY_PRODUCT_REVIEW_FAILURE:
+      return actionUtil(
+        MODIFY_PRODUCT_REVIEW,
+        'modify',
+        'result'
+      )(state, action);
+    case DELETE_PRODUCT_REVIEW:
+    case DELETE_PRODUCT_REVIEW_SUCCESS:
+    case DELETE_PRODUCT_REVIEW_FAILURE:
+      return actionUtil(
+        DELETE_PRODUCT_REVIEW,
+        'delete',
+        'result'
+      )(state, action);
     default:
       return state;
   }

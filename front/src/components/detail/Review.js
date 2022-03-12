@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import ReviewItem from './ReviewItem';
-import ReviewForm from './ReviewForm';
-import ReviewMain from './ReviewMain';
+import ReviewItem from './review/ReviewItem';
+import ReviewPostForm from './review/ReviewPostForm';
+import ReviewMain from './review/ReviewMain';
 
 const Review = () => {
   return (
@@ -10,7 +10,7 @@ const Review = () => {
         <h4>REVIEW</h4>
       </ReviewHeader>
       <ReviewMain />
-      <ReviewForm />
+      <ReviewPostForm />
     </ReviewBlock>
   );
 };
@@ -36,7 +36,7 @@ const ReviewHeader = styled.div`
   padding: 15px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   background-color: ${({ theme }) => theme.color.yellow2};
-  z-index: 99;
+  z-index: 3;
   top: 0;
   left: 0;
   right: 0;

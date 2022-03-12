@@ -1,4 +1,4 @@
-import datetime
+from datetime import timedelta, datetime
 import math
 from typing import List
 
@@ -9,6 +9,25 @@ from models import Review, ReviewImage
 
 from ..core import hashing_password, util
 from ..schemas import ReviewDelete, ReviewManipulation
+
+
+def validation_review_data(review_data: Review, request: ReviewDelete):
+    if review_data is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="review, not found",
+        )
+
+    # check password hashing
+    if not hashing_password.verify_password(
+        request.password, review_data.hashed_password
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Password does not match",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
 
 """
 search 
@@ -27,14 +46,14 @@ def get_reviews(product_num: int, page: int, db: Session):
     offset = (currentPage - 1) * 20
     return_review = (
         db.query(Review)
-        .filter(Review.fk_product_num == product_num)
+        .filter(Review.fk_product_num == product_num, Review.use_flag == 1)
         .limit(20)
         .offset(offset)
         .all()
     )
-    for review in return_review:
-        for review_image in review.review_images:
-            review_image.img_path = util.encoding_base64(review_image.img_path)
+    # for review in return_review:
+    #     for review_image in review.review_images:
+    #         review_image.img_path = util.encoding_base64(review_image.img_path)
 
     return {"data": return_review, "total_page": totalPage, "current_page": currentPage}
 
@@ -47,16 +66,18 @@ create
 def post_reviews_create(request: ReviewManipulation, db: Session):
     # password hashing
     hashed_password = hashing_password.get_password_hash(request.password)
-
     try:
         reveiw_data = Review(
             fk_product_num=request.fk_product_num,
             hashed_password=hashed_password,
             comment=request.comment,
+            hashtag=request.hashtag,
         )
         image_list = []
         for image in request.images:
-            review_image = ReviewImage(img_path=util.IMAGE_DIR + "/" + image)
+            # base64 encoding string을 그대로 저장하는 방식으로 변경
+            # review_image = ReviewImage(img_path="".join([util.IMAGE_DIR, "/", image]))
+            review_image = ReviewImage(img_path=image)
             image_list.append(review_image)
             db.add(review_image)
 
@@ -77,11 +98,14 @@ def post_reviews_create(request: ReviewManipulation, db: Session):
     return return_review
 
 
+# 사용 X
 def post_image_upload(files: List[UploadFile]):
 
     try:
         for file in files:
-            with open(util.IMAGE_DIR + "/" + file.filename, "wb") as file_object:
+            with open(
+                "".join([util.IMAGE_DIR, "/", file.filename]), "wb"
+            ) as file_object:
                 file_object.write(file.file.read())
     except Exception as ex:
         print(ex)
@@ -101,45 +125,30 @@ def post_reviews_modify(request: ReviewManipulation, db: Session):
     return_review = (
         db.query(Review)
         .filter(
-            Review.id == request.id, Review.fk_product_num == request.fk_product_num
+            Review.id == request.id,
+            Review.fk_product_num == request.fk_product_num,
+            Review.use_flag == 1,
         )
         .first()
     )
 
-    if return_review is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="review, not found",
-        )
-
-    # check password hashing
-    if not hashing_password.verify_password(
-        request.password, return_review.hashed_password
-    ):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Password does not match",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+    validation_review_data(return_review, request)
 
     try:
-        # 변경 된 사진이 있다면 images list에 값을 넣는걸로
-        # 변경 된 값이 있다면 기존 데이터들을 삭제 이후 insert
-        if len(return_review.review_images) != 0:
-            delete_images = db.query(ReviewImage).filter(
-                ReviewImage.fk_review_id == return_review.id
-            )
-
-            db.delete(delete_images)
-
+        # 기존 review_image 삭제
+        db.query(ReviewImage).filter(ReviewImage.fk_review_id == request.id).delete()
         image_list = []
         for image in request.images:
-            review_image = ReviewImage(img_path=util.IMAGE_DIR + "/" + image)
+            # base64 encoding string을 그대로 저장하는 방식으로 변경
+            # review_image = ReviewImage(img_path="".join([util.IMAGE_DIR, "/", image]))
+            review_image = ReviewImage(img_path=image)
             image_list.append(review_image)
             db.add(review_image)
 
         # 리뷰내용 변경
         return_review.comment = request.comment
+        return_review.hashtag = request.hashtag
+        return_review.modify_date = datetime.now()+timedelta(hours=9)
         return_review.review_images = image_list
 
         db.commit()
@@ -159,13 +168,10 @@ delete
 
 
 def post_reviews_delete(request: ReviewDelete, db: Session):
+
     delete_review = db.query(Review).filter(Review.id == request.id).first()
-    print(delete_review)
-    if delete_review is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="review, not found",
-        )
+
+    validation_review_data(delete_review, request)
 
     try:
         delete_review.use_flag = False

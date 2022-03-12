@@ -32,7 +32,7 @@ const Header = (props) => {
 const HeaderItemWrap = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   max-width: 1024px;
   width: 100%;
   height: 100%;
@@ -44,12 +44,15 @@ const Logo = styled.img`
 `;
 const NavBlock = styled.nav`
   display: flex;
+  padding-left: 20px;
   li + li {
     padding-left: 10px;
   }
   a {
     text-decoration: none;
     color: black;
+    font-size: 20px;
+    cursor: pointer;
   }
 `;
 export default Header;

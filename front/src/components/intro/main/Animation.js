@@ -62,17 +62,29 @@ const Animation = () => {
   return (
     <Content>
       <Container ref={startTrigger}>
-        <ImageWrap>{/* <img src="/images/main.jpeg" /> */}</ImageWrap>
+        <ImageWrap></ImageWrap>
         <Main>
           <div ref={text1}>
-            <MainText>화장품</MainText>
-            <MainText>추천해줄께</MainText>
+            <Image src="/images/logo.png" alt={'로고'} />
+            <MainSubText>
+              대한민국 유일
+              <br /> 화장품 추천 웹
+            </MainSubText>
           </div>
         </Main>
         <Sub>
-          <SubItem ref={text2}>커몬1</SubItem>
-          <SubItem ref={text3}>커몬2</SubItem>
-          <SubItem ref={text4}>커몬3</SubItem>
+          <SubItem ref={text2}>
+            나에게 맞는지 제품인지 구매 전 <br />
+            reCco의 비교 추천 서비스 통해 알아보세요
+          </SubItem>
+          <SubItem ref={text3}>
+            reCco의 다양한 검색 유형을 통해 <br />
+            구매 전 내가 찾는 제품이 맞는지 확인해 보세요
+          </SubItem>
+          <SubItem ref={text4}>
+            reCco는 누구보다 당신을 위해 고민하며 <br />
+            화장품을 찾다 지친 당신을 위해 도와줄 거예요
+          </SubItem>
         </Sub>
       </Container>
     </Content>
@@ -94,46 +106,6 @@ const Container = styled.div`
   // z-index: 1;
   top: 0;
   left: 0;
-  // opacity: ${({ isShown }) => (isShown ? 1 : 0)};
-  .text {
-    // top: 25vh;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    font-family: Montserrat;
-    font-weight: 900;
-    font-size: 10rem;
-    line-height: 14.6rem;
-    white-space: nowrap;
-    opacity: 1;
-    &__content {
-      color: ${({ theme }) => theme.color.yellow1};
-      &__border {
-        color: transparent;
-        -webkit-text-stroke: 0.02em ${({ theme }) => theme.color.yellow1};
-      }
-    }
-    // ${media.mobile} {
-    //   white-space: pre-line;
-    //   line-height: 10rem;
-    // }
-  }
-  .second {
-    position: absolute;
-    left: auto;
-    right: 0;
-    opacity: 0;
-    // ${media.mobile} {
-    //   font-size: 6rem;
-    // }
-  }
-  .th {
-    position: absolute;
-    left: auto;
-    right: 0;
-    opacity: 0;
-    top: 50px;
-  }
 `;
 const Main = styled.div`
   position: absolute;
@@ -151,6 +123,15 @@ const MainText = styled.div`
     font-size: 54px;
   }
 `;
+const Image = styled.img`
+  width: 140px;
+  height: 140px;
+`;
+const MainSubText = styled.div`
+  font-size: 24px;
+  line-light: 30px;
+  letter-spacing: -1.5px;
+`;
 const Sub = styled.div`
   position: absolute;
   width: 100%;
@@ -161,6 +142,11 @@ const Sub = styled.div`
 const SubItem = styled.div`
   opacity: 0;
   transform: translate3d(0px, -20px, 0px);
+  padding: 10px;
+  font-size: 24px;
+  letter-spacing: -1.5px;
+  color: white;
+  line-height: 30px;
 `;
 
 const ImageWrap = styled.div`

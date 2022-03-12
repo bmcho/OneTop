@@ -1,17 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import {
-  loadIngredientAutoCompleteDataSuccessAction,
-  setIngredientAutoCompleteKeywordAction,
-} from '../../../../stores/modules/searchIngredient';
 
 const SearchBlock = ({
   inputTitle,
   keywords,
   setKeywords,
   setAutoKeywords,
-  autoCompleteKeyword,
   autoCompleteData,
   clearAutoCompleteData,
 }) => {
@@ -19,10 +14,6 @@ const SearchBlock = ({
   const inputRef = useRef();
   const resultsRef = useRef();
   const [inputText, setInputText] = useState('');
-
-  useEffect(() => {
-    console.log(inputText, 'block');
-  }, []);
 
   useEffect(() => {
     if (autoCompleteData.length > 0) {
@@ -67,28 +58,23 @@ const SearchBlock = ({
 
   const changeInputText = (e) => {
     const keyword = e.currentTarget.value;
+
     setInputText(keyword);
-    // if (inputText.length > ingredientAutoCompleteKeyword.length) {
-    //   dispatch(setSearchKeywordAction(''));
-    // }
-    // else
+
     if (keyword.length === 0) {
       dispatch(clearAutoCompleteData());
       dispatch(setAutoKeywords(''));
     }
-    //  else {
-    console.log(keyword, 'component');
     dispatch(setAutoKeywords(keyword));
-    // }
   };
+
   const addKeyword = (item) => {
-    // if (e.key === 'Enter' && inputText !== '') {
     setKeywords((cur) => [...cur, item]);
     setInputText('');
     dispatch(clearAutoCompleteData());
     inputRef.current.focus();
-    // }
   };
+
   const deleteLastKeyword = (e) => {
     if (e.key === 'Backspace' && inputText === '') {
       setKeywords((cur) => {
@@ -154,7 +140,7 @@ const AutoCompleteList = styled.ul`
   background-color: white;
 `;
 const AutoCompleteItem = styled.li`
-  background-color: ${(props) => (props.selected ? 'red' : 'white')};
+  background-color: ${(props) => props.theme.color.lightGray3};
 `;
 const AutoCompleteItemButton = styled.button`
   width: 100%;
@@ -162,10 +148,10 @@ const AutoCompleteItemButton = styled.button`
   display: flex;
   justify-content: space-between;
   &:hover {
-    background-color: ${(props) => props.theme.color.lightGray3};
+    background-color: ${(props) => props.theme.color.yellow2};
   }
   &:focus {
-    background-color: ${(props) => props.theme.color.lightGray3};
+    background-color: ${(props) => props.theme.color.yellow2};
   }
 `;
 export default SearchBlock;

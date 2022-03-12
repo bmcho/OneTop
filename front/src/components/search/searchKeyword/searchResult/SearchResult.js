@@ -1,14 +1,16 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { media } from '../../../../../styles/theme';
 import {
   setRequestDataAction,
-  setRequestPageAction,
-  setResultTypeAction,
-  setSortAction,
+  setSearchKeywordAction,
 } from '../../../../stores/modules/searchKeyword';
+import LoadingComponent from '../../../commons/loading/LoadingComponent';
+import NoResult from '../../../commons/noResult/NoResult';
 import Pagination from '../../../commons/pagination/Pagination';
+import ResultSort from '../../../commons/resultSort/ResultSort';
 import SearchResultItem from '../../searchResultItem/SearchResultItem';
 import Tab from './tab/Tab';
 
@@ -17,18 +19,11 @@ const SearchResult = (props) => {
   const dispatch = useDispatch();
   const {
     searchResultData,
-    searchKeyword,
-    autoCompleteKeyword,
-    requestPage,
+    keywordResultRequestData,
     resultTotalPage,
     resultType,
-    sort,
   } = useSelector((state) => state.searchKeyword);
   const { loadingStatus } = useSelector((state) => state.loading);
-  useEffect(() => {
-    console.log('searchresult mounted');
-    return () => console.log('searchresult unmounted');
-  }, []);
 
   const LinkDetailPageHandle = (product_num) => {
     router.push({
@@ -37,51 +32,42 @@ const SearchResult = (props) => {
   };
 
   const setCurrentPage = (page) => {
-    dispatch(setRequestPageAction(page));
-
     dispatch(
-      setRequestDataAction({
+      setSearchKeywordAction({
         requestPage: page,
-        sort: sort,
-        searchResultType: resultType,
-        keyword: searchKeyword,
       })
     );
+    dispatch(setRequestDataAction());
   };
 
   const changeSort = (e) => {
     const newSort = e.target.value;
-    dispatch(setSortAction(newSort));
-    dispatch(setRequestPageAction(0));
     dispatch(
-      setRequestDataAction({
+      setSearchKeywordAction({
         requestPage: 0,
         sort: newSort,
-        searchResultType: resultType,
-        keyword: searchKeyword,
       })
     );
+    dispatch(setRequestDataAction());
   };
 
-  if (loadingStatus) return <div>loading</div>;
+  if (loadingStatus) return <LoadingComponent />;
   return (
     <div>
       <TabSection>
         <Tab resultType={resultType} />
-        <Select onChange={changeSort} value={sort}>
-          <option value="name asc">가나다 오름차순</option>
-          <option value="name desc">가나다 내림차순</option>
-          <option value="price asc">가격 낮은순</option>
-          <option value="price desc">가격 높은순</option>
-        </Select>
+        <ResultSort
+          onChange={changeSort}
+          value={keywordResultRequestData.sort}
+        />
       </TabSection>
-      {searchKeyword.length !== 0 &&
+      {keywordResultRequestData.keyword.length !== 0 &&
         (searchResultData.length === 0 ? (
-          <div>검색 결과가 없습니다</div>
+          <NoResult />
         ) : (
           <div>
-            <div>
-              {searchResultData.map((cosmetic, idx) => (
+            <ul>
+              {searchResultData.map((cosmetic) => (
                 <a
                   key={cosmetic.product_num}
                   onClick={() => LinkDetailPageHandle(cosmetic.product_num)}
@@ -89,10 +75,10 @@ const SearchResult = (props) => {
                   <SearchResultItem cosmetic={cosmetic} />
                 </a>
               ))}
-            </div>
+            </ul>
             <Pagination
               totalPage={resultTotalPage}
-              currentPage={requestPage}
+              currentPage={keywordResultRequestData.requestPage}
               setCurrentPage={setCurrentPage}
               countByStep={5}
             />
@@ -111,6 +97,12 @@ const TabSection = styled.div`
   font-size: 14px;
   border: none;
   margin-left: 10px;
+  ${media.mobile} {
+    flex-direction: column;
+    margin-left: 0;
+    padding-left: 0;
+    height: auto;
+  }
 `;
 const Select = styled.select`
   height: 35px;
@@ -120,6 +112,12 @@ const Select = styled.select`
   font-size: 14px;
   border: none;
   margin-left: 10px;
+  ${media.mobile} {
+    width: 50%;
+    padding: 10px 0;
+    margin-top: 10px;
+    align-self: flex-end;
+  }
 `;
 const TabItem = styled.div`
   background-color: ${(props) => props.active && 'red'};

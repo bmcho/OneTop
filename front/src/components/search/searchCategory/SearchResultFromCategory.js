@@ -7,6 +7,10 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { MdChevronLeft } from 'react-icons/md';
+import { hashtagSplit } from '../../../utils/util';
+import LoadingComponent from '../../commons/loading/LoadingComponent';
+import Error from 'next/error';
+import NoResult from '../../commons/noResult/NoResult';
 
 const SearchResultFromCategory = ({
   largeCategory,
@@ -14,7 +18,11 @@ const SearchResultFromCategory = ({
   itemPerPage,
   sortingStandard,
 }) => {
-  const { loading, data, error } = useSelector((state) => state.searchCategory);
+  const {
+    loading,
+    data: productInfos,
+    error,
+  } = useSelector((state) => state.searchCategory);
   const dispatch = useDispatch();
   const router = useRouter();
   const { page } = router.query;
@@ -31,7 +39,7 @@ const SearchResultFromCategory = ({
         })
       );
     }
-  }, [page]);
+  }, [page, sortingStandard]);
 
   const LinkDetailPageHandle = (product_num) => {
     router.push({
@@ -39,25 +47,28 @@ const SearchResultFromCategory = ({
     });
   };
 
-  if (loading) return null;
-  if (error) return <div>error...</div>;
-  if (!data) return <div>error...</div>;
+  if (loading) return <LoadingComponent />;
+  if (error) return <Error statusCode={500} title={'네트워크 에러'} />;
+  if (!productInfos)
+    return <Error statusCode={500} title={'상품이 존재하지 않습니다.'} />;
 
   return (
     <ResultBlock>
-      {data.length === 0 ? (
-        <div>검색 결과가 없습니다</div>
+      {productInfos.length === 0 ? (
+        <NoResult />
       ) : (
         <>
           <div size={itemPerPage}>
-            {data.result.map((cosmetic, idx) => (
-              <a
-                key={idx}
-                onClick={() => LinkDetailPageHandle(cosmetic.product_num)}
-              >
-                <SearchResultItem key={idx} cosmetic={cosmetic} />
-              </a>
-            ))}
+            {productInfos.result.map((cosmetic, idx) => {
+              return (
+                <a
+                  key={idx}
+                  onClick={() => LinkDetailPageHandle(cosmetic.product_num)}
+                >
+                  <SearchResultItem key={idx} cosmetic={cosmetic} />
+                </a>
+              );
+            })}
           </div>
         </>
       )}
@@ -66,7 +77,6 @@ const SearchResultFromCategory = ({
 };
 
 const ResultBlock = styled.div`
-  padding: 30px 0;
   width: 80%;
   margin: 0 auto;
 `;

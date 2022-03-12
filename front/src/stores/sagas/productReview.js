@@ -2,25 +2,34 @@ import axios from 'axios';
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 import {
   GET_PRODUCT_REVIEW,
-  GET_PRODUCT_REVIEW_SUCCESS,
-  GET_PRODUCT_REVIEW_FAILURE,
-  getProductReviewAction,
   getProductReviewSuccessAction,
   getProductReviewFailureAction,
   POST_PRODUCT_REVIEW,
-  POST_PRODUCT_REVIEW_SUCCESS,
-  POST_PRODUCT_REVIEW_FAILURE,
-  postProductReviewAction,
   postProductReviewSuccessAction,
   postProductReviewFailureAction,
+  MODIFY_PRODUCT_REVIEW,
+  modifyProductReviewSuccessAction,
+  modifyProductReviewFailureAction,
+  DELETE_PRODUCT_REVIEW,
+  deleteProductReviewSuccessAction,
+  deleteProductReviewFailureAction,
 } from '../modules/productReview';
 
 const getProductReviewApi = async (productNum, page) => {
-  const res = await axios.get(`${process.env.BASE_URL}/reviews/${productNum}`);
+  const res = await axios.get(
+    `${process.env.BASE_URL}/reviews/${productNum}?page=${page}`
+  );
   return res.data;
 };
-const postPoductReviewApi = async (body) => {
+const postProductReviewApi = async (body) => {
   const res = await axios.post(`${process.env.BASE_URL}/reviews`, body);
+  return res.data;
+};
+
+const deleteProductReviewApi = async (body) => {
+  const res = await axios.delete(`${process.env.BASE_URL}/reviews`, {
+    data: body,
+  });
   return res.data;
 };
 
@@ -37,10 +46,30 @@ function* loadProductReview(action) {
 function* createProductReview(action) {
   const { body } = action;
   try {
-    const reviews = yield call(postPoductReviewApi, body);
+    const reviews = yield call(postProductReviewApi, body);
     yield put(postProductReviewSuccessAction(reviews));
   } catch (e) {
     yield put(postProductReviewFailureAction(e));
+  }
+}
+
+function* modifyProductReview(action) {
+  const { body } = action;
+  try {
+    const result = yield call(postProductReviewApi, body);
+    yield put(modifyProductReviewSuccessAction(result));
+  } catch (e) {
+    yield put(modifyProductReviewFailureAction(e));
+  }
+}
+
+function* deleteProductReview(action) {
+  const { body } = action;
+  try {
+    const result = yield call(deleteProductReviewApi, body);
+    yield put(deleteProductReviewSuccessAction(result));
+  } catch (e) {
+    yield put(deleteProductReviewFailureAction(e));
   }
 }
 
@@ -52,7 +81,17 @@ function* watchCreateProductReview() {
   yield takeLatest(POST_PRODUCT_REVIEW, createProductReview);
 }
 
+function* watchModifyProductReview() {
+  yield takeLatest(MODIFY_PRODUCT_REVIEW, modifyProductReview);
+}
+
+function* watchDeleteProductReview() {
+  yield takeLatest(DELETE_PRODUCT_REVIEW, deleteProductReview);
+}
+
 export default function* productReviewSaga() {
   yield all([fork(watchLoadProductReview)]);
   yield all([fork(watchCreateProductReview)]);
+  yield all([fork(watchModifyProductReview)]);
+  yield all([fork(watchDeleteProductReview)]);
 }

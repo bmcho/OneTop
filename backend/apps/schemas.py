@@ -156,7 +156,8 @@ create, modify, delete
 
 class ReviewManipulation(ReviewBase):
     password: str
-    comment: str = None
+    comment: str
+    hashtag: Optional[str] = None
     images: List[Optional[str]] = None
 
     class Config:
@@ -184,6 +185,7 @@ class ReviewSearchImage(BaseModel):
 
 class ReviewSearch(ReviewBase):
     comment: str
+    hashtag: Optional[str]
     review_images: List[Optional[ReviewSearchImage]] = None
     create_date: datetime
     modify_data: Optional[datetime] = None

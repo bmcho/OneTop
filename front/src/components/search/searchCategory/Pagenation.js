@@ -91,33 +91,31 @@ const ButtonWrapper = styled.div`
 `;
 
 const PageButton = styled.button`
-  font-size: 18px;
+  width: 30px;
+  height: 30px;
+  font-size: 14px;
   text-align: center;
-  line-height: 20px;
+  line-height: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
-
+  border: 1px solid
+    ${({ active, theme }) =>
+      active ? theme.color.gray1 : theme.color.lightGray1};
+  color: ${({ active, theme }) =>
+    active ? theme.color.gray1 : theme.color.gray4};
   div {
-    padding: 15px;
-    border-radius: 50%;
-    ${(props) =>
-      props.active &&
-      css`
-        background-color: ${({ theme }) => theme.color.yellow2};
-      `}
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  &:hover {
-    ${(props) =>
-      !props?.disabled &&
-      css`
-        div {
-          background-color: ${({ theme }) => theme.color.yellow2};
-        }
-      `}
-  }
+  /* &:focus {
+    border-color: ${({ theme }) => theme.color.gray1};
+    color: ${({ theme }) => theme.color.gray1};
+  } */
+
   & + & {
-    margin-left: 5px;
+    margin-left: 2px;
   }
 `;
 

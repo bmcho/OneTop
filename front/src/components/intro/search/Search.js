@@ -3,7 +3,7 @@ import { MdOutlineCategory } from 'react-icons/md';
 import { VscSymbolKeyword } from 'react-icons/vsc';
 import { FaCarrot } from 'react-icons/fa';
 import styled, { css } from 'styled-components';
-import { categories } from '../../../utils/categoryUtil';
+import { mainData } from '../../../utils/categoryUtil';
 import { gsap } from 'gsap/dist/gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import FadeIn from './fadeIn/FadeIn';
@@ -58,27 +58,27 @@ const Search = (props) => {
         {tapState === 0 && (
           <FadeIn stagger={0.1} x={100}>
             <Category>
-              <ProductItem />
-              <ProductItem />
-              <ProductItem />
+              {mainData[0].map((e, idx) => (
+                <ProductItem key={idx} data={e} />
+              ))}
             </Category>
           </FadeIn>
         )}
         {tapState === 1 && (
           <FadeIn stagger={0.1} x={100}>
             <Category>
-              <ProductItem />
-              <ProductItem />
-              <ProductItem />
+              {mainData[1].map((e, idx) => (
+                <ProductItem key={idx} data={e} />
+              ))}
             </Category>
           </FadeIn>
         )}
         {tapState === 2 && (
           <FadeIn stagger={0.1} x={100}>
             <Category>
-              <ProductItem />
-              <ProductItem />
-              <ProductItem />
+              {mainData[2].map((e, idx) => (
+                <ProductItem key={idx} data={e} />
+              ))}
             </Category>
           </FadeIn>
         )}

@@ -1,28 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-// import AutoComplete from './autoComplete/AutoComplete';
-// import SearchBar from './searchBar/SearchBar';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import SearchHistory from './searchHistory/SearchHistory';
 import SearchResult from './searchResult/SearchResult';
 import styled from 'styled-components';
 import SearchBar from '../searchKeyword/searchBar/SearchBar';
-import Pagenation from '../searchCategory/Pagenation';
-import { useRouter } from 'next/router';
 
 const SearchKeyword = (props) => {
-  const router = useRouter();
-  const { searchKeyword, autoCompleteKeyword } = useSelector(
+  const { keywordResultRequestData, autoCompleteKeyword } = useSelector(
     (state) => state.searchKeyword
   );
 
   return (
     <SearchKeywordBlock>
       <SearchBar />
-      {searchKeyword.length !== 0 && <SearchResult />}
-      {autoCompleteKeyword.length === 0 && searchKeyword.length === 0 && (
-        <SearchHistory />
-      )}
-      {/* <Pagenation  path={router.pathname}/> */}
+      {keywordResultRequestData.keyword.length !== 0 && <SearchResult />}
+      {autoCompleteKeyword.length === 0 &&
+        keywordResultRequestData.keyword.length === 0 && <SearchHistory />}
     </SearchKeywordBlock>
   );
 };

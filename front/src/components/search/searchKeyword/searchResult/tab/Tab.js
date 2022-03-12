@@ -1,48 +1,44 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
+import { media } from '../../../../../../styles/theme';
 import {
   setRequestDataAction,
-  setRequestPageAction,
-  setResultTypeAction,
+  setSearchKeywordAction,
 } from '../../../../../stores/modules/searchKeyword';
 
 const Tab = (props) => {
   const dispatch = useDispatch();
-  const { searchKeyword, sort, resultType } = useSelector(
+  const { keywordResultRequestData } = useSelector(
     (state) => state.searchKeyword
   );
 
   const clickResultTypeTab = (type) => {
-    const newRequestPage = 0;
-    dispatch(setResultTypeAction(type));
-    dispatch(setRequestPageAction(newRequestPage));
     dispatch(
-      setRequestDataAction({
-        requestPage: newRequestPage,
-        sort: sort,
+      setSearchKeywordAction({
         searchResultType: type,
-        keyword: searchKeyword,
+        requestPage: 0,
       })
     );
+    dispatch(setRequestDataAction());
   };
 
   return (
     <TabBlock>
       <TabItem
-        active={resultType === 'product'}
+        active={keywordResultRequestData.searchResultType === 'product'}
         onClick={() => clickResultTypeTab('product')}
       >
         상품
       </TabItem>
       <TabItem
-        active={resultType === 'brand'}
+        active={keywordResultRequestData.searchResultType === 'brand'}
         onClick={() => clickResultTypeTab('brand')}
       >
         브랜드
       </TabItem>
       <TabItem
-        active={resultType === 'ingredient'}
+        active={keywordResultRequestData.searchResultType === 'ingredient'}
         onClick={() => clickResultTypeTab('ingredient')}
       >
         성분
@@ -52,6 +48,11 @@ const Tab = (props) => {
 };
 const TabBlock = styled.div`
   display: flex;
+  ${media.mobile} {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
 `;
 const TabItem = styled.div`
   width: 50px;
@@ -61,6 +62,7 @@ const TabItem = styled.div`
 
   &:hover {
     background-color: ${(props) => props.theme.color.yellow2};
+    cursor: pointer;
   }
   ${(props) => {
     if (props.active) {
@@ -72,6 +74,10 @@ const TabItem = styled.div`
       `;
     }
   }};
+  ${media.mobile} {
+    width: 33%;
+    box-sizing: border-box;
+  }
 `;
 
 export default Tab;

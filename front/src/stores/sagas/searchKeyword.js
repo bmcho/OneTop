@@ -1,34 +1,30 @@
-import { all, fork, takeLatest, call, put, debounce } from 'redux-saga/effects';
-// import { delay } from 'redux-saga';
+import {
+  all,
+  fork,
+  takeLatest,
+  call,
+  put,
+  select,
+  debounce,
+} from 'redux-saga/effects';
 import axios from 'axios';
 import {
   loadAutoCompleteDataSuccessAction,
   loadDataFailureAction,
   loadDataSuccessAction,
-  SET_SEARCH_KEYWORD,
   SET_AUTO_COMPLETE_KEYWORD,
   clearAutoCompleteDataAction,
   SET_REQUEST_DATA,
-  setResultTotalPage,
 } from '../modules/searchKeyword';
 import { finishLoading, startLoading } from '../modules/loading';
 
 const delay = 500;
 
 function searchKeywordResultAPI(data) {
-  console.log('keyword saga', data);
-  const reqParam = {
-    keyword: data.keyword,
-    searchResultType: data.searchResultType,
-    requestPage: data.requestPage,
-    maxItemCountByPage: 10,
-    sort: data.sort,
-  };
-  return axios.post(`${process.env.BASE_URL}/search/keyword`, reqParam);
+  return axios.post(`${process.env.BASE_URL}/search/keyword`, data);
 }
 
 function searchKeywordAutoCompleteAPI(data) {
-  console.log('saga', data);
   const reqParam = {
     keyword: data,
   };
@@ -38,17 +34,15 @@ function searchKeywordAutoCompleteAPI(data) {
   );
 }
 
-function* loadKeywordSearchData(action) {
+function* loadKeywordSearchData() {
   yield put(clearAutoCompleteDataAction());
   yield put(startLoading());
   try {
-    console.log('keyword search', action.data);
-    if (action.data.keyword.length !== 0) {
-      const result = yield call(searchKeywordResultAPI, action.data);
-      console.log(result);
-      yield put(loadDataSuccessAction(result.data.result));
-      yield put(setResultTotalPage(result.data.totalPageCount));
-    }
+    const keywordResultRequestData = yield select(
+      (state) => state.searchKeyword.keywordResultRequestData
+    );
+    const result = yield call(searchKeywordResultAPI, keywordResultRequestData);
+    yield put(loadDataSuccessAction(result.data));
   } catch (e) {
     console.error(e);
     yield put(loadDataFailureAction(e));
@@ -58,10 +52,9 @@ function* loadKeywordSearchData(action) {
 
 function* loadAutoCompleteData(action) {
   try {
-    console.log(action, action.data.length, 'action.data.length');
     if (action.data.length !== 0) {
       const result = yield call(searchKeywordAutoCompleteAPI, action.data);
-      console.log('auto api result', result);
+
       yield put(loadAutoCompleteDataSuccessAction(result.data));
     }
   } catch (e) {

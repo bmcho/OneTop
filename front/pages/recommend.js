@@ -1,64 +1,55 @@
-import styled, { keyframes, css } from 'styled-components';
-import Image from 'next/image';
+import styled from 'styled-components';
 import SelectFromCategory from '../src/components/recommend/SelectFromCategory';
 import RecommendTitle from '../src/components/recommend/RecommendTitle';
-import { useEffect, useState } from 'react';
 import SelectFromKeyword from '../src/components/recommend/SelectFromKeyword';
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import RecommendResult from '../src/components/recommend/RecommendResult';
+import Hashtag from '../src/components/commons/hashtag/Hashtag';
+import { recommendedResetAction } from '../src/stores/modules/productRecommend';
+import { NextSeo } from 'next-seo';
 
 const recommend = (props) => {
-  const router = useRouter();
-  const [category, setCategory] = useState('');
-  const [isResult, setIsResult] = useState(false);
-  const { selectKeywords } = useSelector((state) => state.productRecommend);
-
+  const dispatch = useDispatch();
+  const { category, selectKeywords, keywords, recommended } = useSelector(
+    (state) => state.productRecommend
+  );
+  const reSelect = () => {
+    dispatch(recommendedResetAction());
+  };
   return (
     <RecommendBlock>
+      <NextSeo
+        title="추천 | reCco"
+        description="본인에게 맞는 화장품을 추천 받아보세요."
+      />
       <RecommendTitle />
+      {recommended.data && <Button onClick={reSelect}>다시 추천받기</Button>}
       <SurveyBlock>
-        <EssentialBlock>
-          {/* <EssentialTitle>
-            <span>필수</span>
-            필수 선택 항목입니다
-          </EssentialTitle> */}
-          <Essential>
-            <dt>{!category ? '어떤 화장품을 찾고 계신가요?' : '카테고리'}</dt>
-            <dd>
-              {!category ? (
-                <SelectFromCategory
-                  category={category}
-                  setCategory={setCategory}
-                />
-              ) : (
-                <SelectedCategory>
-                  <Category>{category}</Category>
-                </SelectedCategory>
-              )}
-            </dd>
-            {category && (
-              <>
-                <dt>{!isResult ? '키워드를 선택해주세요!' : '키워드'}</dt>
-                <dd>
-                  {!isResult ? (
-                    <SelectFromKeyword
-                      category={category}
-                      setIsResult={setIsResult}
-                    />
-                  ) : (
-                    <SelectedCategory>
-                      {selectKeywords?.map((keyword) => {
-                        return <Category>#{keyword}</Category>;
-                      })}
-                    </SelectedCategory>
-                  )}
-                </dd>
-              </>
-            )}
-            {isResult && <RecommendResult />}
-          </Essential>
-        </EssentialBlock>
+        {category.length !== 0 && selectKeywords.length === 0 && (
+          <div>
+            <Selected>카테고리</Selected>
+            <Hashtag>{category}</Hashtag>
+          </div>
+        )}
+        {selectKeywords.length !== 0 && (
+          <SelectedCategory>
+            <Hashtag>{category}</Hashtag>
+            {selectKeywords.map((keyword, index) => (
+              <Hashtag key={index}>#{keyword}</Hashtag>
+            ))}
+          </SelectedCategory>
+        )}
+
+        {category.length === 0 && selectKeywords.length === 0 && (
+          <div>
+            <Question>어떤 화장품을 찾고 계신가요?</Question>
+            <SelectFromCategory />
+          </div>
+        )}
+        {category.length !== 0 && selectKeywords.length === 0 && (
+          <SelectFromKeyword />
+        )}
+        {selectKeywords.length !== 0 && <RecommendResult />}
       </SurveyBlock>
     </RecommendBlock>
   );
@@ -72,11 +63,17 @@ const RecommendBlock = styled.section`
   justify-content: center;
   align-items: center;
 `;
-
 const SelectedCategory = styled.div`
+  display: flex;
+  padding: 20px;
+  align-self: self-start;
   width: 100%;
+  box-sizing: border-box;
 `;
-
+const Selected = styled.span`
+  padding: 0 20px 20px 20px;
+  line-height: 24px;
+`;
 const SurveyBlock = styled.div`
   width: 100%;
   display: flex;
@@ -84,50 +81,20 @@ const SurveyBlock = styled.div`
   align-items: center;
 `;
 
-const Category = styled.div`
-  display: inline-block;
-  padding: 9px 20px;
-  border-radius: 20px;
-  font-size: 20px;
-  background-color: ${({ theme }) => theme.color.yellow2};
-  & + & {
-    margin-left: 5px;
-  }
+const Question = styled.div`
+  padding: 20px;
+  text-align: center;
 `;
-
-const EssentialBlock = styled.article`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-const EssentialTitle = styled.div`
-  span {
-    padding: 8px 15px;
-    background-color: ${({ theme }) => theme.color.yellow2};
-    border-radius: 20px;
-    font-size: 18px;
-    font-weight: 900;
-    margin-right: 20px;
-  }
-  width: 1024px;
-  @media screen and (max-width: 1080px) {
-    width: 90%;
-  }
-`;
-
-const Essential = styled.dl`
-  dt {
-    font-weight: 900;
-    margin-bottom: 30px;
-  }
-  dd {
-    margin-bottom: 30px;
-  }
-  width: 90%;
-  padding: 40px;
-  @media screen and (max-width: 500px) {
-    padding: 20px;
+const Button = styled.button`
+  background-color: ${(props) => props.theme.color.white};
+  color: ${(props) => props.theme.color.black};
+  padding: 10px 20px;
+  border-radius: 2px;
+  border: 2px solid ${(props) => props.theme.color.black};
+  &:hover {
+    border: 2px solid ${(props) => props.theme.color.purple};
+    background-color: ${(props) => props.theme.color.purple};
+    color: ${(props) => props.theme.color.white};
   }
 `;
 
