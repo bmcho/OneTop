@@ -136,6 +136,7 @@ const Input = styled.input`
 const AutoCompleteList = styled.ul`
   position: absolute;
   background-color: white;
+  z-index: 10;
 `;
 const AutoCompleteItem = styled.li`
   background-color: ${(props) => props.theme.color.lightGray3};
