@@ -71,15 +71,17 @@ def get_product_by_ingredient(db: Session, request: schemas.SearchIngredients):
     limit = offset + perPage
 
     productList = get_productList_ingredient(db, sort, request)
-
     showList = productList[offset:limit]
     listLen = len(productList)
-    searchResult = schemas.SearchResult
-    searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
-    searchResult.currentPage = request.requestPage
-
-    searchResult.result = showList
-    return searchResult
+    # searchResult = schemas.SearchResult
+    # searchResult.totalPageCount = int(listLen / request.maxItemCountByPage)
+    # searchResult.currentPage = request.requestPage
+    # searchResult.result = showList
+    return {
+        "totalPageCount": int(listLen / request.maxItemCountByPage),
+        "currentPage": request.requestPage,
+        "result": showList,
+    }
 
 
 def get_keyword_autocomplete(db: Session, request: schemas.Keyword):
@@ -139,20 +141,38 @@ def get_ingredient_autocomplete(db: Session, request: schemas.Keyword):
 
     return ingredientList
 
-def get_sort_string(sort:str):
-    if sort=="id desc":
-        sortSentence=f"product_product_num desc"
-    elif sort=="id asc":
-        sortSentence=f"product_product_num asc"
-    elif sort=="price desc":
-        sortSentence=f"product_price desc"
-    elif sort=="price asc":
-        sortSentence=f"product_price asc"
-    elif sort=="name desc":
-        sortSentence=f"product_name desc"
-    elif sort=="name asc":
-        sortSentence=f"product_name asc"
+
+def get_sort_string(sort: str):
+    if sort == "id desc":
+        sortSentence = f"product_product_num desc"
+    elif sort == "id asc":
+        sortSentence = f"product_product_num asc"
+    elif sort == "price desc":
+        sortSentence = f"product_price desc"
+    elif sort == "price asc":
+        sortSentence = f"product_price asc"
+    elif sort == "name desc":
+        sortSentence = f"product_name desc"
+    elif sort == "name asc":
+        sortSentence = f"product_name asc"
     return sortSentence
+
+
+def get_sort_string_ingredient(sort: str):
+    if sort == "id desc":
+        sortSentence = f"product_num desc"
+    elif sort == "id asc":
+        sortSentence = f"product_num asc"
+    elif sort == "price desc":
+        sortSentence = f"price desc"
+    elif sort == "price asc":
+        sortSentence = f"price asc"
+    elif sort == "name desc":
+        sortSentence = f"`name` desc"
+    elif sort == "name asc":
+        sortSentence = f"`name` asc"
+    return sortSentence
+
 
 def get_productList_category(db: Session, sort: str, request: schemas.SearchCategory):
     largeCategory = request.largeCategory
@@ -161,7 +181,7 @@ def get_productList_category(db: Session, sort: str, request: schemas.SearchCate
     searchLarge = "%{}%".format(largeCategory)
     searchSmall = "%{}%".format(smallCategory)
 
-    sortSentence=get_sort_string(sort)
+    sortSentence = get_sort_string(sort)
 
     productList = (
         db.query(
@@ -198,8 +218,8 @@ def get_productList_keyword(
     search_keyword = request.keyword
     search = "%{}%".format(search_keyword)
 
-    if searchType=="product":
-        sortSentence=get_sort_string(sort)
+    if searchType == "product":
+        sortSentence = get_sort_string(sort)
         productList = (
             db.query(
                 models.Product.product_num,
@@ -222,8 +242,8 @@ def get_productList_keyword(
             .order_by(text(sortSentence))
             .all()
         )
-    elif searchType=="brand":
-        sortSentence=get_sort_string(sort)
+    elif searchType == "brand":
+        sortSentence = get_sort_string(sort)
         search = search.upper()
         productList = (
             db.query(
@@ -242,16 +262,14 @@ def get_productList_keyword(
                 # models.Descrip.hashtag,
             )
             .join(models.Descrip, models.Product._descriptions)
-            .filter(
-                (models.Product.brand.like(search)) & (models.Product.price > 0)
-            )
+            .filter((models.Product.brand.like(search)) & (models.Product.price > 0))
             .order_by(models.Product.extinction.desc())
             .order_by(text(sortSentence))
             .all()
         )
 
-    elif searchType=="ingredient":
-        sortSentence=get_sort_string(sort)
+    elif searchType == "ingredient":
+        sortSentence = get_sort_string(sort)
         productList = (
             db.query(
                 models.Product.product_num,
@@ -281,39 +299,80 @@ def get_productList_keyword(
     return productList
 
 
+def get_list_to_string_queryIn(lstStr: List):
+    retrnStr = ""
+    for s in lstStr:
+        retrnStr += f'"{s}",'
+
+    return retrnStr[0:-1]
+
+
 def get_productList_ingredient(
     db: Session, sort: str, request: schemas.SearchIngredients
 ):
-    includeIngredient = request.includeIngredient
-    excludeIngredient = request.excludeIngredient
+    lenInclude = len(request.includeIngredient)
+    lenExClude = len(request.excludeIngredient)
+    includeIngredient = get_list_to_string_queryIn(request.includeIngredient)
+    excludeIngredient = get_list_to_string_queryIn(request.excludeIngredient)
 
-    sortSentence=get_sort_string(sort)
-    productList = (
-        db.query(
-            models.Product.product_num,
-            models.Product.name,
-            models.Product.img_url,
-            models.Product.brand,
-            models.Product.average_rating,
-            models.Product.capacity,
-            models.Product.price,
-            models.Product.extinction,
-            func.ifnull(models.Product.keywords, models.Descrip.hashtag).label(
-                "hashtag"
-            )
-            # models.Product.keywords,
-            # models.Descrip.hashtag,
+    sortSentence = get_sort_string_ingredient(sort)
+
+    queryString = (
+        "SELECT "
+        + f"pd.product_num, "
+        + f"pd.name, "
+        + f"pd.img_url, "
+        + f"pd.brand, "
+        + f"pd.average_rating, "
+        + f"pd.capacity, "
+        + f"pd.price, "
+        + f"pd.extinction, "
+        + f"ifnull(pd.keywords, dp.hashtag) as hashtag "
+        + f"FROM product pd "
+        + f"JOIN descrip dp ON pd.product_num = dp.fk_product_descrip_product_num "
+        + f"JOIN ( "
+        + f"SELECT a.product_id from productingredientrelation a "
+        + f"JOIN ingredient b ON a.ingredient_id = b.id "
+        + f"WHERE "
+        + f"a.product_id NOT IN ( "
+        + f"SELECT DISTINCT product_id FROM productingredientrelation a "
+        + f"JOIN ingredient b ON a.ingredient_id = b.id "
+        + (
+            f"WHERE b.ko_ingredient IN ({excludeIngredient})) "
+            if lenExClude != 0
+            else 'WHERE b.ko_ingredient IN (""))'
         )
-        .distinct()
-        .join(models.Descrip, models.Product._descriptions)
-        .join(models.Ingredient, models.Product._ingredients)
-        .filter(
-            and_((models.Ingredient.ko_ingredient.in_(includeIngredient)),
-            (models.Ingredient.ko_ingredient.not_in(excludeIngredient)),
-            (models.Product.price > 0))
-        )
-        .order_by(models.Product.extinction.desc())
-        .order_by(text(sortSentence))
-        .all()
+        + (f"AND b.ko_ingredient IN ({includeIngredient}) " if lenInclude != 0 else "")
+        + f"GROUP BY a.product_id "
+        + (f"HAVING count(*) = {lenInclude}" if lenInclude != 0 else "")
+        + f") sub ON pd.product_num = sub.product_id "
+        + f"WHERE pd.price > 0 "
+        + f"ORDER BY pd.extinction DESC, {sortSentence}"
     )
+    productList = [dict(x) for x in db.execute(queryString).fetchall()]
+    # productList = (
+    #     db.query(
+    #         models.Product.product_num,
+    #         models.Product.name,
+    #         models.Product.img_url,
+    #         models.Product.brand,
+    #         models.Product.average_rating,
+    #         models.Product.capacity,
+    #         models.Product.price,
+    #         models.Product.extinction,
+    #         func.ifnull(models.Product.keywords, models.Descrip.hashtag).label(
+    #             "hashtag"
+    #         )
+    #         # models.Product.keywords,
+    #         # models.Descrip.hashtag,
+    #     )
+    #     .distinct()
+    #     .join(models.Descrip, models.Product._descriptions)
+    #     .join(models.Ingredient, models.Product._ingredients)
+
+    #     .filter(models.Product.price > 0)
+    #     .order_by(models.Product.extinction.desc())
+    #     .order_by(text(sortSentence))
+    #     .all()
+    # )
     return productList
