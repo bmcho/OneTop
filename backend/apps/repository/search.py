@@ -144,33 +144,33 @@ def get_ingredient_autocomplete(db: Session, request: schemas.Keyword):
 
 def get_sort_string(sort: str):
     if sort == "id desc":
-        sortSentence = f"product_product_num desc"
+        sortSentence = f"product_product_num desc"  # noqa
     elif sort == "id asc":
-        sortSentence = f"product_product_num asc"
+        sortSentence = f"product_product_num asc"  # noqa
     elif sort == "price desc":
-        sortSentence = f"product_price desc"
+        sortSentence = f"product_price desc"  # noqa
     elif sort == "price asc":
-        sortSentence = f"product_price asc"
+        sortSentence = f"product_price asc"  # noqa
     elif sort == "name desc":
-        sortSentence = f"product_name desc"
+        sortSentence = f"product_name desc"  # noqa
     elif sort == "name asc":
-        sortSentence = f"product_name asc"
+        sortSentence = f"product_name asc"  # noqa
     return sortSentence
 
 
 def get_sort_string_ingredient(sort: str):
     if sort == "id desc":
-        sortSentence = f"product_num desc"
+        sortSentence = f"product_num desc"  # noqa
     elif sort == "id asc":
-        sortSentence = f"product_num asc"
+        sortSentence = f"product_num asc"  # noqa
     elif sort == "price desc":
-        sortSentence = f"price desc"
+        sortSentence = f"price desc"  # noqa
     elif sort == "price asc":
-        sortSentence = f"price asc"
+        sortSentence = f"price asc"  # noqa
     elif sort == "name desc":
-        sortSentence = f"`name` desc"
+        sortSentence = f"`name` desc"  # noqa
     elif sort == "name asc":
-        sortSentence = f"`name` asc"
+        sortSentence = f"`name` asc"  # noqa
     return sortSentence
 
 
@@ -319,60 +319,37 @@ def get_productList_ingredient(
 
     queryString = (
         "SELECT "
-        + f"pd.product_num, "
-        + f"pd.name, "
-        + f"pd.img_url, "
-        + f"pd.brand, "
-        + f"pd.average_rating, "
-        + f"pd.capacity, "
-        + f"pd.price, "
-        + f"pd.extinction, "
-        + f"ifnull(pd.keywords, dp.hashtag) as hashtag "
-        + f"FROM product pd "
-        + f"JOIN descrip dp ON pd.product_num = dp.fk_product_descrip_product_num "
-        + f"JOIN ( "
-        + f"SELECT a.product_id from productingredientrelation a "
-        + f"JOIN ingredient b ON a.ingredient_id = b.id "
-        + f"WHERE "
-        + f"a.product_id NOT IN ( "
-        + f"SELECT DISTINCT product_id FROM productingredientrelation a "
-        + f"JOIN ingredient b ON a.ingredient_id = b.id "
+        + f"pd.product_num, "  # noqa
+        + f"pd.name, "  # noqa
+        + f"pd.img_url, "  # noqa
+        + f"pd.brand, "  # noqa
+        + f"pd.average_rating, "  # noqa
+        + f"pd.capacity, "  # noqa
+        + f"pd.price, "  # noqa
+        + f"pd.extinction, "  # noqa
+        + f"ifnull(pd.keywords, dp.hashtag) as hashtag "  # noqa
+        + f"FROM product pd "  # noqa
+        + f"JOIN descrip dp ON pd.product_num = dp.fk_product_descrip_product_num "  # noqa
+        + f"JOIN ( "  # noqa
+        + f"SELECT a.product_id from productingredientrelation a "  # noqa
+        + f"JOIN ingredient b ON a.ingredient_id = b.id "  # noqa
+        + f"WHERE "  # noqa
+        + f"a.product_id NOT IN ( "  # noqa
+        + f"SELECT DISTINCT product_id FROM productingredientrelation a "  # noqa
+        + f"JOIN ingredient b ON a.ingredient_id = b.id "  # noqa
         + (
-            f"WHERE b.ko_ingredient IN ({excludeIngredient})) "
-            if lenExClude != 0
-            else 'WHERE b.ko_ingredient IN (""))'
+            f"WHERE b.ko_ingredient IN ({excludeIngredient})) "  # noqa
+            if lenExClude != 0  # noqa
+            else 'WHERE b.ko_ingredient IN (""))'  # noqa
         )
-        + (f"AND b.ko_ingredient IN ({includeIngredient}) " if lenInclude != 0 else "")
-        + f"GROUP BY a.product_id "
-        + (f"HAVING count(*) = {lenInclude}" if lenInclude != 0 else "")
-        + f") sub ON pd.product_num = sub.product_id "
-        + f"WHERE pd.price > 0 "
-        + f"ORDER BY pd.extinction DESC, {sortSentence}"
+        + (
+            f"AND b.ko_ingredient IN ({includeIngredient}) " if lenInclude != 0 else ""
+        )  # noqa
+        + f"GROUP BY a.product_id "  # noqa
+        + (f"HAVING count(*) = {lenInclude}" if lenInclude != 0 else "")  # noqa
+        + f") sub ON pd.product_num = sub.product_id "  # noqa
+        + f"WHERE pd.price > 0 "  # noqa
+        + f"ORDER BY pd.extinction DESC, {sortSentence}"  # noqa
     )
     productList = [dict(x) for x in db.execute(queryString).fetchall()]
-    # productList = (
-    #     db.query(
-    #         models.Product.product_num,
-    #         models.Product.name,
-    #         models.Product.img_url,
-    #         models.Product.brand,
-    #         models.Product.average_rating,
-    #         models.Product.capacity,
-    #         models.Product.price,
-    #         models.Product.extinction,
-    #         func.ifnull(models.Product.keywords, models.Descrip.hashtag).label(
-    #             "hashtag"
-    #         )
-    #         # models.Product.keywords,
-    #         # models.Descrip.hashtag,
-    #     )
-    #     .distinct()
-    #     .join(models.Descrip, models.Product._descriptions)
-    #     .join(models.Ingredient, models.Product._ingredients)
-
-    #     .filter(models.Product.price > 0)
-    #     .order_by(models.Product.extinction.desc())
-    #     .order_by(text(sortSentence))
-    #     .all()
-    # )
     return productList

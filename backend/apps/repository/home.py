@@ -59,7 +59,7 @@ def keywords_similarity(request: schemas.KeywordCategoryList, db: Session):
         product_embedding.category == request.category
     ]
 
-    if len(product_embedding) == 0 :
+    if len(product_embedding) == 0:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Error, Not FoundData : {request.category}",
@@ -71,12 +71,12 @@ def keywords_similarity(request: schemas.KeywordCategoryList, db: Session):
     product_embedding.embedding = product_embedding["embedding"].apply(
         lambda x: np.array(x)
     )
-    
+
     # 단종 상품 제외 !!
     product_embedding = product_embedding[
         product_embedding.Discontinued == False  # noqa
     ]
-    
+
     # 선택한 키워드 벡터 계산
     vector = np.zeros((100,))
     for keyword in request.keywords:
