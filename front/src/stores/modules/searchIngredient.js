@@ -19,8 +19,8 @@ export const initialState = {
   searchIngredientError: '',
 };
 
-export const SET_RESULT_REQUEST_PARAMS_SEARCH =
-  'SET_RESULT_REQUEST_PARAMS_SEARCH';
+export const SET_INCLUDE_INGREDIENT = 'SET_INCLUDE_INGREDIENT';
+export const SET_EXCLUDE_INGREDIENT = 'SET_EXCLUDE_INGREDIENT';
 export const SET_INGREDIENT_IN_REQUEST_PARAMS =
   'SET_INGREDIENT_IN_REQUEST_PARAMS';
 export const SET_PAGE_IN_REQUEST_PARAMS = 'SET_PAGE_IN_REQUEST_PARAMS';
@@ -51,11 +51,14 @@ export const CLEAR_INCLUDE_AUTO_COMPLETE_DATA =
 export const CLEAR_EXCLUDE_AUTO_COMPLETE_DATA =
   'CLEAR_EXCLUDE_AUTO_COMPLETE_DATA';
 
-export const setResultRequestParamsAction = (params) => ({
-  type: SET_RESULT_REQUEST_PARAMS_SEARCH,
-  params,
+export const setIncludeIngredientAction = (data) => ({
+  type: SET_INCLUDE_INGREDIENT,
+  data,
 });
-
+export const setExcludeIngredientAction = (data) => ({
+  type: SET_EXCLUDE_INGREDIENT,
+  data,
+});
 export const setIngredientInRequestParamsAction = (data) => ({
   type: SET_INGREDIENT_IN_REQUEST_PARAMS,
   data,
@@ -115,8 +118,41 @@ export const clearExcludeAutoCompleteDataAction = () => ({
 
 const searchIngredient = (state = initialState, action) => {
   switch (action.type) {
-    case SET_RESULT_REQUEST_PARAMS_SEARCH:
-      return { ...state, resultRequestParams: action.data };
+    case SET_INCLUDE_INGREDIENT:
+      // const newArr = [
+      //   ...state.resultRequestParams.includeIngredient,
+      //   action.data,
+      // ];
+      console.log(action.data);
+      return {
+        ...state,
+        resultRequestParams: {
+          ...state.resultRequestParams,
+          includeIngredient: action.data,
+        },
+      };
+    case SET_EXCLUDE_INGREDIENT:
+      // const newArr = [
+      //   ...state.resultRequestParams.includeIngredient,
+      //   action.data,
+      // ];
+      console.log(action.data);
+      return {
+        ...state,
+        resultRequestParams: {
+          ...state.resultRequestParams,
+          excludeIngredient: action.data,
+        },
+      };
+    // case DELETE_INCLUDE_INGREDIENT_ITEM_ACTION:
+    //   const newArr = [...state.resultRequestParams.includeIngredient].pop();
+    //   return {
+    //     ...state,
+    //     resultRequestParams: {
+    //       ...state.resultRequestParams,
+    //       includeIngredient: newArr,
+    //     },
+    //   };
     case SET_INGREDIENT_IN_REQUEST_PARAMS:
       return {
         ...state,
