@@ -12,6 +12,7 @@ const search = (props) => {
   const router = useRouter();
   const { tapState } = useSelector((state) => state.searchTypeTap);
   useEffect(() => {
+    if (tapState == 'category') return;
     router.push({
       pathname: '/search',
     });
