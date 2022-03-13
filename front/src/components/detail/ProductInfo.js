@@ -19,9 +19,8 @@ const ProductInfo = ({
   return (
     <Container>
       <ImageWrapper>
-        <img src={img_url} alt={'상품이미지'} />
+        <Image src={img_url} alt={'상품이미지'} width={450} height={450} />
       </ImageWrapper>
-
       <InfoContainer>
         <TagUl>
           {hashtag &&
