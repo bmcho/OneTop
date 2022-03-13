@@ -1,4 +1,4 @@
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
 from typing import Counter
 
 import sqlalchemy
@@ -122,7 +122,9 @@ class Review(Base):
     hashed_password = Column(String(200))
     comment = Column(TEXT, nullable=False)
     hashtag = Column(String(200), nullable=True)
-    create_date = Column(DATETIME, nullable=False, default=datetime.now()+timedelta(hours=9))
+    create_date = Column(
+        DATETIME, nullable=False, default=datetime.now() + timedelta(hours=9)
+    )
     modify_date = Column(DATETIME, nullable=True)
     use_flag = Column(Boolean, default=True)
 

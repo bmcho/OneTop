@@ -68,29 +68,25 @@ class IngredientAutocompleteList(BaseModel):
         orm_mode = True
 
 
-class SearchKeyword(BaseModel):
+class Search(BaseModel):
+    requestPage: int
+    maxItemCountByPage: int
+    sort: str
+
+
+class SearchKeyword(Search):
     keyword: str
     searchResultType: str
-    requestPage: int
-    maxItemCountByPage: int
-    sort: str
 
 
-class SearchCategory(BaseModel):
+class SearchCategory(Search):
     largeCategory: str
     smallCategory: str
-    requestPage: int
-    maxItemCountByPage: int
-    sort: str
 
 
-class SearchIngredients(BaseModel):
+class SearchIngredients(Search):
     includeIngredient: List[Optional[str]] = None
     excludeIngredient: List[Optional[str]] = None
-    requestPage: int
-    maxItemCountByPage: int
-    sort: str
-    # requestPage, maxItemCountByPage,sort가 공통 인자. 상속관계 만들기 가능.
 
 
 class IngredientList(BaseModel):
