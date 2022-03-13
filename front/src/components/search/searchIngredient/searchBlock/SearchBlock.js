@@ -69,7 +69,7 @@ const SearchBlock = ({
   };
 
   const addKeyword = (item) => {
-    setKeywords((cur) => [...cur, item]);
+    setKeywords([...keywords, item]);
     setInputText('');
     dispatch(clearAutoCompleteData());
     inputRef.current.focus();
@@ -77,11 +77,9 @@ const SearchBlock = ({
 
   const deleteLastKeyword = (e) => {
     if (e.key === 'Backspace' && inputText === '') {
-      setKeywords((cur) => {
-        const newList = [...cur];
-        newList.pop();
-        return newList;
-      });
+      const newArr = [...keywords];
+      newArr.pop();
+      setKeywords(newArr);
     }
   };
 
@@ -138,6 +136,7 @@ const Input = styled.input`
 const AutoCompleteList = styled.ul`
   position: absolute;
   background-color: white;
+  z-index: 10;
 `;
 const AutoCompleteItem = styled.li`
   background-color: ${(props) => props.theme.color.lightGray3};

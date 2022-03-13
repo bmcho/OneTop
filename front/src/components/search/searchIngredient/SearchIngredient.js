@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   setExcludeAutoCompleteKeywordAction,
   setIncludeAutoCompleteKeywordAction,
-  setIngredientForSearchAction,
   clearIncludeAutoCompleteDataAction,
   clearExcludeAutoCompleteDataAction,
-  setResultRequestParamsAction,
   setIngredientInRequestParamsAction,
+  setIncludeIngredientAction,
+  setExcludeIngredientAction,
 } from '../../../stores/modules/searchIngredient';
 import SearchBlock from './searchBlock/SearchBlock';
 import SearchIngredientResult from './searchIngredientResult/SearchIngredientResult';
@@ -16,18 +16,21 @@ import SearchIngredientResult from './searchIngredientResult/SearchIngredientRes
 const SearchIngredient = (props) => {
   const dispatch = useDispatch();
   const {
+    resultRequestParams,
     includeAutoCompleteKeyword,
     excludeAutoCompleteKeyword,
     includeAutoCompleteData,
     excludeAutoCompleteData,
   } = useSelector((state) => state.searchIngredient);
-  const [includeKeywords, setIncludeKeywords] = useState([]);
-  const [excludeKeywords, setExcludeKeywords] = useState([]);
 
+  const setIncludeKeywords = (keyword) => {
+    dispatch(setIncludeIngredientAction(keyword));
+  };
+  const setExcludeKeywords = (keyword) => {
+    dispatch(setExcludeIngredientAction(keyword));
+  };
   const getResult = () => {
     const ingredient = {
-      includeIngredient: includeKeywords,
-      excludeIngredient: excludeKeywords,
       requestPage: 0,
       sort: 'id desc',
     };
@@ -41,7 +44,7 @@ const SearchIngredient = (props) => {
       </Description>
       <SearchBlock
         inputTitle={'포함할 성분'}
-        keywords={includeKeywords}
+        keywords={resultRequestParams.includeIngredient}
         setKeywords={setIncludeKeywords}
         setAutoKeywords={setIncludeAutoCompleteKeywordAction}
         autoCompleteKeyword={includeAutoCompleteKeyword}
@@ -50,7 +53,7 @@ const SearchIngredient = (props) => {
       />
       <SearchBlock
         inputTitle={'제외할 성분'}
-        keywords={excludeKeywords}
+        keywords={resultRequestParams.excludeIngredient}
         setKeywords={setExcludeKeywords}
         setAutoKeywords={setExcludeAutoCompleteKeywordAction}
         autoCompleteKeyword={excludeAutoCompleteKeyword}
