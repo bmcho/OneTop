@@ -64,7 +64,25 @@ const CompareBox = ({ comparBoxOpenHandle }) => {
           </thead>
           <tbody>
             <tr>
-              <th>링크</th>
+              <th>구매링크</th>
+              {new Array(3).fill(0).map((_, index) => {
+                const item = productCompareInfos[index];
+                return item ? (
+                  <td key={index}>
+                    <a
+                      href={`https://search.shopping.naver.com/search/all?query=${item.brand} ${item.name}`}
+                      target="_blank"
+                    >
+                      구매하기
+                    </a>
+                  </td>
+                ) : (
+                  <td></td>
+                );
+              })}
+            </tr>
+            <tr>
+              <th>상품페이지</th>
               {new Array(3).fill(0).map((_, index) => {
                 const item = productCompareInfos[index];
                 return item ? (
@@ -251,6 +269,7 @@ const ItemTable = styled.table`
     border-bottom: 2px solid #dee2e6;
     border-top: 2px solid #dee2e6;
     color: ${({ theme }) => theme.color.gray1};
+    margin: 0 auto;
   }
   th {
     width: 70px;
@@ -258,6 +277,10 @@ const ItemTable = styled.table`
   }
   td {
     width: 90px;
+  }
+  thead,
+  tbody {
+    width: 100%;
   }
   thead td,
   thead th {
@@ -268,6 +291,9 @@ const ItemTable = styled.table`
     padding: 20px 2px;
   }
   @media screen and (max-width: 500px) {
+    td {
+      width: 99px;
+    }
   }
 `;
 
@@ -295,12 +321,10 @@ const ImageWrapper = styled.div`
   overflow: hidden;
   width: 90px;
   position: relative;
+  margin: 0 auto;
   img {
     width: 100%;
     height: 100%;
-  }
-  @media screen and (max-width: 500px) {
-    width: 120px;
   }
 `;
 export default CompareBox;
