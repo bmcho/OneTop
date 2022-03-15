@@ -56,6 +56,15 @@ const ProductInfo = ({
           <span>Compare Box</span>
           <button onClick={addCompareBoxHandle}>보관함에 넣기</button>
         </InfoLi>
+        <InfoLi>
+          <span>Naver Shopping</span>
+          <a
+            href={`https://search.shopping.naver.com/search/all?query=${brand} ${name}`}
+            target="_blank"
+          >
+            사러가기
+          </a>
+        </InfoLi>
       </InfoContainer>
     </Container>
   );
@@ -125,6 +134,16 @@ const InfoLi = styled.li`
     padding: 0;
   }
   button:hover {
+    color: ${theme.color.orange2};
+  }
+  a {
+    text-decoration: none;
+    color: ${({ theme }) => theme.color.black};
+  }
+  a:visited {
+    color: ${({ theme }) => theme.color.black};
+  }
+  a:hover {
     color: ${theme.color.orange2};
   }
 
