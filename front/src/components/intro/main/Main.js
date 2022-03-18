@@ -11,7 +11,7 @@ const MainBlock = styled.div`
   width: 100%;
   top: 0;
   left: 0;
-  height: 600vh;
+  height: 500vh;
   // position: fixed;
 `;
 export default Main;
