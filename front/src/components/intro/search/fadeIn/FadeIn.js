@@ -1,11 +1,11 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap/dist/gsap';
 
 const FadeIn = ({ children, stagger = 0, x = 0 }) => {
   const el = useRef();
   const animation = useRef();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (window.innerWidth > 576) {
       animation.current = gsap.from(el.current.children, {
         opacity: 0,
