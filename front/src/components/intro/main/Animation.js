@@ -13,64 +13,51 @@ const Animation = () => {
   const text4 = useRef(null);
 
   useEffect(() => {
-    const config = {
+    let tl = gsap.timeline({
       scrollTrigger: {
         trigger: startTrigger.current,
+        pin: true,
+        scrub: 0.3,
         start: 'top top',
-        toggleActions: 'play none reverse none',
-        scrub: 1,
+        end: '+=500%',
       },
+    });
+    tl.to(text1.current, {
       opacity: 0,
       duration: 1,
-    };
-    const config2 = {
-      scrollTrigger: {
-        trigger: startTrigger.current,
-        start: 'bottom -100%',
-        toggleActions: 'play none reverse none',
-        scrub: 1,
-      },
-      opacity: 1,
-      transform: 'translate3d(0px, 0px, 0px)',
-      duration: 1,
-    };
-    const config3 = {
-      scrollTrigger: {
-        trigger: startTrigger.current,
-        start: 'bottom -360%',
-        toggleActions: 'play none reverse none',
-        scrub: 1,
-      },
-      opacity: 0,
-      // display: 'block',
-      // position: 'static',
-      duration: 1,
-    };
-    gsap.to(text1.current, config);
-    gsap.to(text2.current, config2);
-    gsap.to(text3.current, {
-      ...config2,
-      scrollTrigger: { ...config2.scrollTrigger, start: 'bottom -200%' },
-    });
-    gsap.to(text4.current, {
-      ...config2,
-      scrollTrigger: { ...config2.scrollTrigger, start: 'bottom -300%' },
-    });
-    gsap.to(startTrigger.current, config3);
+    })
+      .to(text2.current, {
+        opacity: 1,
+        duration: 1,
+        transform: 'translate3d(0px, 0px, 0px)',
+      })
+      .to(text3.current, {
+        opacity: 1,
+        duration: 1,
+        transform: 'translate3d(0px, 0px, 0px)',
+      })
+      .to(text4.current, {
+        opacity: 1,
+        duration: 1,
+        transform: 'translate3d(0px, 0px, 0px)',
+      })
+      .to(startTrigger.current, {
+        opacity: 0,
+        duration: 1,
+      });
   }, []);
 
   return (
     <Content>
       <Container ref={startTrigger}>
-        <ImageWrap></ImageWrap>
         <Main>
-          <div ref={text1}>
+          <MainWrap ref={text1}>
             <Image src="/images/logo.png" alt={'로고'} />
             <MainSubText>
               대한민국 유일
               <br /> 화장품 추천 웹
             </MainSubText>
-          </div>
+          </MainWrap>
         </Main>
         <Sub>
           <SubItem ref={text2}>
@@ -92,27 +79,28 @@ const Animation = () => {
 };
 const Content = styled.div`
   position: relative;
-  height: 100vh;
+  height: 100%;
 `;
 const Container = styled.div`
   width: 100%;
   height: 100vh;
-  position: fixed;
-  // overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  // z-index: 1;
-  top: 0;
-  left: 0;
+  background: url(/images/main.jpeg) center center / cover no-repeat;
 `;
 const Main = styled.div`
-  position: absolute;
   width: 100%;
-  top: 50%;
   text-align: center;
-  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  height: 100%;
+`;
+const MainWrap = styled.div`
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 const MainText = styled.div`
   font-weight: 900;
@@ -149,12 +137,4 @@ const SubItem = styled.div`
   line-height: 30px;
 `;
 
-const ImageWrap = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  /* top: 50%; */
-  text-align: center;
-  background: url(/images/main.jpeg) center center / cover no-repeat;
-`;
 export default Animation;
